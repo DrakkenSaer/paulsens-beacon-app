@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161202185416) do
+ActiveRecord::Schema.define(version: 20161202202929) do
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -29,7 +29,9 @@ ActiveRecord::Schema.define(version: 20161202185416) do
     t.integer  "points"
     t.string   "address"
     t.integer  "visit_count"
+    t.         "preferences"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["preferences"], name: "index_users_on_preferences"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
