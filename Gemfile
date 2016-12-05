@@ -18,6 +18,8 @@ gem 'pundit'
 # https://github.com/RolifyCommunity/rolify
 gem 'rolify'
 
+gem 'pg'
+
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 

@@ -10,7 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161202211336) do
+ActiveRecord::Schema.define(version: 20161205195420) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+  enable_extension "hstore"
+
+  create_table "promotions", force: :cascade do |t|
+    t.string   "promotional_type"
+    t.integer  "promotional_id"
+    t.string   "title"
+    t.text     "description"
+    t.string   "code"
+    t.integer  "redeem_count",     default: 0
+    t.boolean  "daily_deal",       default: false
+    t.boolean  "featured",         default: false
+    t.integer  "cost"
+    t.datetime "expiration"
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+    t.index ["promotional_type", "promotional_id"], name: "index_promotions_on_promotional_type_and_promotional_id", using: :btree
+  end
 
   create_table "roles", force: :cascade do |t|
     t.string   "name"
@@ -18,8 +38,8 @@ ActiveRecord::Schema.define(version: 20161202211336) do
     t.integer  "resource_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
-    t.index ["name"], name: "index_roles_on_name"
+    t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
+    t.index ["name"], name: "index_roles_on_name", using: :btree
   end
 
   create_table "users", force: :cascade do |t|
@@ -39,16 +59,16 @@ ActiveRecord::Schema.define(version: 20161202211336) do
     t.integer  "points"
     t.string   "address"
     t.integer  "visit_count"
-    t.         "preferences"
-    t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["preferences"], name: "index_users_on_preferences"
-    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.hstore   "preferences"
+    t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
+    t.index ["preferences"], name: "index_users_on_preferences", using: :gin
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
 
   create_table "users_roles", id: false, force: :cascade do |t|
     t.integer "user_id"
     t.integer "role_id"
-    t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id"
+    t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", using: :btree
   end
 
 end
