@@ -56,9 +56,9 @@ ActiveRecord::Schema.define(version: 20161205195420) do
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.string   "phone"
-    t.integer  "points"
+    t.integer  "points",                 default: 0
     t.string   "address"
-    t.integer  "visit_count"
+    t.integer  "visit_count",            default: 0
     t.hstore   "preferences"
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["preferences"], name: "index_users_on_preferences", using: :gin
