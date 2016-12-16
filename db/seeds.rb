@@ -10,10 +10,18 @@
 Promotion.destroy_all
 User.destroy_all
 Role.destroy_all
+Product.destroy_all
+Notification.destroy_all
+Beacon.destroy_all
 
 
 5.times do |i|
-  Promotion.create(title: "Promotion ##{i}", description: "A Promotion.", code: "promo#{i}")
+  Promotion.create!(title: "Promotion ##{i}", description: "A Promotion.", code: "promo#{i}")
+  Product.create!(featured: false, cost: "#{100 * i}", title: "product-#{i}", description: "This is product ##{i}")
+  User.create!(email: "user-#{i}@paulsens.com", password: "password-#{i}")
+  beacon = Beacon.create!(title: "Beacon-#{i}", description: "This is beacon ##{i}")
 
-  User.create(email: "user-#{i}@paulsens.com", password: "password-#{i}", password_confirmation: "password-#{i}")
+  5.times do |i_2|
+    beacon.notifications.create!(title: "Notification-#{i_2}", description: "This is notification ##{i_2}")
+  end
 end

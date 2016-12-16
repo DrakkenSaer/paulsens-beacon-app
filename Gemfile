@@ -18,6 +18,7 @@ gem 'pundit'
 # https://github.com/RolifyCommunity/rolify
 gem 'rolify'
 
+# PostgreSQL
 gem 'pg'
 
 # See https://github.com/rails/execjs#readme for more supported runtimes

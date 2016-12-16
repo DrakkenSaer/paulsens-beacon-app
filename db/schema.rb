@@ -10,11 +10,38 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161205195420) do
+ActiveRecord::Schema.define(version: 20161216200104) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "hstore"
+  enable_extension "uuid-ossp"
+
+  create_table "beacons", force: :cascade do |t|
+    t.uuid     "uuid",        default: -> { "uuid_generate_v4()" }, null: false
+    t.string   "title"
+    t.text     "description"
+    t.datetime "created_at",                                        null: false
+    t.datetime "updated_at",                                        null: false
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.string   "title"
+    t.text     "description"
+    t.integer  "beacon_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["beacon_id"], name: "index_notifications_on_beacon_id", using: :btree
+  end
+
+  create_table "products", force: :cascade do |t|
+    t.boolean  "featured",    default: false, null: false
+    t.string   "cost"
+    t.string   "title"
+    t.text     "description"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+  end
 
   create_table "promotions", force: :cascade do |t|
     t.string   "promotional_type"
@@ -71,4 +98,5 @@ ActiveRecord::Schema.define(version: 20161205195420) do
     t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", using: :btree
   end
 
+  add_foreign_key "notifications", "beacons"
 end
