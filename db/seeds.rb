@@ -13,6 +13,8 @@ Role.destroy_all
 Product.destroy_all
 Notification.destroy_all
 Beacon.destroy_all
+Order.destroy_all
+HistoricalEvent.destroy_all
 
 
 5.times do |i|

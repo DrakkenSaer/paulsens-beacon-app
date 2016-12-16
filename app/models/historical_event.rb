@@ -1,0 +1,2 @@
+class HistoricalEvent < ApplicationRecord
+end

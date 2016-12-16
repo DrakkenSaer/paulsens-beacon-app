@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  has_many :orders
+  
   rolify
   
   # Include default devise modules. Others available are:
