@@ -7,23 +7,27 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 
-Promotion.destroy_all
-User.destroy_all
-Role.destroy_all
-Product.destroy_all
+HistoricalEvent.destroy_all
 Notification.destroy_all
 Beacon.destroy_all
+Product.destroy_all
+Promotion.destroy_all
 Order.destroy_all
-HistoricalEvent.destroy_all
+Role.destroy_all
+User.destroy_all
 
 
 5.times do |i|
-  Promotion.create!(title: "Promotion ##{i}", description: "A Promotion.", code: "promo#{i}")
-  Product.create!(featured: false, cost: "#{100 * i}", title: "product-#{i}", description: "This is product ##{i}")
-  User.create!(email: "user-#{i}@paulsens.com", password: "password-#{i}")
+  HistoricalEvent.create!(title: "Historical Event #{i}", description: "This is an event in history ##{i}.", date: Time.now - i.years)
+  promotion = Promotion.create!(title: "Promotion ##{i}", description: "This is promotion ##{i}", code: "promo#{i}")
+  product = Product.create!(cost: "#{100 * (i + 1)}", title: "product-#{i}", description: "This is product ##{i}")
+  user = User.create!(email: "user-#{i}@paulsens.com", password: "password-#{i}")
   beacon = Beacon.create!(title: "Beacon-#{i}", description: "This is beacon ##{i}")
+  order = user.orders.create!
+  order.products << product
+  order.promotions << promotion
 
   5.times do |i_2|
-    beacon.notifications.create!(title: "Notification-#{i_2}", description: "This is notification ##{i_2}")
+    beacon.notifications.create!(title: "Notification-#{i}-#{i_2}", description: "This is notification ##{i}-#{i_2}")
   end
 end
