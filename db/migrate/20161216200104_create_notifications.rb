@@ -3,7 +3,7 @@ class CreateNotifications < ActiveRecord::Migration[5.0]
     create_table :notifications do |t|
       t.string :title, null: false, unique: true
       t.text :description, null: false, unique: true
-      t.belongs_to :beacon, foreign_key: true, null: false, index: true
+      t.belongs_to :beacon, foreign_key: true, index: true
 
       t.timestamps
     end
