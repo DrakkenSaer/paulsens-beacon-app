@@ -5,5 +5,5 @@ Rails.application.routes.draw do
   
   root to: "pages#show", page: "home"
   
-  resources :beacon, :historical_event, :line_item, :notification, :order, :product, :promotion  
+  resources :beacon, :historical_event, :notification, :order, :product, :promotion, :role
 end

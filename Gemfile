@@ -33,6 +33,9 @@ gem 'pg'
 # gem 'capistrano-rails', group: :development
 
 group :development, :test do
+  # Use RSpec for testing
+  gem 'rspec-rails', '~> 3.5'
+
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
 
