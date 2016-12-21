@@ -5,6 +5,8 @@ class Beacon < ApplicationRecord
     
     validates :title, :description, :uuid, presence: true
     validates :title, :uuid, uniqueness: true
+    
+    resourcify
 
     protected
     

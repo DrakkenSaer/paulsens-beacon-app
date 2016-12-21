@@ -8,7 +8,9 @@ class Product < ApplicationRecord
     
     validates :title, :description, :cost, presence: true
     validates :featured, inclusion: { in: [ true, false ] }
-    
+
+    resourcify
+
     protected
     
         def set_default_cost

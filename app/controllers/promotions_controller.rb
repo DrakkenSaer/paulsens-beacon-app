@@ -1,5 +1,8 @@
 class PromotionsController < ApplicationController
+  before_action :authenticate_user!, except: [:index, :show]
+
   def index
+    @promotions = policy_scope(Promotion)
   end
 
   def show

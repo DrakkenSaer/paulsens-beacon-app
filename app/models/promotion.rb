@@ -18,6 +18,8 @@ class Promotion < ApplicationRecord
             :expiration, presence: true
   
   validates :daily_deal, :featured, inclusion: { in: [ true, false ] }
+
+  resourcify
   
   def expired?
      self.expiration < Time.now

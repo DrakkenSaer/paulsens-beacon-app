@@ -1,5 +1,8 @@
 class BeaconsController < ApplicationController
+  before_action :authenticate_user!
+
   def index
+    @beacons = Beacon.all
   end
 
   def show

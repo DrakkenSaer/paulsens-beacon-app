@@ -1,5 +1,8 @@
 class OrdersController < ApplicationController
+  before_action :authenticate_user!
+
   def index
+    @orders = policy_scope(Order)
   end
 
   def show

@@ -1,5 +1,8 @@
 class RolesController < ApplicationController
+  before_action :authenticate_user!
+
   def index
+    @roles = policy_scope(Role)
   end
 
   def show
