@@ -8,7 +8,12 @@ Rails.application.routes.draw do
     match 'logout', to: 'devise/sessions#destroy', as: :destroy_user_session, via: Devise.mappings[:user].sign_out_via
   end
 
-  root to: "pages#show", page: "home", resources: {historical_events: HistoricalEvent.all}
+  root to: "pages#show", page: "home", resources: { historical_events: HistoricalEvent.all }
   
   resources :beacons, :historical_events, :notifications, :orders, :products, :promotions, :roles
+  
+  resources :accounts, only: [:index, :show] do
+    resources :user_roles, :path => "roles", except: [:edit, :update]
+  end
+  
 end

@@ -1,4 +1,4 @@
-class RegistrationPolicy < ApplicationPolicy
+class OrderPolicy < ApplicationPolicy
     class Scope < Scope
         def resolve
             if user.has_any_role?(:admin)
@@ -15,9 +15,5 @@ class RegistrationPolicy < ApplicationPolicy
 
     def show?
         user.has_any_role?(:standard, :admin)
-    end
-
-    def create?
-        user.has_any_role?(:admin)
     end
 end
