@@ -2,7 +2,7 @@ class BeaconsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @beacons = Beacon.all
+    @beacons = policy_scope(Beacon)
   end
 
   def show

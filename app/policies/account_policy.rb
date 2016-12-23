@@ -1,4 +1,4 @@
-class OrderPolicy < ApplicationPolicy
+class RegistrationPolicy < ApplicationPolicy
     class Scope < Scope
         def resolve
             if user.has_any_role?(:admin)
@@ -7,10 +7,6 @@ class OrderPolicy < ApplicationPolicy
                 scope.where(user: user)
             end
         end
-    end
-
-    def index?
-        user.has_any_role?(:standard, :admin)
     end
 
     def show?
