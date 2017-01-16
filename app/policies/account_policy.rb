@@ -1,10 +1,10 @@
-class RegistrationPolicy < ApplicationPolicy
+class AccountPolicy < ApplicationPolicy
     class Scope < Scope
         def resolve
             if user.has_any_role?(:admin)
                 scope.all
             else
-                scope.where(user: user)
+                user
             end
         end
     end

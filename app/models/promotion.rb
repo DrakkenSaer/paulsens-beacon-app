@@ -8,7 +8,7 @@ class Promotion < ApplicationRecord
   belongs_to :promotional, polymorphic: true, optional: true
   has_many :line_items, as: :orderable
   has_many :orders, through: :line_items
-  
+
   validates :title, 
             :description, 
             :code, 
