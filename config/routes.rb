@@ -1,5 +1,6 @@
+# For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  root to: "pages#show", page: "home", resources: { historical_events: HistoricalEvent.all }
 
   devise_for :users, path: 'account', skip: [:sessions], path_names: { cancel: 'deactive' }
   as :user do
@@ -7,8 +8,6 @@ Rails.application.routes.draw do
     post 'login', to: 'devise/sessions#create', as: :user_session
     match 'logout', to: 'devise/sessions#destroy', as: :destroy_user_session, via: Devise.mappings[:user].sign_out_via
   end
-
-  root to: "pages#show", page: "home", resources: { historical_events: HistoricalEvent.all }
   
   resources :beacons, :historical_events, :notifications, :orders, :products, :promotions, :roles
   

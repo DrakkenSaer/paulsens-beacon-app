@@ -9,7 +9,7 @@ class LineItem < ApplicationRecord
   def find_resource
     resource = self.orderable_type
     id = self.orderable_id
-    @resource = resource.singularize.classify.constantize.find(id)
+    @resource ||= resource.singularize.classify.constantize.find(id)
   end
 
   protected

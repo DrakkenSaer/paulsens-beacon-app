@@ -14,30 +14,29 @@ ActiveRecord::Schema.define(version: 20161216224648) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "hstore"
-  enable_extension "uuid-ossp"
 
   create_table "beacons", force: :cascade do |t|
-    t.uuid     "uuid",        default: -> { "uuid_generate_v4()" }, null: false
-    t.string   "title"
-    t.text     "description"
-    t.datetime "created_at",                                        null: false
-    t.datetime "updated_at",                                        null: false
+    t.uuid     "uuid",        null: false
+    t.string   "title",       null: false
+    t.text     "description", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["uuid"], name: "index_beacons_on_uuid", using: :btree
   end
 
   create_table "historical_events", force: :cascade do |t|
-    t.string   "title"
-    t.text     "description"
-    t.date     "date"
+    t.string   "title",       null: false
+    t.text     "description", null: false
+    t.date     "date",        null: false
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
 
   create_table "line_items", force: :cascade do |t|
-    t.integer  "order_id"
+    t.integer  "order_id",       null: false
     t.string   "orderable_type", null: false
     t.integer  "orderable_id",   null: false
-    t.string   "item_cost"
+    t.string   "item_cost",      null: false
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
     t.index ["order_id"], name: "index_line_items_on_order_id", using: :btree
@@ -45,8 +44,8 @@ ActiveRecord::Schema.define(version: 20161216224648) do
   end
 
   create_table "notifications", force: :cascade do |t|
-    t.string   "title"
-    t.text     "description"
+    t.string   "title",       null: false
+    t.text     "description", null: false
     t.integer  "beacon_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
@@ -54,7 +53,7 @@ ActiveRecord::Schema.define(version: 20161216224648) do
   end
 
   create_table "orders", force: :cascade do |t|
-    t.integer  "user_id"
+    t.integer  "user_id",    null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_orders_on_user_id", using: :btree
@@ -62,9 +61,9 @@ ActiveRecord::Schema.define(version: 20161216224648) do
 
   create_table "products", force: :cascade do |t|
     t.boolean  "featured",    default: false, null: false
-    t.string   "cost"
-    t.string   "title"
-    t.text     "description"
+    t.string   "cost",        default: "0",   null: false
+    t.string   "title",                       null: false
+    t.text     "description",                 null: false
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
   end
@@ -72,16 +71,16 @@ ActiveRecord::Schema.define(version: 20161216224648) do
   create_table "promotions", force: :cascade do |t|
     t.string   "promotional_type"
     t.integer  "promotional_id"
-    t.string   "title"
-    t.text     "description"
-    t.string   "code"
-    t.integer  "redeem_count",     default: 0
-    t.boolean  "daily_deal",       default: false
-    t.boolean  "featured",         default: false
-    t.integer  "cost"
-    t.datetime "expiration"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.string   "title",                                            null: false
+    t.text     "description",                                      null: false
+    t.string   "code",                                             null: false
+    t.integer  "redeem_count",     default: 0,                     null: false
+    t.boolean  "daily_deal",       default: false,                 null: false
+    t.boolean  "featured",         default: false,                 null: false
+    t.integer  "cost",             default: 0,                     null: false
+    t.datetime "expiration",       default: '2017-02-09 23:44:15'
+    t.datetime "created_at",                                       null: false
+    t.datetime "updated_at",                                       null: false
     t.index ["promotional_type", "promotional_id"], name: "index_promotions_on_promotional_type_and_promotional_id", using: :btree
   end
 
@@ -112,9 +111,9 @@ ActiveRecord::Schema.define(version: 20161216224648) do
     t.integer  "points",                 default: 0
     t.string   "address"
     t.integer  "visit_count",            default: 0
-    t.hstore   "preferences"
+    t.text     "preferences"
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
-    t.index ["preferences"], name: "index_users_on_preferences", using: :gin
+    t.index ["preferences"], name: "index_users_on_preferences", using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
 
