@@ -35,12 +35,14 @@ gem 'pg'
 group :development, :test do
   # Use RSpec for testing
   gem 'rspec-rails', '~> 3.5'
+  gem 'rails-controller-testing'
 
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
 
   # Use sqlite3 as the database for Active Record
   gem 'sqlite3'
+  gem 'factory_girl_rails'
 end
 
 group :development do

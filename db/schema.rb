@@ -75,7 +75,7 @@ ActiveRecord::Schema.define(version: 20161216224648) do
     t.boolean  "daily_deal",       default: false,                 null: false
     t.boolean  "featured",         default: false,                 null: false
     t.integer  "cost",             default: 0,                     null: false
-    t.datetime "expiration",       default: '2017-02-09 23:47:53'
+    t.datetime "expiration",       default: '2017-02-09 23:55:05'
     t.datetime "created_at",                                       null: false
     t.datetime "updated_at",                                       null: false
     t.index ["promotional_type", "promotional_id"], name: "index_promotions_on_promotional_type_and_promotional_id"
