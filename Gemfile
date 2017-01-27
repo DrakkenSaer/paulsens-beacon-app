@@ -9,6 +9,7 @@ gem 'jquery-rails'
 gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5'
 
+
 # https://github.com/plataformatec/devise
 gem 'devise'
 
@@ -38,6 +39,7 @@ group :development, :test do
 
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
+  gem 'factory_girl_rails'
 
   # Use sqlite3 as the database for Active Record
   gem 'sqlite3'
