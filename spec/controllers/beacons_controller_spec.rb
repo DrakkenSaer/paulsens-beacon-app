@@ -112,12 +112,22 @@ RSpec.describe BeaconsController, type: :controller do
     
     context "as admin" do
       login_admin
-      it "should update object paramaters when logged in as admin" do
-        test_beacon = FactoryGirl.create(:beacon)
-        put :update, id: test_beacon.id, beacon: valid_params
-        test_beacon.reload
-        expect(test_beacon.title).to eql valid_params[:title]
-        expect(test_beacon.description).to eql valid_params[:description]
+      context "valid_params" do
+        before(:each) do
+          @test_beacon = FactoryGirl.create(:beacon)
+          put :update, id: @test_beacon.id, beacon: valid_params
+          @test_beacon.reload
+        end
+      
+  
+        it "should update object paramaters when logged in as admin" do
+          expect(@test_beacon.title).to eql valid_params[:title]
+          expect(@test_beacon.description).to eql valid_params[:description]
+        end
+        
+        it "should redirect to beacon page when successful" do
+          expect(response).to redirect_to @test_beacon
+        end
       end
     end
   end
