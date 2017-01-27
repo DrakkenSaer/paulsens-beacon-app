@@ -94,9 +94,12 @@ RSpec.describe BeaconsController, type: :controller do
   end
   
   describe "POST #update" do
-    let (:valid_params){{"beacon" => {"title" => 'test', "description" => 'test'}}}
-    let (:invalid_params){{"beacon" => {"cake" => 'test'}}}
-    
+    let (:valid_params) do
+      {:title => 'new title', :description => 'new description'}
+    end
+    let (:invalid_params) do
+      {:cake => 'test'}
+    end
     context "as user" do
       login_user
       it "should raise an exception if not an admin" do
@@ -104,6 +107,17 @@ RSpec.describe BeaconsController, type: :controller do
         expect do
           put :update, {id: test_beacon.id}
         end.to raise_error(Pundit::NotAuthorizedError)
+      end
+    end
+    
+    context "as admin" do
+      login_admin
+      it "should update object paramaters when logged in as admin" do
+        test_beacon = FactoryGirl.create(:beacon)
+        put :update, id: test_beacon.id, beacon: valid_params
+        test_beacon.reload
+        expect(test_beacon.title).to eql valid_params[:title]
+        expect(test_beacon.description).to eql valid_params[:description]
       end
     end
   end

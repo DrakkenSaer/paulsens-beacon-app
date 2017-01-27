@@ -28,6 +28,7 @@ class BeaconsController < ApplicationController
   end
 
   def update
+    @beacon.update_attributes(beacon_params)
     # if @beacon.update_attributes(beacon_params)
     #   redirect_to @beacon, success: "Beacon successfully updated!"
     # else
