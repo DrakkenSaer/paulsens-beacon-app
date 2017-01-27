@@ -1,6 +1,8 @@
 class BeaconsController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_beacon, except: [:index, :create]
   before_action :authorize_beacon, except: [:index, :create]
+  
 
   def index
     @beacons = policy_scope(Beacon)
@@ -26,7 +28,6 @@ class BeaconsController < ApplicationController
   end
 
   def update
-    # @beacon = Beacon.find(params[:id])
     # if @beacon.update_attributes(beacon_params)
     #   redirect_to @beacon, success: "Beacon successfully updated!"
     # else
@@ -40,6 +41,10 @@ class BeaconsController < ApplicationController
 private 
   def beacon_params
     params.require(:beacon).permit(:title, :description)
+  end
+  
+  def set_beacon
+    @beacon = Beacon.find(params[:id])
   end
   
   def authorize_beacon

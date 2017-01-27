@@ -54,31 +54,56 @@ RSpec.describe BeaconsController, type: :controller do
   describe "POST #create" do
     let (:valid_params){{"beacon" => {"title" => 'test', "description" => 'test'}}}
     let (:invalid_params){{"beacon" => {"cake" => 'test'}}}
-    login_admin
-    
-    context "with valid parameters" do
-      it "increases amount of beacons by 1" do
-        expect {
+    context "as user" do
+      login_user
+      it "should raise an exception if not an admin" do
+        expect do
           post :create, valid_params
-        }.to change(Beacon, :count).by(1)
-      end
-      
-      it "redirects to the new beacon" do
-        post :create, valid_params
-        expect(response).to redirect_to Beacon.last
+        end.to raise_error(Pundit::NotAuthorizedError)
       end
     end
     
-    context "with invalid parameters" do
-      it "does not save new beacon" do
-        expect{
-          post :create, invalid_params
-        }.to_not change(Beacon,:count)
+    context "as admin" do
+      login_admin
+      context "with valid parameters" do
+        it "increases amount of beacons by 1" do
+          expect {
+            post :create, valid_params
+          }.to change(Beacon, :count).by(1)
+        end
+        
+        it "redirects to the new beacon" do
+          post :create, valid_params
+          expect(response).to redirect_to Beacon.last
+        end
       end
       
-      it "re-renders the new method" do
-        post :create, invalid_params
-        expect(response).to have_rendered("new")
+      context "with invalid parameters" do
+        it "does not save new beacon" do
+          expect{
+            post :create, invalid_params
+          }.to_not change(Beacon,:count)
+        end
+        
+        it "re-renders the new method" do
+          post :create, invalid_params
+          expect(response).to have_rendered("new")
+        end
+      end
+    end
+  end
+  
+  describe "POST #update" do
+    let (:valid_params){{"beacon" => {"title" => 'test', "description" => 'test'}}}
+    let (:invalid_params){{"beacon" => {"cake" => 'test'}}}
+    
+    context "as user" do
+      login_user
+      it "should raise an exception if not an admin" do
+        test_beacon = FactoryGirl.create(:beacon)
+        expect do
+          put :update, {id: test_beacon.id}
+        end.to raise_error(Pundit::NotAuthorizedError)
       end
     end
   end
