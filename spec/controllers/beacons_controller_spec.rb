@@ -111,6 +111,15 @@ RSpec.describe BeaconsController, type: :controller do
     
     context "as admin" do
       login_admin
+      
+      context "invalid id" do 
+        it "should return an ActiveRecord error if the beacon id does not exist" do
+          expect do
+             put :update, params: {id: 999, beacon: valid_params}
+          end.to raise_error(ActiveRecord::RecordNotFound)
+        end
+      end
+      
       context "valid_params" do
         before(:each) do
           @test_beacon = FactoryGirl.create(:beacon)
@@ -119,7 +128,7 @@ RSpec.describe BeaconsController, type: :controller do
         end
         
         it "should find the correct beacon" do
-          expect(assigns(:beacon)).to eq(@test_beacon)
+          expect(assigns(:beacon)).to eql @test_beacon
         end
 
         it "should update object paramaters when logged in as admin" do
@@ -169,9 +178,15 @@ RSpec.describe BeaconsController, type: :controller do
     context "as admin" do
       login_admin
       
+      it "should return an ActiveRecord error if the beacon id does not exist" do
+        expect do
+           delete :destroy, params: {id: 999}
+        end.to raise_error(ActiveRecord::RecordNotFound)
+      end
+      
       it "should find the correct beacon" do
         delete :destroy, params: { id: @test_beacon.id }
-        expect(assigns(:beacon)).to eq(@test_beacon)
+        expect(assigns(:beacon)).to eql @test_beacon
       end
       
       it "deletes the beacon from the database" do
