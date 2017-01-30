@@ -125,21 +125,6 @@ RSpec.describe HistoricalEventsController, type: :controller do
             expect(response).to redirect_to(historical_events_url)
           end
         end
-        
-        context "with invalid id" do
-          it "decreases amount of HistoricalEvent by 1" do
-            historical_event = FactoryGirl.create(:historical_event)
-            expect{
-              delete :destroy, { id: historical_event.id + 1 }    
-            }.to change(HistoricalEvent, :count).by(-1)
-          end
-          
-          it "redirects to historical_events_url after destroy historical_event" do
-            historical_event = FactoryGirl.create(:historical_event)
-            post :destroy, { id: historical_event.id }
-            expect(response).to redirect_to(historical_events_url)
-          end
-        end
     end
   end
   
