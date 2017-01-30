@@ -52,22 +52,113 @@ RSpec.describe OrdersController, type: :controller do
 #   end
 
   describe "POST #create" do
-    let (:valid_params) { { order: { user_id: 1 } } }
-    let (:invalid_params) { { order: FactoryGirl.build(:order, user_id: nil) } }
-    login_user
-
-    context "with valid parameters" do
-      it "increases amount of orders by 1" do
-        expect {
+    let (:valid_params) { { order: FactoryGirl.build(:order).attributes } }
+    let (:invalid_params) { { order: FactoryGirl.build(:order, user_id: nil).attributes } }
+    
+    context "not logged in" do
+      it "should redirect to login page if not logged in" do
+        post :create, params: valid_params
+        expect(response).to redirect_to new_user_session_path
+      end
+    end
+    
+    context "logged in" do
+      login_user
+      
+      context "with valid parameters" do
+        it "increases amount of orders by 1" do
+          expect {
+            post :create, params: valid_params
+          }.to change(Order, :count).by(1)
+        end
+        
+        it "redirects to the new order" do
           post :create, params: valid_params
-        }.to change(Order, :count).by(1)
+          expect(response).to redirect_to Order.last
+        end
       end
       
-      # it "redirects to the new order" do
-      #   post :create, params: valid_params
-      #   expect(response).to redirect_to Order.last
-      # end
+      context "with invalid parameters" do
+        it "does not save new order" do
+          expect{
+            post :create, params: invalid_params
+          }.to_not change(Order, :count)
+        end
+        
+        it "re-renders the new method" do
+          post :create, params: invalid_params
+          expect(response).to render_template :new
+        end
+      end
     end
+  end
+  
+  describe "PUT #update" do
+    let (:valid_params) { FactoryGirl.build(:order, user_id: 99).attributes }
+    let (:invalid_params) { { order: FactoryGirl.build(:order, user_id: nil).attributes } }
+    before(:each) do
+      @test_order = FactoryGirl.create(:order)
+    end
+    
+    context "as user" do
+      login_user
+      it "should raise an exception if not an admin" do
+        expect do
+          put :update, params: { id: @test_order.id }
+        end.to raise_error(Pundit::NotAuthorizedError)
+      end
+    end
+    
+    context "as admin" do
+      login_admin
+      
+      context "invalid id" do 
+        it "should return an ActiveRecord error if the order id does not exist" do
+          expect do
+            put :update, params: {id: 999, order: valid_params}
+          end.to raise_error(ActiveRecord::RecordNotFound)
+        end
+      end
+      
+      # context "valid_params" do
+      #   before(:each) do
+      #     @test_order = FactoryGirl.create(:order)
+      #     put :update, params: {id: @test_order, order: valid_params}
+      #     @test_order.reload
+      #   end
+        
+      #   it "should find the correct order" do
+      #     expect(assigns(:order)).to eql @test_order
+      #   end
+
+      #   it "should update object paramaters when logged in as admin" do
+      #     expect(@test_order.user_id).to eql valid_params[:user_id]
+      #     expect(@test_order.created_at).to_not eql @test_order.updated_at
+      #   end
+        
+      #   it "should redirect to order page when successful" do
+      #     expect(response).to redirect_to @test_order
+      #   end
+      # end
+      
+    #   context "invalid params" do
+    #     before(:each) do
+    #       @test_beacon = FactoryGirl.create(:beacon)
+    #       put :update, params: { id: @test_beacon.id, beacon: invalid_params }
+    #       @test_beacon.reload
+    #     end
+      
+    #     it "should not update object paramaters when given invalid parameters" do
+    #       expect(@test_beacon.title).to eql "test"
+    #       expect(@test_beacon.description).to eql "test description"
+    #     end
+        
+    #     it "should rerender edit page when update unsuccessful" do
+    #       expect(response).to render_template :edit
+    #     end
+    #   end
+    end
+    
   end
 
 end

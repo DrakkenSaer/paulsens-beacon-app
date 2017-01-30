@@ -15,7 +15,6 @@ class OrdersController < ApplicationController
 
   def create
     @order = Order.new(order_params)
-    #authorize(@order)
 
     if @order.save
       redirect_to @order, success: "Order successfully created!"
