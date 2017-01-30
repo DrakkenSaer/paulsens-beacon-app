@@ -59,7 +59,7 @@ RSpec.describe HistoricalEventsController, type: :controller do
       login_admin
       it "creates a new Hitorical event" do
         expect{
-          post :create, {:historical_event => {:title => "test", :description => "Test", :date => "2001-6-4"}}
+          post :create, { historical_event: { title: "test", description: "Test", date: "2001-6-4" } }
         }.to change(HistoricalEvent, :count).by(1)
       end
     end
@@ -77,17 +77,18 @@ RSpec.describe HistoricalEventsController, type: :controller do
     context "have admin right" do
       login_admin
       it "deletes the Historical event" do
-        test_his = FactoryGirl.create(:historical_event)
+        historical_event = FactoryGirl.create(:historical_event)
+
         expect{
-          delete :destroy, { id: test_his.id }    
-        }.to change(HistoricalEvent,:count).by(-1)
+          delete :destroy, { id: historical_event.id }    
+        }.to change(HistoricalEvent, :count).by(-1)
       end
     end
+
     # it "redirects to contacts#index" do
     #   delete :destroy, id: @contact
     #   response.should redirect_to historical_event_url
     # end
   end
   
- 
 end
