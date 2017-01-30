@@ -1,6 +1,6 @@
 class ProductsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :product_params, except: [:index, :create]
+  before_action :set_product, except: [:index, :create]
   before_action :authorize_product, except: [:index, :create]
 
   def index
@@ -48,7 +48,7 @@ class ProductsController < ApplicationController
     @product.destroy
     
     respond_to do |format|
-      format.html { redirect_to historical_events_url }
+      format.html { redirect_to product_url }
       format.json { head :no_content }
     end
   end
