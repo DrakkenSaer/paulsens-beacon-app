@@ -147,20 +147,35 @@ RSpec.describe BeaconsController, type: :controller do
     end
   end
   
-  # describe "DELETE #destroy" do
-  #   before(:each) do
-  #     @test_beacon = FactoryGirl.create(:beacon)
-  #   end
+  describe "DELETE #destroy" do
+    before(:each) do
+      @test_beacon = FactoryGirl.create(:beacon)
+    end
     
-  #   context "as user" do
-  #     login_user
+    context "as user" do
+      login_user
       
-  #     it "should raise an exception if not an admin" do
-  #       expect do
-  #       put :update, params: { id: @test_beacon.id }
-  #       end.to raise_error(Pundit::NotAuthorizedError)
-  #     end
-  #   end
-  # end
+      it "should raise an exception if not an admin" do
+        expect do
+          delete :destroy, params: { id: @test_beacon.id }
+        end.to raise_error(Pundit::NotAuthorizedError)
+      end
+    end
+    
+    context "as admin" do
+      login_admin
+      
+      it "deletes the beacon from the database" do
+        expect do
+           delete :destroy, params: { id: @test_beacon.id }
+        end.to change(Beacon, :count).by(-1)
+      end
+      
+      it "redirects to the beacons index" do
+        delete :destroy, params: {id: @test_beacon.id}
+        expect(response).to redirect_to beacons_url
+      end
+    end
+  end
 
 end
