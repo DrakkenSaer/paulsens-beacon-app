@@ -1,6 +1,6 @@
-# require 'rails_helper'
+require 'rails_helper'
 
-# RSpec.describe ProductsController, type: :controller do
+RSpec.describe ProductsController, type: :controller do
 
 #   describe "GET #index" do
 #     it "returns http success" do
@@ -51,4 +51,48 @@
 #     end
 #   end
 
-# end
+
+    describe "POST create" do
+        
+        context "as user" do
+          login_user
+          it "should raise an exception if not an admin" do
+            expect do
+              post :create, { product: { featured: true, cost: "19.99", title: "test", description: "Test" } }
+            end.to raise_error(Pundit::NotAuthorizedError)
+          end
+        end
+        
+        context "user have admin right" do
+            login_admin
+            
+            context "with valid parameters" do
+              it "increases amount of Product by 1" do
+                expect {
+                  post :create, { product: { featured: true, cost: "19.99", title: "test", description: "Test" } }
+                }.to change(Product, :count).by(1)
+              end
+              
+              it "redirects to the new Product after was made" do
+                post :create, { product: { featured: true, cost: "19.99", title: "test", description: "Test" } }
+                expect(response).to redirect_to Product.last
+              end
+            end
+            
+            context "with invalid parameters" do
+              it "does not save new Product" do
+                expect{
+                  post :create, { product: { featured: true, cost: "19.99", description: "Test" } }
+                }.to_not change(Product, :count)
+              end
+              
+              it "re-renders the new method" do
+                post :create, { product: { featured: true, cost: "19.99", description: "Test" } }
+                expect(response).to render_template :new
+              end
+            end
+        end
+        
+    end
+
+end
