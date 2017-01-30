@@ -52,8 +52,9 @@ RSpec.describe BeaconsController, type: :controller do
   # end
   
   describe "POST #create" do
-    let (:valid_params){{"beacon" => {"title" => 'test', "description" => 'test'}}}
-    let (:invalid_params){{"beacon" => {"cake" => 'test'}}}
+    let (:valid_params) { { beacon: { title: 'test', description: 'test' } } }
+    let (:invalid_params) { { beacon: { cake: 'test' } } }
+
     context "as user" do
       login_user
       it "should raise an exception if not an admin" do
@@ -65,6 +66,7 @@ RSpec.describe BeaconsController, type: :controller do
     
     context "as admin" do
       login_admin
+
       context "with valid parameters" do
         it "increases amount of beacons by 1" do
           expect {
@@ -82,30 +84,27 @@ RSpec.describe BeaconsController, type: :controller do
         it "does not save new beacon" do
           expect{
             post :create, invalid_params
-          }.to_not change(Beacon,:count)
+          }.to_not change(Beacon, :count)
         end
         
         it "re-renders the new method" do
           post :create, invalid_params
-          expect(response).to have_rendered("new")
+          expect(response).to render_template :new
         end
       end
     end
   end
   
   describe "POST #update" do
-    let (:valid_params) do
-      {:title => 'new title', :description => 'new description'}
-    end
-    let (:invalid_params) do
-      {:cake => 'test'}
-    end
+    let (:valid_params) { { title: 'new title', description: 'new description' } }
+    let (:invalid_params) { { cake: 'test' } }
+
     context "as user" do
       login_user
       it "should raise an exception if not an admin" do
         test_beacon = FactoryGirl.create(:beacon)
         expect do
-          put :update, {id: test_beacon.id}
+          put :update, { id: test_beacon.id }
         end.to raise_error(Pundit::NotAuthorizedError)
       end
     end
@@ -118,8 +117,7 @@ RSpec.describe BeaconsController, type: :controller do
           put :update, id: @test_beacon.id, beacon: valid_params
           @test_beacon.reload
         end
-      
-  
+
         it "should update object paramaters when logged in as admin" do
           expect(@test_beacon.title).to eql valid_params[:title]
           expect(@test_beacon.description).to eql valid_params[:description]

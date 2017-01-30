@@ -17,6 +17,7 @@ class BeaconsController < ApplicationController
   def create
     @beacon = Beacon.new(beacon_params)
     authorize(@beacon)
+
     if @beacon.save
       redirect_to @beacon, success: "Beacon successfully created!"
     else
@@ -30,24 +31,26 @@ class BeaconsController < ApplicationController
   def update
     if @beacon.update_attributes(beacon_params)
       redirect_to @beacon, success: "Beacon successfully updated!"
-    # else
-    #   render :edit
+    else
+      render :edit
     end
   end
 
   def destroy
   end
   
-private 
-  def beacon_params
-    params.require(:beacon).permit(:title, :description)
-  end
-  
-  def set_beacon
-    @beacon = Beacon.find(params[:id])
-  end
-  
-  def authorize_beacon
-     authorize(@beacon)
-  end
+  private 
+
+    def beacon_params
+      params.require(:beacon).permit(:title, :description, :uuid)
+    end
+    
+    def set_beacon
+      @beacon = Beacon.find(params[:id])
+    end
+    
+    def authorize_beacon
+       authorize(@beacon)
+    end
+
 end
