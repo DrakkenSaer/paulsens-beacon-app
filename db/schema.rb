@@ -12,13 +12,16 @@
 
 ActiveRecord::Schema.define(version: 20161216224648) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "beacons", force: :cascade do |t|
     t.string   "uuid",        null: false
     t.string   "title",       null: false
     t.text     "description", null: false
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
-    t.index ["uuid"], name: "index_beacons_on_uuid"
+    t.index ["uuid"], name: "index_beacons_on_uuid", using: :btree
   end
 
   create_table "historical_events", force: :cascade do |t|
@@ -36,8 +39,8 @@ ActiveRecord::Schema.define(version: 20161216224648) do
     t.string   "item_cost",      null: false
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
-    t.index ["order_id"], name: "index_line_items_on_order_id"
-    t.index ["orderable_type", "orderable_id"], name: "index_line_items_on_orderable_type_and_orderable_id"
+    t.index ["order_id"], name: "index_line_items_on_order_id", using: :btree
+    t.index ["orderable_type", "orderable_id"], name: "index_line_items_on_orderable_type_and_orderable_id", using: :btree
   end
 
   create_table "notifications", force: :cascade do |t|
@@ -46,14 +49,14 @@ ActiveRecord::Schema.define(version: 20161216224648) do
     t.integer  "beacon_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
-    t.index ["beacon_id"], name: "index_notifications_on_beacon_id"
+    t.index ["beacon_id"], name: "index_notifications_on_beacon_id", using: :btree
   end
 
   create_table "orders", force: :cascade do |t|
     t.integer  "user_id",    null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_orders_on_user_id"
+    t.index ["user_id"], name: "index_orders_on_user_id", using: :btree
   end
 
   create_table "products", force: :cascade do |t|
@@ -75,10 +78,10 @@ ActiveRecord::Schema.define(version: 20161216224648) do
     t.boolean  "daily_deal",       default: false,                 null: false
     t.boolean  "featured",         default: false,                 null: false
     t.integer  "cost",             default: 0,                     null: false
-    t.datetime "expiration",       default: '2017-02-10 17:42:22'
+    t.datetime "expiration",       default: '2017-02-13 00:06:44'
     t.datetime "created_at",                                       null: false
     t.datetime "updated_at",                                       null: false
-    t.index ["promotional_type", "promotional_id"], name: "index_promotions_on_promotional_type_and_promotional_id"
+    t.index ["promotional_type", "promotional_id"], name: "index_promotions_on_promotional_type_and_promotional_id", using: :btree
   end
 
   create_table "roles", force: :cascade do |t|
@@ -87,8 +90,8 @@ ActiveRecord::Schema.define(version: 20161216224648) do
     t.integer  "resource_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
-    t.index ["name"], name: "index_roles_on_name"
+    t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
+    t.index ["name"], name: "index_roles_on_name", using: :btree
   end
 
   create_table "users", force: :cascade do |t|
@@ -109,15 +112,18 @@ ActiveRecord::Schema.define(version: 20161216224648) do
     t.string   "address"
     t.integer  "visit_count",            default: 0
     t.text     "preferences"
-    t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["preferences"], name: "index_users_on_preferences"
-    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
+    t.index ["preferences"], name: "index_users_on_preferences", using: :btree
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
 
   create_table "users_roles", id: false, force: :cascade do |t|
     t.integer "user_id"
     t.integer "role_id"
-    t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id"
+    t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", using: :btree
   end
 
+  add_foreign_key "line_items", "orders"
+  add_foreign_key "notifications", "beacons"
+  add_foreign_key "orders", "users"
 end

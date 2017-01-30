@@ -9,6 +9,7 @@ gem 'jquery-rails'
 gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5'
 
+
 # https://github.com/plataformatec/devise
 gem 'devise'
 
@@ -41,6 +42,9 @@ group :development, :test do
 
   # Use sqlite3 as the database for Active Record
   gem 'sqlite3'
+
+  # Use factory girl to generate test resources
+  gem 'factory_girl_rails'
 end
 
 group :development do
