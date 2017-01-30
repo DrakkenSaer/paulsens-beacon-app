@@ -55,22 +55,45 @@ RSpec.describe HistoricalEventsController, type: :controller do
   # end
 
   describe "POST create" do
-    context "have admin right" do
-      login_admin
-      it "creates a new Hitorical event" do
-        expect{
+    
+    context "as user" do
+      login_user
+      it "should raise an exception if not an admin" do
+        expect do
           post :create, { historical_event: { title: "test", description: "Test", date: "2001-6-4" } }
-        }.to change(HistoricalEvent, :count).by(1)
+        end.to raise_error(Pundit::NotAuthorizedError)
       end
     end
-  
-    # context "have just user" do
-    #   login_user
-    #   it "does not save the new historical event" do
-    #     post :create, {"historical_event" => {"title" => "test", "description" => "Test", "date" => "2001-4-4"}}
-    #     expect(response).to have_http_status(:redirect)
-    #   end
-    # end 
+    
+    context "user have admin right" do
+        login_admin
+        
+        context "with valid parameters" do
+          it "increases amount of HistoricalEvent by 1" do
+            expect {
+              post :create, { historical_event: { title: "test", description: "Test", date: "2001-6-4" } }
+            }.to change(HistoricalEvent, :count).by(1)
+          end
+          
+          it "redirects to the new historical_event after was made" do
+            post :create, { historical_event: { title: "test", description: "Test", date: "2001-6-4" } }
+            expect(response).to redirect_to HistoricalEvent.last
+          end
+        end
+        
+        context "with invalid parameters" do
+          it "does not save new beacon" do
+            expect{
+              post :create, { historical_event: { title: "test", description: "Test" } }
+            }.to_not change(HistoricalEvent, :count)
+          end
+          
+          it "re-renders the new method" do
+            post :create, { historical_event: { title: "test", description: "Test" } }
+            expect(response).to render_template :new
+          end
+      end
+    end
   end
   
   describe 'DELETE destroy' do
@@ -85,10 +108,6 @@ RSpec.describe HistoricalEventsController, type: :controller do
       end
     end
 
-    # it "redirects to contacts#index" do
-    #   delete :destroy, id: @contact
-    #   response.should redirect_to historical_event_url
-    # end
   end
   
 end
