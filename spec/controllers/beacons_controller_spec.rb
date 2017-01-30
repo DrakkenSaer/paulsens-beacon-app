@@ -52,8 +52,8 @@ RSpec.describe BeaconsController, type: :controller do
   # end
   
   describe "POST #create" do
-    let (:valid_params) { { beacon: { title: 'test', description: 'test' } } }
-    let (:invalid_params) { { beacon: { title: nil } } }
+    let (:valid_params) { { beacon: FactoryGirl.attributes_for(:beacon) } }
+    let (:invalid_params) { { beacon: FactoryGirl.attributes_for(:beacon, title: nil) } }
 
     context "as user" do
       login_user
@@ -96,8 +96,8 @@ RSpec.describe BeaconsController, type: :controller do
   end
   
   describe "PUT #update" do
-    let (:valid_params) { { title: 'new title', description: 'new description' } }
-    let (:invalid_params) { { title: nil } }
+    let (:valid_params) { FactoryGirl.attributes_for(:beacon, title: "new title", description: "new description") }
+    let (:invalid_params) { FactoryGirl.attributes_for(:beacon, title: nil) }
 
     context "as user" do
       login_user
@@ -114,8 +114,12 @@ RSpec.describe BeaconsController, type: :controller do
       context "valid_params" do
         before(:each) do
           @test_beacon = FactoryGirl.create(:beacon)
-          put :update, params: {id: @test_beacon.id, beacon: valid_params}
+          put :update, params: {id: @test_beacon, beacon: valid_params}
           @test_beacon.reload
+        end
+        
+        it "should find the correct beacon" do
+          expect(assigns(:beacon)).to eq(@test_beacon)
         end
 
         it "should update object paramaters when logged in as admin" do
@@ -164,6 +168,11 @@ RSpec.describe BeaconsController, type: :controller do
     
     context "as admin" do
       login_admin
+      
+      it "should find the correct beacon" do
+        delete :destroy, params: { id: @test_beacon.id }
+        expect(assigns(:beacon)).to eq(@test_beacon)
+      end
       
       it "deletes the beacon from the database" do
         expect do
