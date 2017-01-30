@@ -82,7 +82,7 @@ RSpec.describe HistoricalEventsController, type: :controller do
         end
         
         context "with invalid parameters" do
-          it "does not save new beacon" do
+          it "does not save new HistoricalEvent" do
             expect{
               post :create, { historical_event: { title: "test", description: "Test" } }
             }.to_not change(HistoricalEvent, :count)
@@ -97,17 +97,51 @@ RSpec.describe HistoricalEventsController, type: :controller do
   end
   
   describe 'DELETE destroy' do
-    context "have admin right" do
-      login_admin
-      it "deletes the Historical event" do
+    
+    context "as user" do
+      login_user
+      it "should raise an exception if not an admin" do
         historical_event = FactoryGirl.create(:historical_event)
-
-        expect{
-          delete :destroy, { id: historical_event.id }    
-        }.to change(HistoricalEvent, :count).by(-1)
+        expect do
+          delete :destroy, {id: historical_event.id }
+        end.to raise_error(Pundit::NotAuthorizedError)
       end
     end
-
+    
+    context "user have admin right" do
+        login_admin
+        
+        context "with valid id" do
+          it "decreases amount of HistoricalEvent by 1" do
+            historical_event = FactoryGirl.create(:historical_event)
+            expect{
+              delete :destroy, { id: historical_event.id }    
+            }.to change(HistoricalEvent, :count).by(-1)
+          end
+          
+          it "redirects to historical_events_url after destroy historical_event" do
+            historical_event = FactoryGirl.create(:historical_event)
+            post :destroy, { id: historical_event.id }
+            expect(response).to redirect_to(historical_events_url)
+          end
+        end
+        
+        context "with invalid id" do
+          it "decreases amount of HistoricalEvent by 1" do
+            historical_event = FactoryGirl.create(:historical_event)
+            expect{
+              delete :destroy, { id: historical_event.id + 1 }    
+            }.to change(HistoricalEvent, :count).by(-1)
+          end
+          
+          it "redirects to historical_events_url after destroy historical_event" do
+            historical_event = FactoryGirl.create(:historical_event)
+            post :destroy, { id: historical_event.id }
+            expect(response).to redirect_to(historical_events_url)
+          end
+        end
+    end
   end
+  
   
 end

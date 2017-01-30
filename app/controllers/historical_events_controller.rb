@@ -39,7 +39,7 @@ class HistoricalEventsController < ApplicationController
     @historical_event.destroy
     
     respond_to do |format|
-      format.html { redirect_to historical_event_url }
+      format.html { redirect_to historical_events_url }
       format.json { head :no_content }
     end
   end
