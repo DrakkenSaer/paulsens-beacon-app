@@ -36,6 +36,9 @@ gem 'pg'
 group :development, :test do
   # Use RSpec for testing
   gem 'rspec-rails', '~> 3.5'
+  
+  # Added for assert_template helper
+  gem 'rails-controller-testing'
 
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
