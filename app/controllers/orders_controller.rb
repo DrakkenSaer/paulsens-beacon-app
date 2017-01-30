@@ -1,5 +1,7 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_order, except: [:index, :create]
+  before_action :authorize_order, except: [:index, :create]
 
   def index
     @orders = policy_scope(Order)
@@ -12,6 +14,14 @@ class OrdersController < ApplicationController
   end
 
   def create
+    @order = Order.new(order_params)
+    #authorize(@order)
+
+    if @order.save
+      redirect_to @order, success: "Order successfully created!"
+    else
+      render :new
+    end
   end
 
   def edit
@@ -22,4 +32,19 @@ class OrdersController < ApplicationController
 
   def destroy
   end
+  
+private 
+
+  def order_params
+    params.require(:order).permit(:user_id)
+  end
+  
+  def set_order
+    @order = Order.find(params[:id])
+  end
+  
+  def authorize_order
+     authorize(@order)
+  end
+
 end

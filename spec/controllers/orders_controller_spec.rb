@@ -1,6 +1,6 @@
-# require 'rails_helper'
+require 'rails_helper'
 
-# RSpec.describe OrdersController, type: :controller do
+RSpec.describe OrdersController, type: :controller do
 
 #   describe "GET #index" do
 #     it "returns http success" do
@@ -51,4 +51,23 @@
 #     end
 #   end
 
-# end
+  describe "POST #create" do
+    let (:valid_params) { { order: { user_id: 1 } } }
+    let (:invalid_params) { { order: FactoryGirl.build(:order, user_id: nil) } }
+    login_user
+
+    context "with valid parameters" do
+      it "increases amount of orders by 1" do
+        expect {
+          post :create, params: valid_params
+        }.to change(Order, :count).by(1)
+      end
+      
+      # it "redirects to the new order" do
+      #   post :create, params: valid_params
+      #   expect(response).to redirect_to Order.last
+      # end
+    end
+  end
+
+end
