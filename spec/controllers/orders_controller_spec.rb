@@ -132,7 +132,6 @@ RSpec.describe OrdersController, type: :controller do
         end
 
         it "should update object paramaters when logged in as admin" do
-          p valid_params
           expect(@test_order.user_id).to eql valid_params["user_id"]
           expect(@test_order.created_at).to_not eql @test_order.updated_at
         end
