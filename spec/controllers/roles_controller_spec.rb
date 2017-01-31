@@ -130,5 +130,57 @@ describe "POST create" do
         end
     end
   end
+  
+  describe "PUT #update" do
+  
+    context "as user" do
+      login_user
+      it "should raise an exception if not an admin" do
+        role = FactoryGirl.create(:role)
+        expect do
+          put :update, params: { id: role }
+        end.to raise_error(Pundit::NotAuthorizedError)
+      end
+    end
+    
+   context "as admin" do
+      let (:valid_params) { { name: "bob" } }
+      let (:invalid_params) { { name: nil, resource_type: nil } }
+     
+      login_admin
+      context "valid_params" do
+        before(:each) do
+          @role = FactoryGirl.create(:role)
+          put :update, id: @role.id, role: valid_params
+          @role.reload
+        end
+
+        it "should update object paramaters when logged in as admin" do
+          expect(@role.name).to eql valid_params[:name]
+        end
+        
+        it "should redirect to beacon page when successful" do
+          expect(response).to redirect_to @role
+        end
+      end
+      
+      context "invalid params" do
+         before(:each) do
+          @role = FactoryGirl.create(:role)
+          put :update, id: @role.id, role: invalid_params
+          @role.reload
+        end
+      
+        it "should not update object paramaters when given invalid parameters" do
+          expect(@role.name).to eql "test"
+        end
+        
+        it "should rerender edit page when update unsuccessful" do
+          put :update, id: @role, role: invalid_params
+          expect(response).to render_template :edit
+        end
+      end
+    end
+  end
 
 end
