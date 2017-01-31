@@ -57,7 +57,7 @@ describe "POST create" do
       login_user
       it "should raise an exception if not an admin" do
         expect do
-          post :create, { role: { name: "test", resource_type: "Test" } }
+          post :create, { role: { name: "test" } }
         end.to raise_error(Pundit::NotAuthorizedError)
       end
     end
@@ -68,12 +68,12 @@ describe "POST create" do
         context "with valid parameters" do
           it "increases amount of Role by 1" do
             expect {
-              post :create, { role: { name: "test", resource_type: "Test", resource_id: 1 } }
+              post :create, { role: { name: "test" } }
             }.to change(Role, :count).by(1)
           end
           
           it "redirects to the new role after was made" do
-            post :create, { role: { name: "test", resource_type: "Test", resource_id: 1 } }
+            post :create, { role: { name: "test"} }
             expect(response).to redirect_to Role.last
           end
         end
