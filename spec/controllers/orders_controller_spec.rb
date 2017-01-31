@@ -137,27 +137,28 @@ RSpec.describe OrdersController, type: :controller do
           expect(@test_order.created_at).to_not eql @test_order.updated_at
         end
         
-        # it "should redirect to order page when successful" do
-        #   expect(response).to redirect_to @test_order
-        # end
+        it "should redirect to order page when successful" do
+          expect(response).to redirect_to @test_order
+        end
       end
       
-    #   context "invalid params" do
-    #     before(:each) do
-    #       @test_beacon = FactoryGirl.create(:beacon)
-    #       put :update, params: { id: @test_beacon.id, beacon: invalid_params }
-    #       @test_beacon.reload
-    #     end
+      context "invalid params" do
+        before(:each) do
+          @test_order = FactoryGirl.create(:order)
+          @original_user_id = @test_order.user_id
+          put :update, params: { id: @test_order.id, order: invalid_params }
+          @test_order.reload
+        end
       
-    #     it "should not update object paramaters when given invalid parameters" do
-    #       expect(@test_beacon.title).to eql "test"
-    #       expect(@test_beacon.description).to eql "test description"
-    #     end
+        it "should not update object paramaters when given invalid parameters" do
+          expect(@test_order.user_id).to eql @original_user_id
+          expect(@test_order.created_at).to eql @test_order.updated_at
+        end
         
-    #     it "should rerender edit page when update unsuccessful" do
-    #       expect(response).to render_template :edit
-    #     end
-    #   end
+        it "should rerender edit page when update unsuccessful" do
+          expect(response).to render_template :edit
+        end
+      end
     end
     
   end
