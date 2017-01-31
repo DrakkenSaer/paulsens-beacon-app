@@ -35,6 +35,8 @@ class OrdersController < ApplicationController
   end
 
   def destroy
+    @order.destroy
+    redirect_to orders_url, success: "Order successfully deleted!"
   end
   
 private 

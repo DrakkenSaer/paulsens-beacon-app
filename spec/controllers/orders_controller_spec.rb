@@ -146,7 +146,7 @@ RSpec.describe OrdersController, type: :controller do
         before(:each) do
           @test_order = FactoryGirl.create(:order)
           @original_user_id = @test_order.user_id
-          put :update, params: { id: @test_order.id, order: invalid_params }
+          put :update, params: { id: @test_order, order: invalid_params }
           @test_order.reload
         end
       
@@ -160,7 +160,47 @@ RSpec.describe OrdersController, type: :controller do
         end
       end
     end
+  end
+  
+  describe "Delete #destroy" do
+    before(:each) do
+      @test_order = FactoryGirl.create(:order)
+    end
     
+    context "as user" do
+      login_user
+      it "should raise an exception if not an admin" do
+        expect do
+          delete :destroy, params: { id: @test_order }
+        end.to raise_error(Pundit::NotAuthorizedError)
+      end
+    end
+    
+    context "as admin" do
+      login_admin
+      
+      it "should return an ActiveRecord error if the order id does not exist" do
+        expect do
+           delete :destroy, params: {id: 999}
+        end.to raise_error(ActiveRecord::RecordNotFound)
+      end
+      
+      it "should find the correct order" do
+        delete :destroy, params: { id: @test_order }
+        expect(assigns(:order)).to eql @test_order
+      end
+      
+      it "deletes the found order" do
+        expect do
+          delete :destroy, params: {id: @test_order }
+        end.to change(Order, :count).by(-1)
+      end
+      
+      it "redirects to the orders index" do
+        delete :destroy, params: { id: @test_order }
+        expect(response).to redirect_to orders_url
+      end
+    end
   end
 
 end
