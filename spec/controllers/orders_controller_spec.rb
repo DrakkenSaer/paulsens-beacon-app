@@ -94,8 +94,8 @@ RSpec.describe OrdersController, type: :controller do
   end
   
   describe "PUT #update" do
-    let (:valid_params) { FactoryGirl.build(:order, user_id: 99).attributes }
-    let (:invalid_params) { { order: FactoryGirl.build(:order, user_id: nil).attributes } }
+    let (:valid_params) { FactoryGirl.build(:order, user: FactoryGirl.create(:user)).attributes }
+    let (:invalid_params) { FactoryGirl.build(:order, user_id: nil).attributes }
     before(:each) do
       @test_order = FactoryGirl.create(:order)
     end
@@ -120,26 +120,27 @@ RSpec.describe OrdersController, type: :controller do
         end
       end
       
-      # context "valid_params" do
-      #   before(:each) do
-      #     @test_order = FactoryGirl.create(:order)
-      #     put :update, params: {id: @test_order, order: valid_params}
-      #     @test_order.reload
-      #   end
+      context "valid_params" do
+        before(:each) do
+          @test_order = FactoryGirl.create(:order)
+          put :update, params: {id: @test_order, order: valid_params}
+          @test_order.reload
+        end
         
-      #   it "should find the correct order" do
-      #     expect(assigns(:order)).to eql @test_order
-      #   end
+        it "should find the correct order" do
+          expect(assigns(:order)).to eql @test_order
+        end
 
-      #   it "should update object paramaters when logged in as admin" do
-      #     expect(@test_order.user_id).to eql valid_params[:user_id]
-      #     expect(@test_order.created_at).to_not eql @test_order.updated_at
-      #   end
+        it "should update object paramaters when logged in as admin" do
+          p valid_params
+          expect(@test_order.user_id).to eql valid_params["user_id"]
+          expect(@test_order.created_at).to_not eql @test_order.updated_at
+        end
         
-      #   it "should redirect to order page when successful" do
-      #     expect(response).to redirect_to @test_order
-      #   end
-      # end
+        # it "should redirect to order page when successful" do
+        #   expect(response).to redirect_to @test_order
+        # end
+      end
       
     #   context "invalid params" do
     #     before(:each) do

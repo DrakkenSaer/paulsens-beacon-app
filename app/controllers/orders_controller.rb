@@ -27,6 +27,11 @@ class OrdersController < ApplicationController
   end
 
   def update
+    @order.update(order_params)
+    #   redirect_to @order, success: "Order successfully updated!"
+    # else
+    #   render :edit
+    # end
   end
 
   def destroy
