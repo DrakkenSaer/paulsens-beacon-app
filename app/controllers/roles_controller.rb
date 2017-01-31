@@ -48,7 +48,7 @@ class RolesController < ApplicationController
     @role.destroy
     
     respond_to do |format|
-      format.html { redirect_to role_url }
+      format.html { redirect_to roles_url }
       format.json { head :no_content }
     end
   end

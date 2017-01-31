@@ -92,5 +92,43 @@ describe "POST create" do
       end
     end
   end
+  
+  describe 'DELETE destroy' do
+    
+    context "as user" do
+      login_user
+      it "should raise an exception if not an admin" do
+        role = FactoryGirl.create(:role)
+        expect do
+          delete :destroy, {id: role.id }
+        end.to raise_error(Pundit::NotAuthorizedError)
+      end
+    end
+    
+    context "user have admin right" do
+        login_admin
+        
+        it "should return an ActiveRecord error if the role id does not exist" do
+          expect do
+            delete :destroy, params: {id: 9001}
+          end.to raise_error(ActiveRecord::RecordNotFound)
+        end
+        
+        context "with valid id" do
+          it "decreases amount of Role by 1" do
+            role = FactoryGirl.create(:role)
+            expect{
+              delete :destroy, { id: role.id }    
+            }.to change(Role, :count).by(-1)
+          end
+          
+          it "redirects to roles_url after destroy role" do
+            role = FactoryGirl.create(:role)
+            post :destroy, { id: role.id }
+            expect(response).to redirect_to(roles_url)
+          end
+        end
+    end
+  end
 
 end
