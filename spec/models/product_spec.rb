@@ -37,4 +37,18 @@ describe Product do
     FactoryGirl.create(:product, cost: "10.99").cost.should == "10.99"
   end
 
+  it "have many promotions" do
+    assc = described_class.reflect_on_association(:promotions)
+    expect(assc.macro).to eq :has_many
+  end
+  
+  it "have many line_items" do
+    assc = described_class.reflect_on_association(:line_items)
+    expect(assc.macro).to eq :has_many
+  end
+  
+  it "have many orders" do
+    assc = described_class.reflect_on_association(:orders)
+    expect(assc.macro).to eq :has_many
+  end
 end
