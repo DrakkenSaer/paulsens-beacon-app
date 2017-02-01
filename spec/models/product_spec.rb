@@ -9,11 +9,11 @@ describe Product do
     product = FactoryGirl.create(:product, featured: nil).featured.should == false
   end
 
-  it "is invalid without a cost" do
+  it "is valid without a cost" do
     product = FactoryGirl.create(:product, cost: nil).cost.should == "0.0"
   end
   
-  it "is invalid without a description" do
+  it "is valid without a description" do
     product = FactoryGirl.build(:product, description: nil).should_not be_valid
   end
   
