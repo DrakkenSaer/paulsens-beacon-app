@@ -28,5 +28,10 @@ describe HistoricalEvent do
   it "returns a historical event date as a date" do
     FactoryGirl.create(:historical_event, date: "2001-1-1").date.should == "2001-1-1".to_date
   end
+  
+  it "will not save the same data in the model" do
+    test = FactoryGirl.create(:historical_event)
+    FactoryGirl.build(:historical_event).should_not be_valid
+  end 
 
 end
