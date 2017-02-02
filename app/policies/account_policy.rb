@@ -1,7 +1,7 @@
 class AccountPolicy < ApplicationPolicy
     class Scope < Scope
         def resolve
-            if user.has_any_role?(:admin)
+            if is_admin?
                 scope.all
             else
                 user
@@ -10,6 +10,6 @@ class AccountPolicy < ApplicationPolicy
     end
 
     def show?
-        user.has_any_role?(:standard, :admin)
+        is_admin? or matching_user?
     end
 end

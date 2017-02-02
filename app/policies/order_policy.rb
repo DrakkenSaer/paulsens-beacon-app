@@ -1,7 +1,7 @@
 class OrderPolicy < ApplicationPolicy
     class Scope < Scope
         def resolve
-            if user.has_any_role?(:admin)
+            if is_admin?
                 scope.all
             else
                 scope.where(user: user)
@@ -10,10 +10,10 @@ class OrderPolicy < ApplicationPolicy
     end
 
     def update?
-        user.has_any_role?(:admin)
+        is_admin?
     end
 
     def destroy?
-        user.has_any_role?(:admin)
+        is_admin?
     end
 end
