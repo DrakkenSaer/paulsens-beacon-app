@@ -110,7 +110,7 @@ describe "POST create" do
         
         it "should return an ActiveRecord error if the role id does not exist" do
           expect do
-            delete :destroy, params: {id: 9001}
+            delete :destroy, params: {id: -1}
           end.to raise_error(ActiveRecord::RecordNotFound)
         end
         
