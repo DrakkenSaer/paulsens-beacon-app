@@ -23,30 +23,9 @@ RSpec.describe OrdersController, type: :controller do
 #     end
 #   end
 
-#   describe "GET #create" do
-#     it "returns http success" do
-#       get :create
-#       expect(response).to have_http_status(:success)
-#     end
-#   end
-
 #   describe "GET #edit" do
 #     it "returns http success" do
 #       get :edit
-#       expect(response).to have_http_status(:success)
-#     end
-#   end
-
-#   describe "GET #update" do
-#     it "returns http success" do
-#       get :update
-#       expect(response).to have_http_status(:success)
-#     end
-#   end
-
-#   describe "GET #destroy" do
-#     it "returns http success" do
-#       get :destroy
 #       expect(response).to have_http_status(:success)
 #     end
 #   end
@@ -71,13 +50,13 @@ RSpec.describe OrdersController, type: :controller do
             post :create, params: valid_params
           }.to change(Order, :count).by(1)
         end
-        
+
         it "redirects to the new order" do
           post :create, params: valid_params
           expect(response).to redirect_to Order.last
         end
       end
-      
+
       context "with invalid parameters" do
         it "does not save new order" do
           expect{
@@ -115,7 +94,7 @@ RSpec.describe OrdersController, type: :controller do
       context "invalid id" do 
         it "should return an ActiveRecord error if the order id does not exist" do
           expect do
-            put :update, params: {id: 999, order: valid_params}
+            put :update, params: {id: -1, order: valid_params}
           end.to raise_error(ActiveRecord::RecordNotFound)
         end
       end
@@ -169,6 +148,7 @@ RSpec.describe OrdersController, type: :controller do
     
     context "as user" do
       login_user
+
       it "should raise an exception if not an admin" do
         expect do
           delete :destroy, params: { id: @test_order }
@@ -181,7 +161,7 @@ RSpec.describe OrdersController, type: :controller do
       
       it "should return an ActiveRecord error if the order id does not exist" do
         expect do
-           delete :destroy, params: {id: 999}
+           delete :destroy, params: {id: -1}
         end.to raise_error(ActiveRecord::RecordNotFound)
       end
       
