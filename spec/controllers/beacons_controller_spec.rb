@@ -23,13 +23,6 @@ RSpec.describe BeaconsController, type: :controller do
   #   end
   # end
 
-  # describe "GET #create" do
-  #   it "returns http success" do
-  #     get :create
-  #     expect(response).to have_http_status(:success)
-  #   end
-  # end
-
   # describe "GET #edit" do
   #   it "returns http success" do
   #     get :edit
@@ -37,20 +30,6 @@ RSpec.describe BeaconsController, type: :controller do
   #   end
   # end
 
-  # describe "GET #update" do
-  #   it "returns http success" do
-  #     get :update
-  #     expect(response).to have_http_status(:success)
-  #   end
-  # end
-
-  # describe "GET #destroy" do
-  #   it "returns http success" do
-  #     get :destroy
-  #     expect(response).to have_http_status(:success)
-  #   end
-  # end
-  
   describe "POST #create" do
     let (:valid_params) { { beacon: FactoryGirl.attributes_for(:beacon) } }
     let (:invalid_params) { { beacon: FactoryGirl.attributes_for(:beacon, title: nil) } }
@@ -115,7 +94,7 @@ RSpec.describe BeaconsController, type: :controller do
       context "invalid id" do 
         it "should return an ActiveRecord error if the beacon id does not exist" do
           expect do
-             put :update, params: {id: 999, beacon: valid_params}
+             put :update, params: {id: -1, beacon: valid_params}
           end.to raise_error(ActiveRecord::RecordNotFound)
         end
       end
@@ -180,7 +159,7 @@ RSpec.describe BeaconsController, type: :controller do
       
       it "should return an ActiveRecord error if the beacon id does not exist" do
         expect do
-           delete :destroy, params: {id: 999}
+           delete :destroy, params: {id: -1}
         end.to raise_error(ActiveRecord::RecordNotFound)
       end
       
