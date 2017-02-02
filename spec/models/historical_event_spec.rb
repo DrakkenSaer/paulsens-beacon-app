@@ -6,15 +6,15 @@ describe HistoricalEvent do
   end
 
   it "is invalid without a title" do
-    historical_event = FactoryGirl.build(:historical_event, title: nil).should_not be_valid
+    FactoryGirl.build(:historical_event, title: nil).should_not be_valid
   end
 
   it "is invalid without a description" do
-    historical_event = FactoryGirl.build(:historical_event, description: nil).should_not be_valid
+    FactoryGirl.build(:historical_event, description: nil).should_not be_valid
   end
   
   it "is invalid without a date" do
-    historical_event = FactoryGirl.build(:historical_event, date: nil).should_not be_valid
+    FactoryGirl.build(:historical_event, date: nil).should_not be_valid
   end
 
   it "returns a historical event title as a string" do
@@ -30,7 +30,7 @@ describe HistoricalEvent do
   end
   
   it "will not save the same data in the model" do
-    test = FactoryGirl.create(:historical_event)
+    FactoryGirl.create(:historical_event)
     FactoryGirl.build(:historical_event).should_not be_valid
   end 
 

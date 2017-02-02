@@ -24,15 +24,6 @@ RSpec.describe HistoricalEventsController, type: :controller do
   #   end
   # end
 
-  # describe "GET #create" do
-  #   it "returns http success" do
-  #     get :create
-  #     expect(response).to have_http_status(:success)
-  #   end
-  # end
-  
-  
-
   # describe "GET #edit" do
   #   it "returns http success" do
   #     get :edit
@@ -40,43 +31,32 @@ RSpec.describe HistoricalEventsController, type: :controller do
   #   end
   # end
 
-  # describe "GET #update" do
-  #   it "returns http success" do
-  #     get :update
-  #     expect(response).to have_http_status(:success)
-  #   end
-  # end
-
-  # describe "GET #destroy" do
-  #   it "returns http success" do
-  #     get :destroy
-  #     expect(response).to have_http_status(:success)
-  #   end
-  # end
-
   describe "POST create" do
-    
+    let (:valid_params) { { title: "test", description: "Test", date: "2001-6-4" } }
+    let (:invalid_params) { { title: nil } }
+
     context "as user" do
       login_user
+
       it "should raise an exception if not an admin" do
         expect do
-          post :create, { historical_event: { title: "test", description: "Test", date: "2001-6-4" } }
+          post :create, params: { historical_event: valid_params }
         end.to raise_error(Pundit::NotAuthorizedError)
       end
     end
     
     context "user have admin right" do
         login_admin
-        
+
         context "with valid parameters" do
           it "increases amount of HistoricalEvent by 1" do
             expect {
-              post :create, { historical_event: { title: "test", description: "Test", date: "2001-6-4" } }
+              post :create, params: { historical_event: valid_params }
             }.to change(HistoricalEvent, :count).by(1)
           end
           
           it "redirects to the new historical_event after was made" do
-            post :create, { historical_event: { title: "test", description: "Test", date: "2001-6-4" } }
+            post :create, params: { historical_event: valid_params }
             expect(response).to redirect_to HistoricalEvent.last
           end
         end
@@ -84,12 +64,12 @@ RSpec.describe HistoricalEventsController, type: :controller do
         context "with invalid parameters" do
           it "does not save new HistoricalEvent" do
             expect{
-              post :create, { historical_event: { title: "test", description: "Test" } }
+              post :create, params: { historical_event: invalid_params }
             }.to_not change(HistoricalEvent, :count)
           end
           
           it "re-renders the new method" do
-            post :create, { historical_event: { title: "test", description: "Test" } }
+            post :create, params: { historical_event: invalid_params }
             expect(response).to render_template :new
           end
       end
@@ -97,9 +77,9 @@ RSpec.describe HistoricalEventsController, type: :controller do
   end
   
   describe 'DELETE destroy' do
-    
     context "as user" do
       login_user
+
       it "should raise an exception if not an admin" do
         historical_event = FactoryGirl.create(:historical_event)
         expect do
@@ -110,24 +90,26 @@ RSpec.describe HistoricalEventsController, type: :controller do
     
     context "user have admin right" do
         login_admin
+
+        before(:each) do
+          @historical_event = FactoryGirl.create(:historical_event)
+        end
         
         it "should return an ActiveRecord error if the beacon id does not exist" do
           expect do
-            delete :destroy, params: {id: 9001}
+            delete :destroy, params: {id: -1}
           end.to raise_error(ActiveRecord::RecordNotFound)
         end
         
         context "with valid id" do
           it "decreases amount of HistoricalEvent by 1" do
-            historical_event = FactoryGirl.create(:historical_event)
             expect{
-              delete :destroy, { id: historical_event.id }    
+              delete :destroy, params: { id: @historical_event.id }
             }.to change(HistoricalEvent, :count).by(-1)
           end
           
           it "redirects to historical_events_url after destroy historical_event" do
-            historical_event = FactoryGirl.create(:historical_event)
-            post :destroy, { id: historical_event.id }
+            post :destroy, params: { id: @historical_event.id }
             expect(response).to redirect_to(historical_events_url)
           end
         end
@@ -135,9 +117,9 @@ RSpec.describe HistoricalEventsController, type: :controller do
   end
   
   describe "PUT #update" do
-  
     context "as user" do
       login_user
+
       it "should raise an exception if not an admin" do
         historical_event = FactoryGirl.create(:historical_event)
         expect do
@@ -154,7 +136,7 @@ RSpec.describe HistoricalEventsController, type: :controller do
       context "valid_params" do
         before(:each) do
           @historical_event = FactoryGirl.create(:historical_event)
-          put :update, id: @historical_event.id, historical_event: valid_params
+          put :update, params: { id: @historical_event.id, historical_event: valid_params }
           @historical_event.reload
         end
 
@@ -172,7 +154,7 @@ RSpec.describe HistoricalEventsController, type: :controller do
       context "invalid params" do
          before(:each) do
           @historical_event = FactoryGirl.create(:historical_event)
-          put :update, id: @historical_event.id, historical_event: invalid_params
+          put :update, params: { id: @historical_event.id, historical_event: invalid_params }
           @historical_event.reload
         end
       
@@ -183,7 +165,7 @@ RSpec.describe HistoricalEventsController, type: :controller do
         end
         
         it "should rerender edit page when update unsuccessful" do
-          put :update, id: @historical_event.id, historical_event: invalid_params
+          put :update, params: { id: @historical_event.id, historical_event: invalid_params }
           expect(response).to render_template :edit
         end
       end
