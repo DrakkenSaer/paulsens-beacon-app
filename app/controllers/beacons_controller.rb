@@ -37,6 +37,8 @@ class BeaconsController < ApplicationController
   end
 
   def destroy
+    @beacon.destroy
+    redirect_to beacons_url
   end
   
   private 
