@@ -59,7 +59,7 @@ RSpec.describe HistoricalEventsController, type: :controller do
       login_admin
       it "creates a new Hitorical event" do
         expect{
-          post :create, { historical_event: { title: "test", description: "Test", date: "2001-6-4" } }
+          post :create, params: { historical_event: { title: "test", description: "Test", date: "2001-6-4" } }
         }.to change(HistoricalEvent, :count).by(1)
       end
     end
@@ -80,7 +80,7 @@ RSpec.describe HistoricalEventsController, type: :controller do
         historical_event = FactoryGirl.create(:historical_event)
 
         expect{
-          delete :destroy, { id: historical_event.id }    
+          delete :destroy, params: { id: historical_event.id }    
         }.to change(HistoricalEvent, :count).by(-1)
       end
     end
