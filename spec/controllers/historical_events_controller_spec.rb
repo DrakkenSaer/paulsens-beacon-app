@@ -24,15 +24,6 @@ RSpec.describe HistoricalEventsController, type: :controller do
   #   end
   # end
 
-  # describe "GET #create" do
-  #   it "returns http success" do
-  #     get :create
-  #     expect(response).to have_http_status(:success)
-  #   end
-  # end
-  
-  
-
   # describe "GET #edit" do
   #   it "returns http success" do
   #     get :edit
@@ -40,55 +31,145 @@ RSpec.describe HistoricalEventsController, type: :controller do
   #   end
   # end
 
-  # describe "GET #update" do
-  #   it "returns http success" do
-  #     get :update
-  #     expect(response).to have_http_status(:success)
-  #   end
-  # end
-
-  # describe "GET #destroy" do
-  #   it "returns http success" do
-  #     get :destroy
-  #     expect(response).to have_http_status(:success)
-  #   end
-  # end
-
   describe "POST create" do
-    context "have admin right" do
-      login_admin
-      it "creates a new Hitorical event" do
-        expect{
-          post :create, params: { historical_event: { title: "test", description: "Test", date: "2001-6-4" } }
-        }.to change(HistoricalEvent, :count).by(1)
+    let (:valid_params) { { title: "test", description: "Test", date: "2001-6-4" } }
+    let (:invalid_params) { { title: nil } }
+
+    context "as user" do
+      login_user
+
+      it "should raise an exception if not an admin" do
+        expect do
+          post :create, params: { historical_event: valid_params }
+        end.to raise_error(Pundit::NotAuthorizedError)
       end
     end
-  
-    # context "have just user" do
-    #   login_user
-    #   it "does not save the new historical event" do
-    #     post :create, {"historical_event" => {"title" => "test", "description" => "Test", "date" => "2001-4-4"}}
-    #     expect(response).to have_http_status(:redirect)
-    #   end
-    # end 
+    
+    context "user have admin right" do
+        login_admin
+
+        context "with valid parameters" do
+          it "increases amount of HistoricalEvent by 1" do
+            expect {
+              post :create, params: { historical_event: valid_params }
+            }.to change(HistoricalEvent, :count).by(1)
+          end
+          
+          it "redirects to the new historical_event after was made" do
+            post :create, params: { historical_event: valid_params }
+            expect(response).to redirect_to HistoricalEvent.last
+          end
+        end
+        
+        context "with invalid parameters" do
+          it "does not save new HistoricalEvent" do
+            expect{
+              post :create, params: { historical_event: invalid_params }
+            }.to_not change(HistoricalEvent, :count)
+          end
+          
+          it "re-renders the new method" do
+            post :create, params: { historical_event: invalid_params }
+            expect(response).to render_template :new
+          end
+      end
+    end
   end
   
   describe 'DELETE destroy' do
-    context "have admin right" do
-      login_admin
-      it "deletes the Historical event" do
-        historical_event = FactoryGirl.create(:historical_event)
+    context "as user" do
+      login_user
 
-        expect{
-          delete :destroy, params: { id: historical_event.id }    
-        }.to change(HistoricalEvent, :count).by(-1)
+      it "should raise an exception if not an admin" do
+        historical_event = FactoryGirl.create(:historical_event)
+        expect do
+          delete :destroy, params: { id: historical_event.id }
+        end.to raise_error(Pundit::NotAuthorizedError)
       end
     end
+    
+    context "user have admin right" do
+        login_admin
 
-    # it "redirects to contacts#index" do
-    #   delete :destroy, id: @contact
-    #   response.should redirect_to historical_event_url
-    # end
+        before(:each) do
+          @historical_event = FactoryGirl.create(:historical_event)
+        end
+        
+        it "should return an ActiveRecord error if the beacon id does not exist" do
+          expect do
+            delete :destroy, params: {id: -1}
+          end.to raise_error(ActiveRecord::RecordNotFound)
+        end
+        
+        context "with valid id" do
+          it "decreases amount of HistoricalEvent by 1" do
+            expect{
+              delete :destroy, params: { id: @historical_event.id }
+            }.to change(HistoricalEvent, :count).by(-1)
+          end
+          
+          it "redirects to historical_events_url after destroy historical_event" do
+            post :destroy, params: { id: @historical_event.id }
+            expect(response).to redirect_to(historical_events_url)
+          end
+        end
+    end
+  end
+  
+  describe "PUT #update" do
+    context "as user" do
+      login_user
+
+      it "should raise an exception if not an admin" do
+        historical_event = FactoryGirl.create(:historical_event)
+        expect do
+          put :update, params: { id: historical_event }
+        end.to raise_error(Pundit::NotAuthorizedError)
+      end
+    end
+    
+   context "as admin" do
+      let (:valid_params) { { title: "bob", description: "bob", date: "2001-6-30" } }
+      let (:invalid_params) { { title: nil } }
+     
+      login_admin
+      context "valid_params" do
+        before(:each) do
+          @historical_event = FactoryGirl.create(:historical_event)
+          put :update, params: { id: @historical_event.id, historical_event: valid_params }
+          @historical_event.reload
+        end
+
+        it "should update object paramaters when logged in as admin" do
+          expect(@historical_event.title).to eql valid_params[:title]
+          expect(@historical_event.description).to eql valid_params[:description]
+          expect(@historical_event.date).to eq(valid_params[:date].to_date)
+        end
+        
+        it "should redirect to beacon page when successful" do
+          expect(response).to redirect_to @historical_event
+        end
+      end
+      
+      context "invalid params" do
+         before(:each) do
+          @historical_event = FactoryGirl.create(:historical_event)
+          put :update, params: { id: @historical_event.id, historical_event: invalid_params }
+          @historical_event.reload
+        end
+      
+        it "should not update object paramaters when given invalid parameters" do
+          expect(@historical_event.title).to eql "test"
+          expect(@historical_event.description).to eql "test"
+          expect(@historical_event.date).to eql "2001-1-1".to_date
+        end
+        
+        it "should rerender edit page when update unsuccessful" do
+          put :update, params: { id: @historical_event.id, historical_event: invalid_params }
+          expect(response).to render_template :edit
+        end
+      end
+    end
   end
   
 end
