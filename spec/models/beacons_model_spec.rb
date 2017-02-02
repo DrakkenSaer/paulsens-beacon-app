@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Beacon, :type => :model do
-    subject {FactoryGirl.build(:beacon) }
+  subject {FactoryGirl.build(:beacon) }
     
   describe "Presence Validations" do
     it "is valid with valid attributes" do 
