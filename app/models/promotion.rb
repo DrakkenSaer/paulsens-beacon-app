@@ -17,7 +17,7 @@ class Promotion < ApplicationRecord
             :redeem_count, 
             :expiration, presence: true
   
-  #validates :daily_deal, :featured, inclusion: { in: [ true, false ] }
+  validates :daily_deal, :featured, inclusion: { in: [ true, false ] }
 
   resourcify
   
