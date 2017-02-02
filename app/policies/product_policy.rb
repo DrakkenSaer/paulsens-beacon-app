@@ -1,8 +1,12 @@
-class HistoricalEventPolicy < ApplicationPolicy
+class ProductPolicy < ApplicationPolicy
     class Scope < Scope
         def resolve
-            scope.all
+            true
         end
+    end
+    
+    def index?
+        true
     end
 
     def create?

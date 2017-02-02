@@ -1,5 +1,5 @@
 class RegistrationPolicy < ApplicationPolicy
     def create?
-        user.has_any_role?(:admin)
+        is_admin?
     end
 end

@@ -33,13 +33,22 @@ class HistoricalEventsController < ApplicationController
   end
 
   def update
+    respond_to do |format|
+      if @historical_event.update_attributes(historical_event_params)
+       format.html { redirect_to @historical_event, notice: 'Historical Event was successfully updated.' }
+       format.json { head :no_content }
+      else
+        format.html { render action: :edit }
+        format.json { render json: @historical_event.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   def destroy
     @historical_event.destroy
     
     respond_to do |format|
-      format.html { redirect_to historical_event_url }
+      format.html { redirect_to historical_events_url }
       format.json { head :no_content }
     end
   end

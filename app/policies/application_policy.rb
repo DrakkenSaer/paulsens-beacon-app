@@ -1,4 +1,6 @@
 class ApplicationPolicy
+  include Helpers::PoliciesHelper
+
   attr_reader :user, :record
 
   def initialize(user, record)
@@ -39,6 +41,8 @@ class ApplicationPolicy
   end
 
   class Scope
+    include Helpers::PoliciesHelper
+
     attr_reader :user, :scope
 
     def initialize(user, scope)

@@ -1,25 +1,25 @@
 class RolePolicy < ApplicationPolicy
     class Scope < Scope
         def resolve
-            if user.has_any_role?(:admin)
+            if is_admin?
                 scope.all
             end
         end
     end
 
     def show?
-        user.has_any_role?(:admin)
+        is_admin?
     end
 
     def create?
-        user.has_any_role?(:admin)
+        is_admin?
     end
 
     def update?
-        user.has_any_role?(:admin)
+        is_admin?
     end
 
     def destroy?
-        user.has_any_role?(:admin)
+        is_admin?
     end
 end
