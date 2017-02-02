@@ -2,39 +2,39 @@ require 'spec_helper'
 
 describe Product do
   it "has a valid factory" do
-    FactoryGirl.create(:product).should be_valid
+    expect( FactoryGirl.create(:product) ).to be_valid
   end
 
   it "is invalid without a featured, output flase" do
-    product = FactoryGirl.create(:product, featured: nil).featured.should == false
+    expect( FactoryGirl.create(:product, featured: nil).featured ).to eq(false)
   end
 
   it "is valid without a cost" do
-    product = FactoryGirl.create(:product, cost: nil).cost.should == "0.0"
+    expect( FactoryGirl.create(:product, cost: nil).cost ).to eq("0.0")
   end
   
   it "is valid without a description" do
-    product = FactoryGirl.build(:product, description: nil).should_not be_valid
+    expect( FactoryGirl.build(:product, description: nil) ).not_to be_valid
   end
   
   it "is invalid without a title" do
-    product = FactoryGirl.build(:product, title: nil).should_not be_valid
+    expect( FactoryGirl.build(:product, title: nil) ).not_to be_valid
   end
 
   it "returns a product featured as a boolean" do
-    FactoryGirl.create(:product, featured: true).featured.should == true
+    expect( FactoryGirl.create(:product, featured: true).featured ).to eq(true)
   end
   
   it "returns a product description as a string" do
-    FactoryGirl.create(:product, description: "Bob").description.should == "Bob"
+    expect( FactoryGirl.create(:product, description: "Bob").description ).to eq("Bob")
   end
   
   it "returns a product title as a string" do
-    FactoryGirl.create(:product, title: "Bob").title.should == "Bob"
+    expect( FactoryGirl.create(:product, title: "Bob").title ).to eq("Bob")
   end
   
   it "returns a product cost as a string" do
-    FactoryGirl.create(:product, cost: "10.99").cost.should == "10.99"
+    expect( FactoryGirl.create(:product, cost: "10.99").cost ).to eq("10.99")
   end
 
   it "have many promotions" do
