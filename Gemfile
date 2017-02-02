@@ -48,6 +48,9 @@ group :development, :test do
 
   # Use factory girl to generate test resources
   gem 'factory_girl_rails'
+
+  # Use Faker to generate test resources
+  gem 'faker'
 end
 
 group :development do
