@@ -16,7 +16,7 @@ class PromotionsController < ApplicationController
   def create
     @promotion = Promotion.new(promotion_params)
 
-    authorize @promotion
+    authorize_promotion
     
     if @promotion.save
       redirect_to @promotion, success: "Promotion successfully created!"

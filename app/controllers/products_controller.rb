@@ -16,7 +16,7 @@ class ProductsController < ApplicationController
   def create
     @product = Product.new(product_params)
     
-    authorize(@product)
+    authorize_product
 
     respond_to do |format|
       if @product.save

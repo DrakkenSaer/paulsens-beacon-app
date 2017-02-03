@@ -8,6 +8,10 @@ class OrderPolicy < ApplicationPolicy
             end
         end
     end
+    
+    def create?
+        true 
+    end
 
     def update?
         is_admin?

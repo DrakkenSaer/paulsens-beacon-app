@@ -1,7 +1,7 @@
 class HistoricalEventsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_historical_event, except: [:index, :create]
-  before_action :authorize_hisorical_event, except: [:index, :create]
+  before_action :authorize_historical_event, except: [:index, :create]
 
   def index
     @historical_events = policy_scope(HistoricalEvent)
@@ -16,7 +16,7 @@ class HistoricalEventsController < ApplicationController
   def create
     @historical_event = HistoricalEvent.new(historical_event_params)
     
-    authorize(@historical_event)
+    authorize_historical_event
 
     respond_to do |format|
       if @historical_event.save
@@ -63,7 +63,7 @@ class HistoricalEventsController < ApplicationController
       @historical_event = HistoricalEvent.find(params[:id])
     end
 
-    def authorize_hisorical_event
+    def authorize_historical_event
       authorize(@historical_event)
     end
 

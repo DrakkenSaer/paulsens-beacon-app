@@ -16,7 +16,7 @@ class BeaconsController < ApplicationController
 
   def create
     @beacon = Beacon.new(beacon_params)
-    authorize(@beacon)
+    authorize_beacon
 
     if @beacon.save
       redirect_to @beacon, success: "Beacon successfully created!"

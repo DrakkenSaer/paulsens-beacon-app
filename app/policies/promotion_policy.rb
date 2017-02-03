@@ -1,25 +1,23 @@
 class PromotionPolicy < ApplicationPolicy
     class Scope < Scope
         def resolve
-            if user.has_any_role?(:admin)
-                scope.all
-            end
+            scope.all
         end
     end
-
-    def show?
-        user.has_any_role?(:admin)
+    
+    def index?
+       true 
     end
 
     def create?
-        user.has_any_role?(:admin)
+        is_admin?
     end
 
     def update?
-        user.has_any_role?(:admin)
+        is_admin?
     end
 
     def destroy?
-        user.has_any_role?(:admin)
+        is_admin?
     end
 end
