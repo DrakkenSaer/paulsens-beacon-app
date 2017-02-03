@@ -2,12 +2,13 @@ require 'rails_helper'
 
 RSpec.describe BeaconsController, type: :controller do
 
-  # describe "GET #index" do
-  #   it "returns http success" do
-  #     get :index
-  #     expect(response).to have_http_status(:success)
-  #   end
-  # end
+  describe "GET #index" do
+    login_user
+    it "returns http success" do
+      get :index
+      expect(response).to have_http_status(:success)
+    end
+  end
 
   # describe "GET #show" do
   #   it "returns http success" do
@@ -110,7 +111,7 @@ RSpec.describe BeaconsController, type: :controller do
           expect(assigns(:beacon)).to eql @test_beacon
         end
 
-        it "should update object paramaters when logged in as admin" do
+        it "should update object paramaters" do
           expect(@test_beacon.title).to eql valid_params[:title]
           expect(@test_beacon.description).to eql valid_params[:description]
         end
@@ -127,7 +128,7 @@ RSpec.describe BeaconsController, type: :controller do
           @test_beacon.reload
         end
       
-        it "should not update object paramaters when given invalid parameters" do
+        it "should not update object paramaters" do
           expect(@test_beacon.title).to eql "test"
           expect(@test_beacon.description).to eql "test description"
         end
