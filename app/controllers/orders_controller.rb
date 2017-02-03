@@ -39,18 +39,18 @@ class OrdersController < ApplicationController
     redirect_to orders_url, success: "Order successfully deleted!"
   end
   
-private 
-
-  def order_params
-    params.require(:order).permit(:user_id)
-  end
+  private 
   
-  def set_order
-    @order = Order.find(params[:id])
-  end
-  
-  def authorize_order
-     authorize(@order)
-  end
+    def order_params
+      params.require(:order).permit(:user_id)
+    end
+    
+    def set_order
+      @order = Order.find(params[:id])
+    end
+    
+    def authorize_order
+       authorize(@order)
+    end
 
 end
