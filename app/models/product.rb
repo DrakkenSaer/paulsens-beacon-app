@@ -10,6 +10,13 @@ class Product < ApplicationRecord
     validates :featured, inclusion: { in: [ true, false ] }
 
     resourcify
+    
+    def purchase!(user)
+        order = Order.new
+        order.products << self
+        order.user = user
+        order.save
+    end
 
     protected
     
