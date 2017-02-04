@@ -60,7 +60,7 @@ class ProductsController < ApplicationController
     end
   
     def set_product
-      @product = Product.find(params[:id])
+      @product = params[:id] ? Product.find(params[:id]) : Product.new
     end
 
     def authorize_product

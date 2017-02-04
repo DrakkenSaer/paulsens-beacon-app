@@ -23,26 +23,13 @@ RSpec.describe UserRolesController, type: :controller do
 #     end
 #   end
 
-#   describe "GET #create" do
-#     it "returns http success" do
-#       get :create
-#       expect(response).to have_http_status(:success)
-#     end
-#   end
-
-#   describe "GET #destroy" do
-#     it "returns http success" do
-#       get :destroy
-#       expect(response).to have_http_status(:success)
-#     end
-#   end
-
   describe "POST #create" do
     login_user
+
     before(:each) do
       @role = FactoryGirl.create(:role)
     end
-    
+
     it "should add a role to the user"
     it "should not add the role if the user already has it"
     it "should not add an invalid role"

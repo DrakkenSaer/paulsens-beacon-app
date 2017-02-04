@@ -30,7 +30,7 @@ RSpec.describe Promotion, type: :model do
     end
   end
     
-  describe "assigning default values" do
+  describe "Assigning default values" do
     it "assigns a default cost if it becomes nil" do
       subject.cost = nil
       subject.save
