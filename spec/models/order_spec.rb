@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Order, :type => :model do
+RSpec.describe Order, type: :model do
   describe "Associations" do
     it "has many line_items" do
       assc = described_class.reflect_on_association(:line_items)

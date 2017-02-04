@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe Beacon, :type => :model do
-  subject {FactoryGirl.build(:beacon) }
+RSpec.describe Beacon, type: :model do
+  subject { FactoryGirl.build(:beacon) }
     
   describe "Presence Validations" do
     it "is valid with valid attributes" do 
@@ -28,16 +28,15 @@ RSpec.describe Beacon, :type => :model do
   
   describe "Uniqueness Validations" do
     before(:each) do
+      subject.save
       @test_beacon = FactoryGirl.build(:beacon)
     end
   
     it "is not valid if the title is not unique" do
-        subject.save
         expect(@test_beacon).to_not be_valid
     end
     
     it "is not valid if UUID is not unique" do
-        subject.save
         @test_beacon.uuid = subject.uuid
         expect(@test_beacon).to_not be_valid
     end

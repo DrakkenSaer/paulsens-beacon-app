@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe Promotion, :type => :model do
-  subject {FactoryGirl.build(:promotion) }
+RSpec.describe Promotion, type: :model do
+  subject { FactoryGirl.build(:promotion) }
   
   describe "Presence Validations" do
     it "is valid with valid attributes" do 
@@ -31,7 +31,6 @@ RSpec.describe Promotion, :type => :model do
   end
     
   describe "assigning default values" do
-    
     it "assigns a default cost if it becomes nil" do
       subject.cost = nil
       subject.save
@@ -75,5 +74,4 @@ RSpec.describe Promotion, :type => :model do
       expect(assc.macro).to eql :belongs_to
     end
   end
-  
 end
