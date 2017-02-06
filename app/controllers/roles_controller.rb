@@ -1,5 +1,5 @@
 class RolesController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
+  before_action :authenticate_user!
   before_action :set_role, except: [:index, :create]
   before_action :authorize_role, except: [:index, :create]
 
@@ -16,7 +16,7 @@ class RolesController < ApplicationController
   def create
     @role = Role.new(role_params)
     
-    authorize(@role)
+    authorize_role
 
     respond_to do |format|
       if @role.save
@@ -60,7 +60,7 @@ class RolesController < ApplicationController
     end
   
     def set_role
-      @role = Role.find(params[:id])
+      @role = params[:id] ? Role.find(params[:id]) : Role.new
     end
 
     def authorize_role
