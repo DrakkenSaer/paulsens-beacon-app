@@ -1,20 +1,42 @@
 require 'rails_helper'
 
 RSpec.describe HistoricalEventsController, type: :controller do
+  render_views
 
-  # describe "GET #index" do
-  #   it "returns http success" do
-  #     get :index
-  #     expect(response).to have_http_status(:success)
-  #   end
-  # end
+  let(:json) { JSON.parse(response.body) }
 
-  # describe "GET #show" do
-  #   it "returns http success" do
-  #     get :show
-  #     expect(response).to have_http_status(:success)
-  #   end
-  # end
+  describe "GET #index" do
+    
+    before(:each) do
+      @historical_event = FactoryGirl.create(:historical_event)
+      get :index, format: :json
+    end
+    
+    it "returns http success for json" do
+      expect(response).to have_http_status(:success)
+    end
+    
+    it "get the data from json success" do
+      expect(json["historical_events"].collect{|l| l["title"]}).to include(@historical_event.title)
+    end
+  end
+
+  describe "GET #show" do
+    context 'get HistoricalEvent show by id' do
+      before(:each) do
+        @historical_event = FactoryGirl.create(:historical_event)
+        get :show, format: :json, id: @historical_event.id
+      end
+      it "returns http success for json" do
+        expect(response).to have_http_status(:success)
+      end
+      
+      it "returns json success" do
+        expect(json["title"]).to include(@historical_event.title)
+      end
+    end
+    
+  end
 
   # describe "GET #new" do
   #   it "returns http success" do
