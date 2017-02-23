@@ -24,12 +24,55 @@ RSpec.describe ProductsController, type: :controller do
     end
   end
 
-#   describe "GET #index" do
-#     it "returns http success" do
-#       get :index
-#       expect(response).to have_http_status(:success)
-#     end
-#   end
+  describe "GET #index" do
+    shared_examples_for "json request" do
+      render_views
+      let(:json) { JSON.parse(response.body) }
+      before do
+        @test_product = FactoryGirl.create(:product)
+        @test_product_2 = FactoryGirl.create(:product, title: "test2", description: "test2 description")
+        get :index, format: :json
+      end
+      
+      it 'returns the listings' do
+        expect(json["products"].count).to eql Product.count
+        expect(json["products"].collect{|l| l["title"]}).to include(@test_product.title)
+      end
+    end
+
+    context "as user" do
+      login_user
+      before :each do
+        get :index
+      end
+
+      it "returns http success" do
+        expect(response).to have_http_status(:success)
+      end
+      
+      it "renders index template" do
+        expect(response).to render_template :index
+      end
+      
+      it "returns products" do
+        expect(assigns(:products)).to_not be_nil
+      end
+
+      it_should_behave_like "json request"
+    end
+    
+    context "as admin" do
+      login_admin
+      
+      it "returns all products" do
+        FactoryGirl.create(:product)
+        get :index
+        expect(assigns(:products).count).to eql Product.count
+      end
+      
+      it_should_behave_like "json request"
+    end
+  end
 
   describe "GET #show" do
     shared_examples_for "has appropriate permissions" do
@@ -76,7 +119,7 @@ RSpec.describe ProductsController, type: :controller do
       
       it "displays orders belonging to product" do
         expect(json["orders"].count).to eql @test_product.orders.count
-        expect(json["orders"].collect{|l| l["title"]}).to include @order.title
+        expect(json["orders"].collect{|l| l["id"]}).to include @order.id
       end
       
       it "displays line_items belonging to product" do
