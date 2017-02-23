@@ -67,8 +67,10 @@ RSpec.describe OrdersController, type: :controller do
     end
     
     context "as user with orders" do
-      login_order_user
+      login_user
       before :each do
+        @test_order.user = controller.current_user
+        @test_order.save
         get :index
       end
       
