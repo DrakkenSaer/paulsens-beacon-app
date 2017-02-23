@@ -5,7 +5,6 @@ RSpec.describe PromotionsController, type: :controller do
   let(:json) { JSON.parse(response.body) }
 
   describe "GET #index" do
-    
     before(:each) do
       @promotion = FactoryGirl.create(:promotion)
       get :index, format: :json
@@ -15,16 +14,12 @@ RSpec.describe PromotionsController, type: :controller do
       expect(response).to have_http_status(:success)
     end
     
-    it "get the data from json success" do
+    it "returns the correct json data" do
       expect(json["promotions"].collect{|l| l["title"]}).to include(@promotion.title)
     end
       
     it "renders index template" do
       expect(response).to render_template :index
-    end
-      
-    it "returns 0 promotion" do
-      expect(assigns(:promotion)).to be_nil
     end
   end
 
@@ -32,7 +27,7 @@ RSpec.describe PromotionsController, type: :controller do
     context 'get promotion show by id' do
       before(:each) do
         @promotion = FactoryGirl.create(:promotion)
-        get :show, format: :json, id: @promotion.id
+        get :show, format: :json, params: { id: @promotion.id }
       end
       
       it "renders show template" do
@@ -43,20 +38,19 @@ RSpec.describe PromotionsController, type: :controller do
         expect(response).to have_http_status(:success)
       end
       
-      it "returns json success" do
+      it "returns json data" do
         expect(json["title"]).to include(@promotion.title)
       end
       
-      it "not find the json" do
+      it "returns RecordNotFound for invalid id" do
          expect do
-           get :show, format: :json, id: -1
+           get :show, format: :json, params: { id: -1 }
          end.to raise_error(ActiveRecord::RecordNotFound)
       end
       
-       it "should find the correct beacon" do
+       it "finds the correct beacon" do
          expect(assigns(:promotion)).to eql @promotion
        end
-
     end
     
   end

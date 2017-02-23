@@ -5,7 +5,7 @@ class PromotionPolicy < ApplicationPolicy
         end
     end
     
-    def index?
+    def show?
        true 
     end
 
