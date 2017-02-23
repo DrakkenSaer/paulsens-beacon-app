@@ -1,6 +1,28 @@
 require 'rails_helper'
 
 RSpec.describe ProductsController, type: :controller do
+  
+  shared_examples_for "does not have permission" do | http_verb, controller_method | 
+    it "should raise a Pundit exception" do
+      expect do
+        send(http_verb, controller_method, params: sent_params)
+      end.to raise_error(Pundit::NotAuthorizedError)
+    end
+  end
+  
+  shared_examples_for "invalid id" do | http_verb, controller_method | 
+    it "should raise an ActiveRecord exception" do
+      expect do
+        send(http_verb, controller_method, params: {id: -1})
+      end.to raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
+  
+  shared_examples_for "valid id" do
+    it "should find the correct product" do
+      expect(assigns(:product)).to eql test_product
+    end
+  end
 
 #   describe "GET #index" do
 #     it "returns http success" do
@@ -9,12 +31,85 @@ RSpec.describe ProductsController, type: :controller do
 #     end
 #   end
 
-#   describe "GET #show" do
-#     it "returns http success" do
-#       get :show
-#       expect(response).to have_http_status(:success)
-#     end
-#   end
+  describe "GET #show" do
+    shared_examples_for "has appropriate permissions" do
+      it_should_behave_like "valid id"
+      
+      it "returns http success" do
+        expect(response).to have_http_status(:success)
+      end
+      
+      it "renders show template" do
+        expect(response).to render_template :show
+      end
+    end
+    
+    shared_examples_for "html request" do
+      before :each do
+        get :show, params: {id: @test_product}
+      end
+      
+      it_should_behave_like "has appropriate permissions" do 
+        let(:test_product) {@test_product}
+      end
+    end
+    
+    shared_examples_for "json request" do
+      render_views
+      let(:json) { JSON.parse(response.body) }
+      before do
+        @order = FactoryGirl.create(:order)
+        @promotion = FactoryGirl.create(:promotion)
+        @test_product.orders << @order
+        @test_product.promotions << @promotion
+        @test_product.save
+        get :show, format: :json, params: { id: @test_product.id }
+      end
+      
+      it_should_behave_like "has appropriate permissions" do 
+        let(:test_product) {@test_product}
+      end
+      
+      it "returns the product" do
+        expect(json["title"]).to eql @test_product.title
+      end
+      
+      it "displays orders belonging to product" do
+        expect(json["orders"].count).to eql @test_product.orders.count
+        expect(json["orders"].collect{|l| l["title"]}).to include @order.title
+      end
+      
+      it "displays line_items belonging to product" do
+        expect(json["line_items"].count).to eql @test_product.line_items.count
+        expect(json["line_items"].collect{|l| l["id"]}).to include @test_product.line_items.first.id
+      end
+      
+      it "displays promotions belonging to product" do
+        expect(json["promotions"].count).to eql @test_product.promotions.count
+        expect(json["promotions"].collect{|l| l["title"]}).to include @promotion.title
+      end
+    end
+
+    before :each do
+      @test_product = FactoryGirl.create(:product)
+    end
+
+    context "logged in as user" do
+      login_user
+  
+      it_should_behave_like "html request"
+      it_should_behave_like "json request"
+      it_should_behave_like "invalid id", :get, :show
+    end
+    
+    context "logged in as admin" do
+      login_admin
+
+      it_should_behave_like "html request"
+      it_should_behave_like "json request"
+      it_should_behave_like "invalid id", :get, :show
+    end
+  end
 
 #   describe "GET #new" do
 #     it "returns http success" do
@@ -144,7 +239,7 @@ RSpec.describe ProductsController, type: :controller do
           expect(@product.featured).to eql valid_params[:featured]
         end
         
-        it "should redirect to beacon page when successful" do
+        it "should redirect to product page when successful" do
           expect(response).to redirect_to @product
         end
       end
