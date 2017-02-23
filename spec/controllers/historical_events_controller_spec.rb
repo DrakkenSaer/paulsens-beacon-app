@@ -25,7 +25,7 @@ RSpec.describe HistoricalEventsController, type: :controller do
     context 'get HistoricalEvent show by id' do
       before(:each) do
         @historical_event = FactoryGirl.create(:historical_event)
-        get :show, format: :json, id: @historical_event.id
+        get :show, format: :json, params: { id: @historical_event.id }
       end
       it "returns http success for json" do
         expect(response).to have_http_status(:success)

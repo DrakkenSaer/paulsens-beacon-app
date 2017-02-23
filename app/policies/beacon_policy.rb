@@ -1,14 +1,12 @@
 class BeaconPolicy < ApplicationPolicy
     class Scope < Scope
         def resolve
-            if is_admin?
-                scope.all
-            end
+            scope.all
         end
     end
-
+    
     def show?
-        is_admin?
+        true
     end
 
     def create?
