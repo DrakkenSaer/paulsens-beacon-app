@@ -1,21 +1,147 @@
 require 'rails_helper'
 
 RSpec.describe BeaconsController, type: :controller do
-
-  describe "GET #index" do
-    login_user
-    it "returns http success" do
-      get :index
-      expect(response).to have_http_status(:success)
+  
+  shared_examples_for "does not have permission" do | http_verb, controller_method | 
+    it "should raise a Pundit exception" do
+      expect do
+        send(http_verb, controller_method, params: sent_params)
+      end.to raise_error(Pundit::NotAuthorizedError)
+    end
+  end
+  
+  shared_examples_for "invalid id" do | http_verb, controller_method | 
+    it "should raise an ActiveRecord exception" do
+      expect do
+        send(http_verb, controller_method, params: {id: -1})
+      end.to raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
+  
+  shared_examples_for "valid id" do
+    it "should find the correct beacon" do
+      expect(assigns(:beacon)).to eql test_beacon
     end
   end
 
-  # describe "GET #show" do
-  #   it "returns http success" do
-  #     get :show
-  #     expect(response).to have_http_status(:success)
-  #   end
-  # end
+  describe "GET #index" do
+    shared_examples_for "json request" do
+      render_views
+      let(:json) { JSON.parse(response.body) }
+      before do
+        @test_beacon = FactoryGirl.create(:beacon)
+        @test_beacon_2 = FactoryGirl.create(:beacon, title: "test2", description: "test2 description")
+        @test_beacon.notifications << FactoryGirl.create(:notification)
+        get :index, format: :json
+      end
+      
+      it 'returns the listings' do
+        expect(json["beacons"].count).to eql Beacon.count
+        expect(json["beacons"].collect{|l| l["title"]}).to include(@test_beacon.title)
+      end
+    end
+
+    
+    context "as user" do
+      login_user
+      before :each do
+        get :index
+      end
+
+      it "returns http success" do
+        expect(response).to have_http_status(:success)
+      end
+      
+      it "renders index template" do
+        expect(response).to render_template :index
+      end
+      
+      it "returns beacons" do
+        expect(assigns(:beacons)).to_not be_nil
+      end
+
+      it_should_behave_like "json request"
+    end
+    
+    context "as admin" do
+      login_admin
+      
+      it "returns all beacons" do
+        FactoryGirl.create(:beacon)
+        get :index
+        expect(assigns(:beacons).count).to eql Beacon.count
+      end
+      
+      it_should_behave_like "json request"
+    end
+  end
+
+  describe "GET #show" do
+    shared_examples_for "has appropriate permissions" do
+      it_should_behave_like "valid id"
+      
+      it "returns http success" do
+        expect(response).to have_http_status(:success)
+      end
+      
+      it "renders show template" do
+        expect(response).to render_template :show
+      end
+    end
+    
+    shared_examples_for "html request" do
+      before :each do
+        get :show, params: {id: @test_beacon}
+      end
+      
+      it_should_behave_like "has appropriate permissions" do 
+        let(:test_beacon) {@test_beacon}
+      end
+    end
+    
+    shared_examples_for "json request" do
+      render_views
+      let(:json) { JSON.parse(response.body) }
+      before do
+        @notification = FactoryGirl.create(:notification)
+        @test_beacon.notifications << @notification
+        get :show, format: :json, params: { id: @test_beacon.id }
+      end
+      
+      it_should_behave_like "has appropriate permissions" do 
+        let(:test_beacon) {@test_beacon}
+      end
+      
+      it "returns the beacon" do
+        expect(json["title"]).to eql @test_beacon.title
+      end
+      
+      it "displays notifications belonging to beacon" do
+        expect(json["notifications"].count).to eql @test_beacon.notifications.count
+        expect(json["notifications"][0]["title"]).to eql @notification.title
+      end
+    end
+
+    before :each do
+      @test_beacon = FactoryGirl.create(:beacon)
+    end
+
+    context "logged in as user" do
+      login_user
+  
+      it_should_behave_like "html request"
+      it_should_behave_like "json request"
+      it_should_behave_like "invalid id", :get, :show
+    end
+    
+    context "logged in as admin" do
+      login_admin
+
+      it_should_behave_like "html request"
+      it_should_behave_like "json request"
+      it_should_behave_like "invalid id", :get, :show
+    end
+  end
 
   # describe "GET #new" do
   #   it "returns http success" do

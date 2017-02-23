@@ -48,7 +48,7 @@ class OrdersController < ApplicationController
     end
     
     def set_order
-      @order = Order.find(params[:id])
+      @order = params[:id] ? Order.find(params[:id]) : Order.new
     end
     
     def authorize_order
