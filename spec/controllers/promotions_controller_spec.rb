@@ -1,20 +1,65 @@
 require 'rails_helper'
 
 RSpec.describe PromotionsController, type: :controller do
+  render_views
+  let(:json) { JSON.parse(response.body) }
 
-#   describe "GET #index" do
-#     it "returns http success" do
-#       get :index
-#       expect(response).to have_http_status(:success)
-#     end
-#   end
+  describe "GET #index" do
+    
+    before(:each) do
+      @promotion = FactoryGirl.create(:promotion)
+      get :index, format: :json
+    end
+    
+    it "returns http success for json" do
+      expect(response).to have_http_status(:success)
+    end
+    
+    it "get the data from json success" do
+      expect(json["promotions"].collect{|l| l["title"]}).to include(@promotion.title)
+    end
+      
+    it "renders index template" do
+      expect(response).to render_template :index
+    end
+      
+    it "returns 0 promotion" do
+      expect(assigns(:promotion)).to be_nil
+    end
+  end
 
-#   describe "GET #show" do
-#     it "returns http success" do
-#       get :show
-#       expect(response).to have_http_status(:success)
-#     end
-#   end
+  describe "GET #show" do
+    context 'get promotion show by id' do
+      before(:each) do
+        @promotion = FactoryGirl.create(:promotion)
+        get :show, format: :json, id: @promotion.id
+      end
+      
+      it "renders show template" do
+        expect(response).to render_template :show
+      end
+      
+      it "returns http success for json" do
+        expect(response).to have_http_status(:success)
+      end
+      
+      it "returns json success" do
+        expect(json["title"]).to include(@promotion.title)
+      end
+      
+      it "not find the json" do
+         expect do
+           get :show, format: :json, id: -1
+         end.to raise_error(ActiveRecord::RecordNotFound)
+      end
+      
+       it "should find the correct beacon" do
+         expect(assigns(:promotion)).to eql @promotion
+       end
+
+    end
+    
+  end
 
 #   describe "GET #new" do
 #     it "returns http success" do
