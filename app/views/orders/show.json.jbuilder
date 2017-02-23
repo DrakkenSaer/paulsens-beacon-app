@@ -1,2 +1,3 @@
 json.(@order, :id, :created_at, :updated_at)
-json.order @order.products, :id
+json.products @order.products
+json.promotions @order.promotions

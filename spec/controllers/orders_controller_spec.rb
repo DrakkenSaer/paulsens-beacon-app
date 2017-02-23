@@ -98,10 +98,9 @@ RSpec.describe OrdersController, type: :controller do
           expect(json["id"]).to eql @test_order.id
         end
         
-        # it "displays notifications belonging to order" do
-        #   expect(json["notifications"].count).to eql @test_order.notifications.count
-        #   expect(json["notifications"][0]["title"]).to eql @notification.title
-        # end
+        it "displays promotions belonging to order" do
+          expect(json["promotions"].count).to eql @test_order.promotions.count
+        end
       end
     end
   end
