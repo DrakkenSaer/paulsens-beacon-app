@@ -12,7 +12,6 @@ describe Role do
   end
 
   it "returns a historical event name as a string" do
-    expect(FactoryGirl.create(:role, name: "Bob").name).to eql "Bob"
+    expect(FactoryGirl.create(:role, name: "Bob").name).to eql("Bob")
   end
-  
 end

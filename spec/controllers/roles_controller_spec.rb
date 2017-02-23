@@ -36,7 +36,7 @@ describe "POST create" do
       login_user
       it "should raise an exception if not an admin" do
         expect do
-          post :create, { role: { name: "test" } }
+          post :create, params: { role: { name: "test" } }
         end.to raise_error(Pundit::NotAuthorizedError)
       end
     end
@@ -47,12 +47,12 @@ describe "POST create" do
         context "with valid parameters" do
           it "increases amount of Role by 1" do
             expect {
-              post :create, { role: { name: "test" } }
+              post :create, params: { role: { name: "test" } }
             }.to change(Role, :count).by(1)
           end
           
           it "redirects to the new role after was made" do
-            post :create, { role: { name: "test"} }
+            post :create, params: { role: { name: "test"} }
             expect(response).to redirect_to Role.last
           end
         end
@@ -60,12 +60,12 @@ describe "POST create" do
         context "with invalid parameters" do
           it "does not save new Role" do
             expect{
-              post :create, { role: { resource_type: "Test" } }
+              post :create, params: { role: { resource_type: "Test" } }
             }.to_not change(Role, :count)
           end
           
           it "re-renders the new method" do
-            post :create, { role: { resource_type: "Test" } }
+            post :create, params: { role: { resource_type: "Test" } }
             expect(response).to render_template :new
           end
       end
@@ -79,7 +79,7 @@ describe "POST create" do
       it "should raise an exception if not an admin" do
         role = FactoryGirl.create(:role)
         expect do
-          delete :destroy, {id: role.id }
+          delete :destroy, params: { id: role.id }
         end.to raise_error(Pundit::NotAuthorizedError)
       end
     end
@@ -97,13 +97,13 @@ describe "POST create" do
           it "decreases amount of Role by 1" do
             role = FactoryGirl.create(:role)
             expect{
-              delete :destroy, { id: role.id }    
+              delete :destroy, params: { id: role.id }    
             }.to change(Role, :count).by(-1)
           end
           
           it "redirects to roles_url after destroy role" do
             role = FactoryGirl.create(:role)
-            post :destroy, { id: role.id }
+            post :destroy, params: { id: role.id }
             expect(response).to redirect_to(roles_url)
           end
         end
@@ -130,7 +130,7 @@ describe "POST create" do
       context "valid_params" do
         before(:each) do
           @role = FactoryGirl.create(:role)
-          put :update, id: @role.id, role: valid_params
+          put :update, params: { id: @role.id, role: valid_params }
           @role.reload
         end
 
@@ -146,7 +146,7 @@ describe "POST create" do
       context "invalid params" do
          before(:each) do
           @role = FactoryGirl.create(:role)
-          put :update, id: @role.id, role: invalid_params
+          put :update, params: { id: @role.id, role: invalid_params }
           @role.reload
         end
       
@@ -155,7 +155,7 @@ describe "POST create" do
         end
         
         it "should rerender edit page when update unsuccessful" do
-          put :update, id: @role, role: invalid_params
+          put :update, params: { id: @role, role: invalid_params }
           expect(response).to render_template :edit
         end
       end
