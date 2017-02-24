@@ -3,7 +3,8 @@ class User < ApplicationRecord
   has_many :line_items, as: :orderable
   has_many :products, through: :line_items, source: :orderable, source_type: 'Product'
   has_many :promotions, through: :line_items, source: :orderable, source_type: 'Promotion'
-  
+  has_one :points, as: :pointable
+
   rolify
   
   # Include default devise modules. Others available are:
@@ -14,8 +15,15 @@ class User < ApplicationRecord
   serialize :preferences, Hash
 
   after_create :assign_default_role
+  after_create :assign_default_points
 
-  def assign_default_role
-    self.add_role(:standard) if self.roles.blank?
-  end
+  protected
+  
+    def assign_default_role
+      self.add_role(:standard) if self.roles.blank?
+    end
+
+    def assign_default_points
+      self.create_points! if self.points.nil?
+    end
 end
