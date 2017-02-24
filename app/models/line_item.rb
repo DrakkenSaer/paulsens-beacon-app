@@ -1,16 +1,12 @@
 class LineItem < ApplicationRecord
+  include Concerns::Polymorphic::Helpers
+
   before_validation :set_default_item_cost
   
-  belongs_to :order
+  belongs_to :order, inverse_of: :line_items
   belongs_to :orderable, polymorphic: true
 
   validates :item_cost, presence: true
-
-  def find_resource
-    resource = self.orderable_type
-    id = self.orderable_id
-    @resource ||= resource.singularize.classify.constantize.find(id)
-  end
 
   protected
 
