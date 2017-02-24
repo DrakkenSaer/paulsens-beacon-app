@@ -62,9 +62,9 @@ ActiveRecord::Schema.define(version: 20170224185012) do
   create_table "points", force: :cascade do |t|
     t.string   "pointable_type"
     t.integer  "pointable_id"
-    t.integer  "value"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.integer  "value",          default: 0, null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.index ["pointable_type", "pointable_id"], name: "index_points_on_pointable_type_and_pointable_id", using: :btree
   end
 
@@ -87,7 +87,7 @@ ActiveRecord::Schema.define(version: 20170224185012) do
     t.boolean  "daily_deal",       default: false,                 null: false
     t.boolean  "featured",         default: false,                 null: false
     t.integer  "cost",             default: 0,                     null: false
-    t.datetime "expiration",       default: '2017-03-10 18:53:37'
+    t.datetime "expiration",       default: '2017-03-10 19:03:07'
     t.datetime "created_at",                                       null: false
     t.datetime "updated_at",                                       null: false
     t.index ["promotional_type", "promotional_id"], name: "index_promotions_on_promotional_type_and_promotional_id", using: :btree
