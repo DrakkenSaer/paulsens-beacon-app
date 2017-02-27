@@ -1,7 +1,11 @@
 class PromotionPolicy < ApplicationPolicy
     class Scope < Scope
         def resolve
-            scope.all
+            if scope.respond_to? :all
+                scope.send(:all)
+            else
+                scope
+            end           
         end
     end
     

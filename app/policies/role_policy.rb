@@ -2,7 +2,11 @@ class RolePolicy < ApplicationPolicy
     class Scope < Scope
         def resolve
             if is_admin?
-                scope.all
+                if scope.respond_to? :all
+                    scope.send(:all)
+                else
+                    scope
+                end
             end
         end
     end

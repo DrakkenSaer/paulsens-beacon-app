@@ -2,7 +2,11 @@ class OrderPolicy < ApplicationPolicy
     class Scope < Scope
         def resolve
             if is_admin?
-                scope.all
+                if scope.respond_to? :all
+                    scope.send(:all)
+                else
+                    scope
+                end
             else
                 scope.where(user: user)
             end

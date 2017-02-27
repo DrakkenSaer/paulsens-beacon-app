@@ -1,7 +1,11 @@
 class ProductPolicy < ApplicationPolicy
     class Scope < Scope
         def resolve
-            true
+            if scope.respond_to? :all
+                scope.send(:all)
+            else
+                scope
+            end
         end
     end
     
