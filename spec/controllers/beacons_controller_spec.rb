@@ -25,15 +25,18 @@ RSpec.describe BeaconsController, type: :controller do
   end
 
   describe "GET #index" do
+    before :each do
+      @test_beacon = FactoryGirl.create(:beacon)
+      @test_beacon_2 = FactoryGirl.create(:beacon, title: "test2", description: "test2 description")
+      @test_beacon.notifications << FactoryGirl.create(:notification)
+    end
+    
     shared_examples_for "json request" do
       render_views
-      let(:json) { JSON.parse(response.body) }
-      before do
-        @test_beacon = FactoryGirl.create(:beacon)
-        @test_beacon_2 = FactoryGirl.create(:beacon, title: "test2", description: "test2 description")
-        @test_beacon.notifications << FactoryGirl.create(:notification)
+      before :each do
         get :index, format: :json
       end
+      let(:json) { JSON.parse(response.body) }
       
       it 'returns the listings' do
         expect(json["beacons"].count).to eql Beacon.count
@@ -44,20 +47,23 @@ RSpec.describe BeaconsController, type: :controller do
     
     context "as user" do
       login_user
-      before :each do
-        get :index
-      end
-
-      it "returns http success" do
-        expect(response).to have_http_status(:success)
-      end
       
-      it "renders index template" do
-        expect(response).to render_template :index
-      end
-      
-      it "returns beacons" do
-        expect(assigns(:beacons)).to_not be_nil
+      context "html request" do
+        before :each do
+          get :index
+        end
+  
+        it "returns http success" do
+          expect(response).to have_http_status(:success)
+        end
+        
+        it "renders index template" do
+          expect(response).to render_template :index
+        end
+        
+        it "returns beacons" do
+          expect(assigns(:beacons).count).to eql Beacon.count
+        end
       end
 
       it_should_behave_like "json request"
@@ -67,7 +73,6 @@ RSpec.describe BeaconsController, type: :controller do
       login_admin
       
       it "returns all beacons" do
-        FactoryGirl.create(:beacon)
         get :index
         expect(assigns(:beacons).count).to eql Beacon.count
       end
