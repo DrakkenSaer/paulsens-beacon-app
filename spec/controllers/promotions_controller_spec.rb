@@ -1,20 +1,59 @@
 require 'rails_helper'
 
 RSpec.describe PromotionsController, type: :controller do
+  render_views
+  let(:json) { JSON.parse(response.body) }
 
-#   describe "GET #index" do
-#     it "returns http success" do
-#       get :index
-#       expect(response).to have_http_status(:success)
-#     end
-#   end
+  describe "GET #index" do
+    before(:each) do
+      @promotion = FactoryGirl.create(:promotion)
+      get :index, format: :json
+    end
+    
+    it "returns http success for json" do
+      expect(response).to have_http_status(:success)
+    end
+    
+    it "returns the correct json data" do
+      expect(json["promotions"].collect{|l| l["title"]}).to include(@promotion.title)
+    end
+      
+    it "renders index template" do
+      expect(response).to render_template :index
+    end
+  end
 
-#   describe "GET #show" do
-#     it "returns http success" do
-#       get :show
-#       expect(response).to have_http_status(:success)
-#     end
-#   end
+  describe "GET #show" do
+    context 'get promotion show by id' do
+      before(:each) do
+        @promotion = FactoryGirl.create(:promotion)
+        get :show, format: :json, params: { id: @promotion.id }
+      end
+      
+      it "renders show template" do
+        expect(response).to render_template :show
+      end
+      
+      it "returns http success for json" do
+        expect(response).to have_http_status(:success)
+      end
+      
+      it "returns json data" do
+        expect(json["title"]).to include(@promotion.title)
+      end
+      
+      it "returns RecordNotFound for invalid id" do
+         expect do
+           get :show, format: :json, params: { id: -1 }
+         end.to raise_error(ActiveRecord::RecordNotFound)
+      end
+      
+       it "finds the correct beacon" do
+         expect(assigns(:promotion)).to eql @promotion
+       end
+    end
+    
+  end
 
 #   describe "GET #new" do
 #     it "returns http success" do

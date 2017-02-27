@@ -1,6 +1,27 @@
 require 'rails_helper'
 
 RSpec.describe OrdersController, type: :controller do
+  shared_examples_for "does not have permission" do | http_verb, controller_method | 
+    it "should raise a Pundit exception" do
+      expect do
+        send(http_verb, controller_method, params: sent_params)
+      end.to raise_error(Pundit::NotAuthorizedError)
+    end
+  end
+  
+  shared_examples_for "invalid id" do | http_verb, controller_method | 
+    it "should raise an ActiveRecord exception" do
+      expect do
+        send(http_verb, controller_method, params: {id: -1})
+      end.to raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
+  
+  shared_examples_for "valid id" do
+    it "should find the correct order" do
+      expect(assigns(:order)).to eql test_order
+    end
+  end
 
 #   describe "GET #index" do
 #     it "returns http success" do
@@ -9,12 +30,80 @@ RSpec.describe OrdersController, type: :controller do
 #     end
 #   end
 
-#   describe "GET #show" do
-#     it "returns http success" do
-#       get :show
-#       expect(response).to have_http_status(:success)
-#     end
-#   end
+ describe "GET #show" do
+    before :each do
+      @test_order = FactoryGirl.create(:order)
+    end
+    
+    shared_examples_for "has appropriate permissions" do
+      it_should_behave_like "valid id"
+      
+      it "returns http success" do
+        expect(response).to have_http_status(:success)
+      end
+      
+      it "renders show template" do
+        expect(response).to render_template :show
+      end
+    end
+    
+    context "logged in as user" do
+      login_user
+      
+      it_should_behave_like "invalid id", :get, :show
+      
+      it_should_behave_like "does not have permission", :get, :show do 
+        let (:sent_params) {{id: @test_order}}
+      end
+    end
+    
+    context "logged in as user with order" do
+      login_user
+      before :each do
+        @test_order.user = controller.current_user
+        @test_order.save
+        get :show, params: {id: @test_order}
+      end
+      
+      it_should_behave_like "has appropriate permissions" do 
+        let(:test_order) {@test_order}
+      end
+    end
+    
+    context "logged in as admin" do
+      login_admin
+        
+      context "as html request" do
+        before :each do
+          get :show, params: {id: @test_order}
+        end
+        
+        it_should_behave_like "has appropriate permissions" do 
+          let(:test_order) {@test_order}
+        end
+      end
+      
+      context "as json request" do
+        render_views
+        let(:json) { JSON.parse(response.body) }
+        before do
+          get :show, format: :json, params: { id: @test_order.id }
+        end
+        
+        it_should_behave_like "has appropriate permissions" do 
+          let(:test_order) {@test_order}
+        end
+        
+        it "returns the order" do
+          expect(json["id"]).to eql @test_order.id
+        end
+        
+        it "displays promotions belonging to order" do
+          expect(json["promotions"].count).to eql @test_order.promotions.count
+        end
+      end
+    end
+  end
 
 #   describe "GET #new" do
 #     it "returns http success" do

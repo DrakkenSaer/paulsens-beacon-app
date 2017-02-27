@@ -17,17 +17,71 @@ Role.destroy_all
 User.destroy_all
 
 
-5.times do |i|
-  HistoricalEvent.create!(title: "Historical Event #{i}", description: "This is an event in history ##{i}.", date: Time.now - i.years)
-  promotion = Promotion.create!(title: "Promotion ##{i}", description: "This is promotion ##{i}", code: "promo#{i}")
-  product = Product.create!(cost: "#{100 * (i + 1)}", title: "product-#{i}", description: "This is product ##{i}")
-  user = User.create!(email: "user-#{i}@paulsens.com", password: "password-#{i}")
-  beacon = Beacon.create!(title: "Beacon-#{i}", description: "This is beacon ##{i}")
-  order = user.orders.create!
-  order.products << product
-  order.promotions << promotion
+resource_interval = 100
+resource_roles = { user: ["customer", "employee", "admin"]}
 
-  5.times do |i_2|
-    beacon.notifications.create!(title: "Notification-#{i}-#{i_2}", description: "This is notification ##{i}-#{i_2}")
-  end
+admin_user = User.create!( email: "test@test.com", password: "password123" )
+
+resource_roles[:user].each do |role|
+    Role.create!(name: role)
+    admin_user.add_role(role)
 end
+
+resource_interval.times do |i|
+    user = User.new( email: Faker::Internet.email, 
+                        password: Faker::Internet.password, 
+                        phone: Faker::PhoneNumber.phone_number,
+                        address: Faker::Address.street_address)
+    user.save!
+    user.add_role resource_roles[:user].sample
+end
+
+resource_interval.times do |i|
+    Beacon.create!( title: Faker::Company.name, 
+                   description: Faker::Lorem.paragraph )
+
+    HistoricalEvent.create!( title: Faker::Company.name,
+                    description: Faker::Lorem.paragraph,
+                    date: Date.today.prev_day(i))
+                    
+    Product.create!( title: Faker::Commerce.product_name,
+                    description: Faker::Lorem.paragraph,
+                    cost: Faker::Commerce.price)
+                    
+                    
+    Promotion.create!( title: Faker::Company.name,
+                    description: Faker::Lorem.paragraph,
+                    code: Faker::Commerce.promotion_code,
+                    expiration: Faker::Date.between(Date.today, i.days.from_now),
+                    cost: Faker::Commerce.price,
+                    redeem_count: Faker::Number.between(1, 100))
+end
+
+Beacon.all.each_with_index do |beacon, index|
+    5.times do |i|
+      beacon.notifications.create!(title: "Notification-#{index}-#{i}", description: "This is notification ##{index}-#{i}")
+    end
+end
+
+User.all.each do |user|
+  products = Product.all.sample(5)
+  promotions = Promotion.all.sample(5)
+  order = user.orders.create!
+  order.products << products
+  order.promotions << promotions
+end
+
+# 5.times do |i|
+#   HistoricalEvent.create!(title: "Historical Event #{i}", description: "This is an event in history ##{i}.", date: Time.now - i.years)
+#   promotion = Promotion.create!(title: "Promotion ##{i}", description: "This is promotion ##{i}", code: "promo#{i}")
+#   product = Product.create!(cost: "#{100 * (i + 1)}", title: "product-#{i}", description: "This is product ##{i}")
+#   user = User.create!(email: "user-#{i}@paulsens.com", password: "password-#{i}")
+#   beacon = Beacon.create!(title: "Beacon-#{i}", description: "This is beacon ##{i}")
+#   order = user.orders.create!
+#   order.products << product
+#   order.promotions << promotion
+
+#   5.times do |i_2|
+#     beacon.notifications.create!(title: "Notification-#{i}-#{i_2}", description: "This is notification ##{i}-#{i_2}")
+#   end
+# end

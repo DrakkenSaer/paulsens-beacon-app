@@ -44,11 +44,11 @@ class OrdersController < ApplicationController
   private 
   
     def order_params
-      params.require(:order).permit(:user_id)
+      params.require(:order).permit(promotionals_attributes: [:id])
     end
     
     def set_order
-      @order = Order.find(params[:id])
+      @order = params[:id] ? Order.find(params[:id]) : Order.new
     end
     
     def authorize_order
