@@ -13,6 +13,16 @@
   <%= @beacon.uuid %>
 </p>
 
+<p>
+  <strong>Major Uuid:</strong>
+  <%= @beacon.major_uuid %>
+</p>
+
+<p>
+  <strong>Minor Uuid:</strong>
+  <%= @beacon.minor_uuid %>
+</p>
+
 <%= link_to 'Edit', edit_beacon_path(@beacon) %> |
 <%= link_to 'Back', beacons_path %>
 

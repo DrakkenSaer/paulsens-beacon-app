@@ -18,10 +18,14 @@ RSpec.describe Beacon, type: :model do
         expect(subject).to_not be_valid
     end
     
-    it "assigns a default uuid when saved" do
+    it "assigns default uuids when saved" do
         subject.save
         expect(subject.uuid).to_not be_nil
+        expect(subject.major_uuid).to_not be_nil
+        expect(subject.minor_uuid).to_not be_nil
         expect(subject.uuid.length).to eql SecureRandom.uuid.length
+        expect(subject.major_uuid.length).to eql SecureRandom.uuid.length
+        expect(subject.minor_uuid.length).to eql SecureRandom.uuid.length
     end
   end
     
@@ -39,6 +43,16 @@ RSpec.describe Beacon, type: :model do
     it "is not valid if UUID is not unique" do
         @test_beacon.uuid = subject.uuid
         expect(@test_beacon).to_not be_valid
+    end
+    
+    it "is not valid if major_uuid is not unique" do
+        @test_beacon.major_uuid = subject.major_uuid
+        expect(@test_beacon).to_not be_valid
+    end
+    
+    it "is not valid if minor UUID is not unique" do
+      @test_beacon.minor_uuid = subject.minor_uuid
+      expect(@test_beacon).to_not be_valid
     end
   end
   

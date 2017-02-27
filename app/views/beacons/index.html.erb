@@ -6,6 +6,8 @@
       <th>Title</th>
       <th>Description</th>
       <th>Uuid</th>
+      <th>Major Uuid</th>
+      <th>Minor Uuid</th>
     </tr>
   </thead>
 
@@ -15,6 +17,8 @@
         <td><%= beacon.title %></td>
         <td><%= beacon.description %></td>
         <td><%= beacon.uuid %></td>
+        <td><%= beacon.major_uuid %></td>
+        <td><%= beacon.minor_uuid %></td>
         <td><%= link_to 'Show', beacon %></td>
         <td><%= link_to 'Edit', edit_beacon_path(beacon) %></td>
         <td><%= link_to 'Destroy', beacon, method: :delete, data: { confirm: 'Are you sure?' } %></td>

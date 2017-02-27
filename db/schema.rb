@@ -10,10 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170227182050) do
-
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+ActiveRecord::Schema.define(version: 20170227203039) do
 
   create_table "beacons", force: :cascade do |t|
     t.string   "uuid",        null: false
@@ -21,7 +18,9 @@ ActiveRecord::Schema.define(version: 20170227182050) do
     t.text     "description", null: false
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
-    t.index ["uuid"], name: "index_beacons_on_uuid", using: :btree
+    t.string   "major_uuid",  null: false
+    t.string   "minor_uuid",  null: false
+    t.index ["uuid"], name: "index_beacons_on_uuid"
   end
 
   create_table "currencies", force: :cascade do |t|
@@ -31,7 +30,7 @@ ActiveRecord::Schema.define(version: 20170227182050) do
     t.string   "value"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
-    t.index ["cashable_type", "cashable_id"], name: "index_currencies_on_cashable_type_and_cashable_id", using: :btree
+    t.index ["cashable_type", "cashable_id"], name: "index_currencies_on_cashable_type_and_cashable_id"
   end
 
   create_table "historical_events", force: :cascade do |t|
@@ -49,8 +48,8 @@ ActiveRecord::Schema.define(version: 20170227182050) do
     t.string   "item_cost",      null: false
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
-    t.index ["order_id"], name: "index_line_items_on_order_id", using: :btree
-    t.index ["orderable_type", "orderable_id"], name: "index_line_items_on_orderable_type_and_orderable_id", using: :btree
+    t.index ["order_id"], name: "index_line_items_on_order_id"
+    t.index ["orderable_type", "orderable_id"], name: "index_line_items_on_orderable_type_and_orderable_id"
   end
 
   create_table "notifications", force: :cascade do |t|
@@ -59,14 +58,14 @@ ActiveRecord::Schema.define(version: 20170227182050) do
     t.integer  "beacon_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
-    t.index ["beacon_id"], name: "index_notifications_on_beacon_id", using: :btree
+    t.index ["beacon_id"], name: "index_notifications_on_beacon_id"
   end
 
   create_table "orders", force: :cascade do |t|
     t.integer  "user_id",    null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_orders_on_user_id", using: :btree
+    t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
   create_table "points", force: :cascade do |t|
@@ -75,7 +74,7 @@ ActiveRecord::Schema.define(version: 20170227182050) do
     t.integer  "value",          default: 0, null: false
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
-    t.index ["pointable_type", "pointable_id"], name: "index_points_on_pointable_type_and_pointable_id", using: :btree
+    t.index ["pointable_type", "pointable_id"], name: "index_points_on_pointable_type_and_pointable_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -100,7 +99,7 @@ ActiveRecord::Schema.define(version: 20170227182050) do
     t.datetime "expiration",       default: '2017-03-10 22:36:43'
     t.datetime "created_at",                                       null: false
     t.datetime "updated_at",                                       null: false
-    t.index ["promotional_type", "promotional_id"], name: "index_promotions_on_promotional_type_and_promotional_id", using: :btree
+    t.index ["promotional_type", "promotional_id"], name: "index_promotions_on_promotional_type_and_promotional_id"
   end
 
   create_table "roles", force: :cascade do |t|
@@ -109,8 +108,8 @@ ActiveRecord::Schema.define(version: 20170227182050) do
     t.integer  "resource_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
-    t.index ["name"], name: "index_roles_on_name", using: :btree
+    t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
+    t.index ["name"], name: "index_roles_on_name"
   end
 
   create_table "users", force: :cascade do |t|
@@ -131,18 +130,15 @@ ActiveRecord::Schema.define(version: 20170227182050) do
     t.string   "address"
     t.integer  "visit_count",            default: 0
     t.text     "preferences"
-    t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
-    t.index ["preferences"], name: "index_users_on_preferences", using: :btree
-    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["preferences"], name: "index_users_on_preferences"
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   create_table "users_roles", id: false, force: :cascade do |t|
     t.integer "user_id"
     t.integer "role_id"
-    t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", using: :btree
+    t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id"
   end
 
-  add_foreign_key "line_items", "orders"
-  add_foreign_key "notifications", "beacons"
-  add_foreign_key "orders", "users"
 end
