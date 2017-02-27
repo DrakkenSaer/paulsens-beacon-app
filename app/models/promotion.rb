@@ -1,4 +1,6 @@
 class Promotion < ApplicationRecord
+  include Concerns::Polymorphic::Helpers
+
   before_validation :set_default_cost, 
                     :set_default_daily_deal, 
                     :set_default_featured, 
@@ -14,8 +16,7 @@ class Promotion < ApplicationRecord
             :code, 
             :expiration, 
             :cost, 
-            :redeem_count, 
-            :expiration, presence: true
+            :redeem_count, presence: true
   
   validates :daily_deal, :featured, inclusion: { in: [ true, false ] }
 
@@ -23,12 +24,6 @@ class Promotion < ApplicationRecord
   
   def expired?
      self.expiration < Time.now
-  end
-
-  def find_resource
-    resource = self.orderable_type
-    id = self.orderable_id
-    @resource = resource.singularize.classify.constantize.find(id)
   end
 
   protected
