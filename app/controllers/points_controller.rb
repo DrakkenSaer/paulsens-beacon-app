@@ -65,7 +65,7 @@ class PointsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_points
-      @point = params[:id] ? Point.find(params[:id]) : Point.new
+      @point = params[:id] ? Point.find(params[:id]) : current_user.points
       @resource = @point.find_resource if @point.persisted?
     end
     

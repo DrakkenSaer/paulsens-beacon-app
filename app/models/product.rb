@@ -1,22 +1,16 @@
 class Product < ApplicationRecord
+    include Concerns::Purchasable
+    
     before_validation :set_default_cost, 
                       :set_default_featured
-    
+
     has_many :promotions, as: :promotional
-    has_many :line_items, as: :orderable
-    has_many :orders, through: :line_items
-    
+
     validates :title, :description, :cost, presence: true
+    validates :title, uniqueness: true
     validates :featured, inclusion: { in: [ true, false ] }
 
     resourcify
-    
-    def purchase!(user)
-        order = Order.new
-        order.products << self
-        order.user = user
-        order.save
-    end
 
     protected
     
