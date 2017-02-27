@@ -40,7 +40,7 @@ resource_interval.times do |i|
     Beacon.create!( title: Faker::Company.name, 
                    description: Faker::Lorem.paragraph )
 
-    HistoricalEvent.create!( title: Faker::Company.name,
+    HistoricalEvent.create!( title: "#{Faker::Company.name} - #{i}",
                     description: Faker::Lorem.paragraph,
                     date: Date.today.prev_day(i))
                     
