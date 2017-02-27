@@ -1,2 +1,9 @@
-<h1>Points#show</h1>
-<p>Find me in app/views/points/show.html.erb</p>
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Value:</strong>
+  <%= @point.value %>
+</p>
+
+<%= link_to 'Edit', edit_point_path(@point) %> |
+<%= link_to 'Back', points_path %>

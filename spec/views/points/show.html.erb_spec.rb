@@ -1,5 +1,14 @@
 require 'rails_helper'
 
-RSpec.describe "points/show.html.erb", type: :view do
-  pending "add some examples to (or delete) #{__FILE__}"
+RSpec.describe "points/show", type: :view do
+  before(:each) do
+    @point = assign(:point, Point.create!(
+      :value => "Value"
+    ))
+  end
+
+  it "renders attributes in <p>" do
+    render
+    expect(rendered).to match(/Value/)
+  end
 end
