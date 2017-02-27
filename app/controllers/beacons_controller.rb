@@ -3,42 +3,64 @@ class BeaconsController < ApplicationController
   before_action :set_beacon, except: [:index, :create]
   before_action :authorize_beacon, except: [:index, :create]
   
-
+  # GET /beacons
+  # GET /beacons.json
   def index
     @beacons = policy_scope(Beacon)
   end
 
+  # GET /beacons/1
+  # GET /beacons/1.json
   def show
   end
 
+  # GET /beacons/new
   def new
   end
+  
+  # GET /beacons/1/edit
+  def edit
+  end
 
+  # POST /beacons
+  # POST /beacons.json
   def create
     @beacon = Beacon.new(beacon_params)
     authorize_beacon
 
-    if @beacon.save
-      redirect_to @beacon, success: "Beacon successfully created!"
-    else
-      render :new
+    respond_to do |format|
+      if @beacon.save
+        format.html { redirect_to @beacon, notice: 'Beacon was successfully created.' }
+        format.json { render :show, status: :created, location: @beacon }
+      else
+        format.html { render :new }
+        format.json { render json: @beacon.errors, status: :unprocessable_entity }
+      end
     end
   end
-
-  def edit
-  end
-
+  
+  # PATCH/PUT /beacons/1
+  # PATCH/PUT /beacons/1.json
   def update
-    if @beacon.update_attributes(beacon_params)
-      redirect_to @beacon, success: "Beacon successfully updated!"
-    else
-      render :edit
+    respond_to do |format|
+      if @beacon.update_attributes(beacon_params)
+        format.html { redirect_to @beacon, notice: 'Beacon was successfully updated.' }
+        format.json { render :show, status: :ok, location: @beacon }
+      else
+        format.html { render :edit }
+        format.json { render json: @beacon.errors, status: :unprocessable_entity }
+      end
     end
   end
 
+  # DELETE /beacons/1
+  # DELETE /beacons/1.json
   def destroy
     @beacon.destroy
-    redirect_to beacons_url, success: "Beacon successfully deleted!"
+    respond_to do |format|
+      format.html { redirect_to beacons_url, notice: 'Beacon was successfully destroyed.' }
+      format.json { head :no_content }
+    end
   end
   
   private 
@@ -48,7 +70,7 @@ class BeaconsController < ApplicationController
     end
     
     def set_beacon
-      @beacon = Beacon.find(params[:id])
+      @beacon = params[:id] ? Beacon.find(params[:id]): Beacon.new
     end
     
     def authorize_beacon
