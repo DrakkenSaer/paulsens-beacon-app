@@ -1,38 +1,80 @@
 class PointsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_points, except: [:index]
-  before_action :authorize_points, except: [:index]
-  
+  before_action :set_points, except: [:index, :create]
+  before_action :authorize_points, except: [:index, :create]
+
+  # GET /points
+  # GET /points.json
+  def index
+    @points = policy_scope(Point)
+  end
+
+  # GET /points/1
+  # GET /points/1.json
   def show
   end
 
+  # GET /points/new
+  def new
+  end
+
+  # GET /points/1/edit
   def edit
   end
 
-  def update
+  # POST /points
+  # POST /points.json
+  def create
+    @point = Point.new(points_params)
+
     respond_to do |format|
-      if @points.update_attributes(points_params)
-        format.html { redirect_to @points, notice: 'Points was successfully updated.' }
-        format.json { head :no_content }
+      if @point.save
+        format.html { redirect_to @point, notice: 'Points was successfully created.' }
+        format.json { render :show, status: :created, location: @point }
       else
-        format.html { render action: :edit }
-        format.json { render json: @points.errors, status: :unprocessable_entity }
+        format.html { render :new }
+        format.json { render json: @point.errors, status: :unprocessable_entity }
       end
     end
   end
 
+  # PATCH/PUT /points/1
+  # PATCH/PUT /points/1.json
+  def update
+    respond_to do |format|
+      if @point.update(points_params)
+        format.html { redirect_to @point, notice: 'Points was successfully updated.' }
+        format.json { render :show, status: :ok, location: @point }
+      else
+        format.html { render :edit }
+        format.json { render json: @point.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /points/1
+  # DELETE /points/1.json
+  def destroy
+    @point.destroy
+    respond_to do |format|
+      format.html { redirect_to points_index_url, notice: 'Points was successfully destroyed.' }
+      format.json { head :no_content }
+    end
+  end
+
   private
-  
-    def points_params
-      params.require(:points).permit(:value)
-    end
-  
+    # Use callbacks to share common setup or constraints between actions.
     def set_points
-      @points = params[:id] ? Points.find(params[:id]) : Points.new
+      @point = params[:id] ? Point.find(params[:id]) : Point.new
+      @resource = @point.find_resource if @point.persisted?
     end
-
+    
     def authorize_points
-      authorize(@points)
+      authorize @point
     end
 
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def points_params
+      params.require(:points).permit(:user_id, :value)
+    end
 end

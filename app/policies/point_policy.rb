@@ -1,8 +1,10 @@
-class PointsPolicy < ApplicationPolicy
+class PointPolicy < ApplicationPolicy
     class Scope < Scope
         def resolve
-            if is_admin?
-                scope.all
+            if scope.respond_to? :all
+                scope.send(:all)
+            else
+                scope
             end
         end
     end
@@ -11,7 +13,7 @@ class PointsPolicy < ApplicationPolicy
         true
     end
 
-    def edit?
+    def create?
         is_admin?
     end
 

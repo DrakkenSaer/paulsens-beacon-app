@@ -1,6 +1,7 @@
 class PagesController < ApplicationController
+    before_action :authorize_page
+
     def show
-        authorize :page
         params[:resources].each { |key, value| instance_variable_set("@#{key}", is_invalid?(value) ? nil : policy_scope(eval(value))) } unless params[:resources].nil?
         render template: "pages/#{params[:page]}"
     end
@@ -13,4 +14,7 @@ class PagesController < ApplicationController
             value !~ /(?:\A[A-Z][a-z]+)(?:(\.)?(?(1)(?:(?:limit|find|order|wher)\(\w*:?\s?:?'?\w*'?\))))*$/
         end
 
+        def authorize_page
+            authorize :pages
+        end
 end

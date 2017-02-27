@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170224185012) do
+ActiveRecord::Schema.define(version: 20170227182050) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,16 @@ ActiveRecord::Schema.define(version: 20170224185012) do
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.index ["uuid"], name: "index_beacons_on_uuid", using: :btree
+  end
+
+  create_table "currencies", force: :cascade do |t|
+    t.string   "cashable_type"
+    t.integer  "cashable_id"
+    t.string   "type"
+    t.string   "value"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["cashable_type", "cashable_id"], name: "index_currencies_on_cashable_type_and_cashable_id", using: :btree
   end
 
   create_table "historical_events", force: :cascade do |t|
@@ -87,7 +97,7 @@ ActiveRecord::Schema.define(version: 20170224185012) do
     t.boolean  "daily_deal",       default: false,                 null: false
     t.boolean  "featured",         default: false,                 null: false
     t.integer  "cost",             default: 0,                     null: false
-    t.datetime "expiration",       default: '2017-03-10 19:03:07'
+    t.datetime "expiration",       default: '2017-03-10 22:36:43'
     t.datetime "created_at",                                       null: false
     t.datetime "updated_at",                                       null: false
     t.index ["promotional_type", "promotional_id"], name: "index_promotions_on_promotional_type_and_promotional_id", using: :btree
