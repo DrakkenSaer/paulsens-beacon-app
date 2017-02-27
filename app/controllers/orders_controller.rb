@@ -44,7 +44,7 @@ class OrdersController < ApplicationController
   private 
   
     def order_params
-      params.require(:order).permit(promotionals_attributes: [:id])
+      params.require(:order).permit(:user_id, promotionals_attributes: [:id])
     end
     
     def set_order
