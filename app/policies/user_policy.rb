@@ -1,4 +1,4 @@
-class AccountPolicy < ApplicationPolicy
+class UserPolicy < ApplicationPolicy
     class Scope < Scope
         def resolve
             if is_admin?
