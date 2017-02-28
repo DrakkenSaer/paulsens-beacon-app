@@ -1,8 +1,8 @@
 class User < ApplicationRecord
   has_many :orders
-  has_many :line_items, through: :orders, as: :orderable
-  has_many :products, -> { distinct }, through: :line_items, source: :orderable, source_type: 'Product'
-  has_many :promotions, -> { distinct }, through: :line_items, source: :orderable, source_type: 'Promotion'
+  has_many :line_items, through: :orders, as: :lineable
+  has_many :products, -> { distinct }, through: :line_items, source: :lineable, source_type: 'Product'
+  has_many :promotions, -> { distinct }, through: :line_items, source: :lineable, source_type: 'Promotion'
   has_one :points, as: :cashable, class_name: 'Point'
 
   rolify

@@ -3,15 +3,15 @@ class LineItem < ApplicationRecord
 
   before_validation :set_default_item_cost
   
-  belongs_to :order, inverse_of: :line_items
-  belongs_to :orderable, polymorphic: true
+  belongs_to :lineable, polymorphic: true
+  belongs_to :order
 
   validates :item_cost, presence: true
 
   protected
 
     def set_default_item_cost
-      self.item_cost = Product.find(self.orderable_id).cost if self.item_cost.nil?
+      self.item_cost = self.send(resourcable_type_name).constantize.find( self.send(resourcable_id_name) ).cost if self.item_cost.nil?
     end
 
 end
