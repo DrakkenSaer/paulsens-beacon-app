@@ -1,11 +1,7 @@
 class BeaconPolicy < ApplicationPolicy
     class Scope < Scope
         def resolve
-            if scope.respond_to? :all
-                scope.send(:all)
-            else
-                scope
-            end 
+            scope.all
         end
     end
     
