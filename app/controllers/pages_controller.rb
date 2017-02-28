@@ -13,10 +13,10 @@ class PagesController < ApplicationController
     
     private
 
-        #returns true if input string does not follow pattern of: Modelname or Modelname.find/where/order/limit
+        #returns true if input string does not follow pattern of: Modelname or Modelname.find/where/order/limit(parameters)
         #note: the where query is currently limited to only single hash conditions
         def is_invalid? (value)
-            value !~ /(?:\A[A-Z][a-z]+)(?:(\.)?(?(1)(?:(?:limit|find|order|where)\(\w*:?\s?:?'?\w*'?\))))*$/
+            value !~ /(?:\A[a-z]+)(?:(\.)?(?(1)(?:(?:limit|order|where)\(\w*:?\s?:?'?[\w\s-]*'?\))))*$/i
         end
 
         def authorize_page
