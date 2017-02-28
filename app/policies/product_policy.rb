@@ -1,7 +1,7 @@
 class ProductPolicy < ApplicationPolicy
     class Scope < Scope
         def resolve
-            true
+            scope.all
         end
     end
     

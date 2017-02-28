@@ -1,5 +1,6 @@
 class Promotion < ApplicationRecord
   include Concerns::Polymorphic::Helpers
+  include Concerns::Purchasable
 
   before_validation :set_default_cost, 
                     :set_default_daily_deal, 
@@ -8,8 +9,6 @@ class Promotion < ApplicationRecord
                     :set_default_redeem_count
   
   belongs_to :promotional, polymorphic: true, optional: true
-  has_many :line_items, as: :orderable
-  has_many :orders, through: :line_items
 
   validates :title, 
             :description, 
@@ -17,7 +16,8 @@ class Promotion < ApplicationRecord
             :expiration, 
             :cost, 
             :redeem_count, presence: true
-  
+
+  validates :title, :code, uniqueness: true
   validates :daily_deal, :featured, inclusion: { in: [ true, false ] }
 
   resourcify
