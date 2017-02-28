@@ -101,9 +101,7 @@ RSpec.describe ProductsController, type: :controller do
       render_views
       let(:json) { JSON.parse(response.body) }
       before do
-        @order = FactoryGirl.create(:order)
         @promotion = FactoryGirl.create(:promotion)
-        @test_product.orders << @order
         @test_product.promotions << @promotion
         @test_product.save
         get :show, format: :json, params: { id: @test_product.id }
@@ -115,16 +113,6 @@ RSpec.describe ProductsController, type: :controller do
       
       it "returns the product" do
         expect(json["title"]).to eql @test_product.title
-      end
-      
-      it "displays orders belonging to product" do
-        expect(json["orders"].count).to eql @test_product.orders.count
-        expect(json["orders"].collect{|l| l["id"]}).to include @order.id
-      end
-      
-      it "displays line_items belonging to product" do
-        expect(json["line_items"].count).to eql @test_product.line_items.count
-        expect(json["line_items"].collect{|l| l["id"]}).to include @test_product.line_items.first.id
       end
       
       it "displays promotions belonging to product" do

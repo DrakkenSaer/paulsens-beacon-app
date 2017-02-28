@@ -160,14 +160,14 @@ RSpec.describe OrdersController, type: :controller do
         
       context "as html request" do
         before :each do
-          get :show, params: {id: @test_order}
+          get :show, params: { id: @test_order }
         end
-        
+
         it_should_behave_like "has appropriate permissions" do 
-          let(:test_order) {@test_order}
+          let(:test_order) { @test_order }
         end
       end
-      
+
       context "as json request" do
         render_views
         let(:json) { JSON.parse(response.body) }
@@ -179,28 +179,26 @@ RSpec.describe OrdersController, type: :controller do
           @test_order.save
           get :show, format: :json, params: { id: @test_order.id }
         end
-        
-        it_should_behave_like "has appropriate permissions" do 
-          let(:test_order) {@test_order}
+
+        it_should_behave_like "has appropriate permissions" do
+          let(:test_order) { @test_order }
         end
-        
+
         it "returns the order" do
           expect(json["id"]).to eql @test_order.id
         end
-        
-        it "displays products belonging to order" do
-          expect(json["products"].count).to eql @test_order.products.count
-          expect(json["products"].collect{|l| l["title"]}).to include @product.title
-        end
-        
+
         it "displays line_items belonging to order" do
           expect(json["line_items"].count).to eql @test_order.line_items.count
-          expect(json["line_items"].collect{|l| l["id"]}).to include @test_order.line_items.first.id
+          expect(json["line_items"].collect{|line_item| line_item["id"]}).to include @test_order.line_items.first.id
         end
-          
+
+        it "displays products belonging to order" do
+          expect(json["line_items"][0]['item']["title"]).to include @product.title
+        end
+
         it "displays promotions belonging to order" do
-          expect(json["promotions"].count).to eql @test_order.promotions.count
-          expect(json["promotions"].collect{|l| l["title"]}).to include @test_order.promotions.first.title
+          expect(json["line_items"][1]['item']["title"]).to include @promotion.title
         end
       end
     end

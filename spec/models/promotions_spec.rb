@@ -59,16 +59,6 @@ RSpec.describe Promotion, type: :model do
   end
   
   describe "Associations" do
-    it "has many line_items" do
-      assc = described_class.reflect_on_association(:line_items)
-      expect(assc.macro).to eql :has_many
-    end
-    
-    it "has many orders" do
-      assc = described_class.reflect_on_association(:orders)
-      expect(assc.macro).to eql :has_many
-    end
-    
     it "belongs to promotional" do
       assc = described_class.reflect_on_association(:promotional)
       expect(assc.macro).to eql :belongs_to

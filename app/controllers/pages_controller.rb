@@ -15,6 +15,6 @@ class PagesController < ApplicationController
     private
 
         def authorize_page
-            authorize :pages
+            authorize :page
         end
 end

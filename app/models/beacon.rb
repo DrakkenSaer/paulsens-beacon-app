@@ -4,7 +4,7 @@ class Beacon < ApplicationRecord
 
     has_many :notifications
     
-    validates :title, :description, :uuid, presence: true
+    validates :title, :description, :uuid, :major_uuid, :minor_uuid, presence: true
     validates :title, :uuid, :major_uuid, :minor_uuid, uniqueness: true
     
     resourcify

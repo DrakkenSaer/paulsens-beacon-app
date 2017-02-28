@@ -8,16 +8,6 @@ RSpec.describe Product, type: :model do
         assc = described_class.reflect_on_association(:promotions)
         expect(assc.macro).to eq :has_many
       end
-      
-      it "have many line_items" do
-        assc = described_class.reflect_on_association(:line_items)
-        expect(assc.macro).to eq :has_many
-      end
-      
-      it "have many orders" do
-        assc = described_class.reflect_on_association(:orders)
-        expect(assc.macro).to eq :has_many
-      end
     end
 
     describe "Validations" do
@@ -80,21 +70,21 @@ RSpec.describe Product, type: :model do
           expect { subject.purchase! }.to raise_error(ArgumentError)
         end
         
-        it "adds a line_item to the product" do
+        it "adds a line_item to the order" do
          subject.save
-         expect { subject.purchase!(@user) }.to change { subject.line_items.count }.by(1)
+         expect { subject.purchase!(@user) }.to change { @user.line_items.count }.by(1)
         end
           
         it "line_item is also associated with an order" do
           subject.save
           subject.purchase!(@user)
-          expect(subject.line_items.last.order).to_not be_nil
+          expect(@user.line_items.last.order).to_not be_nil
         end
         
         it "the order is associated to the passed in user" do
           subject.save
           subject.purchase!(@user)
-          expect(subject.line_items.last.order.user).to eql @user
+          expect(@user.line_items.last.find_resource).to eql subject
         end
     end
   end
