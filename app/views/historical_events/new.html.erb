@@ -1,2 +1,5 @@
-<h1>HistoricalEvents#new</h1>
-<p>Find me in app/views/historical_events/new.html.erb</p>
+<h1>New Historical Event</h1>
+
+<%= render 'form', historical_event: @historical_event %>
+
+<%= link_to 'Back', historical_events_path %>

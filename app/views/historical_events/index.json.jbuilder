@@ -1,7 +1,3 @@
 json.historical_events @historical_events do |historical_event| 
-  json.id historical_event.id
-  json.title historical_event.title
-  json.description historical_event.description
-  json.date historical_event.date
-  json.(historical_event, :created_at, :updated_at)
+  json.partial! 'historical_events/historical_event', historical_event: historical_event
 end
