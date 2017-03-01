@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170227203039) do
+ActiveRecord::Schema.define(version: 20170301182952) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,11 +56,13 @@ ActiveRecord::Schema.define(version: 20170227203039) do
   end
 
   create_table "notifications", force: :cascade do |t|
-    t.string   "title",       null: false
-    t.text     "description", null: false
+    t.string   "title",         null: false
+    t.text     "description",   null: false
     t.integer  "beacon_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.string   "entry_message"
+    t.string   "exit_message"
     t.index ["beacon_id"], name: "index_notifications_on_beacon_id", using: :btree
   end
 
@@ -90,7 +92,7 @@ ActiveRecord::Schema.define(version: 20170227203039) do
     t.boolean  "daily_deal",       default: false,                 null: false
     t.boolean  "featured",         default: false,                 null: false
     t.integer  "cost",             default: 0,                     null: false
-    t.datetime "expiration",       default: '2017-03-14 20:12:53'
+    t.datetime "expiration",       default: '2017-03-15 21:20:30'
     t.datetime "created_at",                                       null: false
     t.datetime "updated_at",                                       null: false
     t.index ["promotional_type", "promotional_id"], name: "index_promotions_on_promotional_type_and_promotional_id", using: :btree

@@ -62,7 +62,9 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
+# For some reason heroku needs these to be global
 gem 'listen', '~> 3.0.5'
+gem 'faker'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
