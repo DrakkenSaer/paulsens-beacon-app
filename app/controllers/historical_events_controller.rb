@@ -73,7 +73,7 @@ class HistoricalEventsController < ApplicationController
     end
   
     def set_historical_event
-      @historical_event = params[:id] ? HistoricalEvent.find(params[:id]): HistoricalEvent.new
+      @historical_event = params[:id] ? HistoricalEvent.find(params[:id]) : HistoricalEvent.new
     end
 
     def authorize_historical_event
