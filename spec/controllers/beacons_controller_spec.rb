@@ -26,8 +26,8 @@ RSpec.describe BeaconsController, type: :controller do
 
   describe "GET #index" do
     before :each do
-      @test_beacon = FactoryGirl.create(:beacon)
-      @test_beacon_2 = FactoryGirl.create(:beacon, title: "test2", description: "test2 description")
+      @test_beacon = FactoryGirl.create(:beacon, title: "test2", description: "test2 description")
+      @test_beacon_2 = FactoryGirl.create(:beacon, title: "test3", description: "test3 description")
       @test_beacon.notifications << FactoryGirl.create(:notification)
     end
     
@@ -128,7 +128,7 @@ RSpec.describe BeaconsController, type: :controller do
     end
 
     before :each do
-      @test_beacon = FactoryGirl.create(:beacon)
+      @test_beacon = FactoryGirl.create(:beacon, title: "test2", description: "test2 description")
     end
 
     context "logged in as user" do

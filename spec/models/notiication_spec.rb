@@ -23,10 +23,10 @@ RSpec.describe Notification, :type => :model do
       expect(subject).to_not be_valid
     end
     
-    # it "is not valid without an exit message" do
-    #   subject.description = nil
-    #   expect(subject).to_not be_valid
-    # end
+    it "is not valid without an exit message" do
+      subject.description = nil
+      expect(subject).to_not be_valid
+    end
   end
   
   describe "Uniqueness Validations" do
