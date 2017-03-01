@@ -124,6 +124,7 @@ RSpec.describe BeaconsController, type: :controller do
       it "displays notifications belonging to beacon" do
         expect(json["notifications"].count).to eql @test_beacon.notifications.count
         expect(json["notifications"][0]["title"]).to eql @notification.title
+        expect(json["notifications"][0]["entry_message"]).to eql @notification.entry_message
       end
     end
 
