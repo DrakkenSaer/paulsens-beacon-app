@@ -107,7 +107,7 @@ RSpec.describe BeaconsController, type: :controller do
     shared_examples_for "json request" do
       render_views
       let(:json) { JSON.parse(response.body) }
-      before do
+      before :each do
         @notification = FactoryGirl.create(:notification)
         @test_beacon.notifications << @notification
         get :show, format: :json, params: { id: @test_beacon.id }
