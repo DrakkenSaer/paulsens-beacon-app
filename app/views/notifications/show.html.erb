@@ -1,2 +1,28 @@
-<h1>Notifications#show</h1>
-<p>Find me in app/views/notifications/show.html.erb</p>
+<p>
+  <strong>Title:</strong>
+  <%= @notification.title %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @notification.description %>
+</p>
+
+<p>
+  <strong>Uuid:</strong>
+  <%= @notification.uuid %>
+</p>
+
+<p>
+  <strong>Major Uuid:</strong>
+  <%= @notification.major_uuid %>
+</p>
+
+<p>
+  <strong>Minor Uuid:</strong>
+  <%= @notification.minor_uuid %>
+</p>
+
+<%= link_to 'Edit', edit_notification_path(@notification) %> |
+<%= link_to 'Back', notifications_path %>
+

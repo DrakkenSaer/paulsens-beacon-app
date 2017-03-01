@@ -1,2 +1,5 @@
-<h1>Notifications#new</h1>
-<p>Find me in app/views/notifications/new.html.erb</p>
+<h1>New Notification</h1>
+
+<%= render 'form', notification: @notification %>
+
+<%= link_to 'Back', notifications_path %>
