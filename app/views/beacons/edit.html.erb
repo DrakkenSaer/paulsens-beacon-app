@@ -1,2 +1,6 @@
-<h1>Beacons#edit</h1>
-<p>Find me in app/views/beacons/edit.html.erb</p>
+<h1>Editing Beacon</h1>
+
+<%= render 'form', beacon: @beacon %>
+
+<%= link_to 'Show', @beacon %> |
+<%= link_to 'Back', beacons_path %>

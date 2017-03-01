@@ -10,8 +10,8 @@ describe LineItem do
     expect(assc.macro).to eq :belongs_to
   end
   
-  it "belongs to line_items" do
-    assc = described_class.reflect_on_association(:orderable)
+  it "belongs to lineable as a polymorphic record" do
+    assc = described_class.reflect_on_association(:lineable)
     expect(assc.macro).to eq :belongs_to
   end
   

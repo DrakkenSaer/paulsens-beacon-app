@@ -18,7 +18,7 @@ User.destroy_all
 
 
 resource_interval = 100
-resource_roles = { user: ["customer", "employee", "admin"]}
+resource_roles = { user: ["customer", "employee", "admin"] }
 
 admin_user = User.create!( email: "test@test.com", password: "password123" )
 
@@ -37,19 +37,19 @@ resource_interval.times do |i|
 end
 
 resource_interval.times do |i|
-    Beacon.create!( title: Faker::Company.name, 
-                   description: Faker::Lorem.paragraph )
+    Beacon.create!( title: Faker::Company.name + "_#{i}", 
+                  description: Faker::Lorem.paragraph )
 
-    HistoricalEvent.create!( title: Faker::Company.name,
+    HistoricalEvent.create!( title: Faker::Company.name + "_#{i}",
                     description: Faker::Lorem.paragraph,
                     date: Date.today.prev_day(i))
                     
-    Product.create!( title: Faker::Commerce.product_name,
+    Product.create!( title: Faker::Commerce.product_name + "_#{i}",
                     description: Faker::Lorem.paragraph,
                     cost: Faker::Commerce.price)
                     
                     
-    Promotion.create!( title: Faker::Company.name,
+    Promotion.create!( title: Faker::Company.name + "_#{i}",
                     description: Faker::Lorem.paragraph,
                     code: Faker::Commerce.promotion_code,
                     expiration: Faker::Date.between(Date.today, i.days.from_now),
@@ -59,16 +59,17 @@ end
 
 Beacon.all.each_with_index do |beacon, index|
     5.times do |i|
-      beacon.notifications.create!(title: "Notification-#{index}-#{i}", description: "This is notification ##{index}-#{i}")
+      beacon.notifications.create!(title: Faker::Commerce.product_name + "_#{index}_#{i}", description: Faker::Lorem.paragraph)
     end
 end
 
 User.all.each do |user|
   products = Product.all.sample(5)
   promotions = Promotion.all.sample(5)
-  order = user.orders.create!
+  order = user.orders.build
   order.products << products
   order.promotions << promotions
+  order.save!
 end
 
 # 5.times do |i|

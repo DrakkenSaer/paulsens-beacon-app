@@ -1,2 +1,5 @@
-<h1>Beacons#new</h1>
-<p>Find me in app/views/beacons/new.html.erb</p>
+<h1>New Beacon</h1>
+
+<%= render 'form', beacon: @beacon %>
+
+<%= link_to 'Back', beacons_path %>

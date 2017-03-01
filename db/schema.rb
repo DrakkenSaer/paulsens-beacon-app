@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170227182050) do
+ActiveRecord::Schema.define(version: 20170227203039) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,6 +21,8 @@ ActiveRecord::Schema.define(version: 20170227182050) do
     t.text     "description", null: false
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.string   "major_uuid",  null: false
+    t.string   "minor_uuid",  null: false
     t.index ["uuid"], name: "index_beacons_on_uuid", using: :btree
   end
 
@@ -43,14 +45,14 @@ ActiveRecord::Schema.define(version: 20170227182050) do
   end
 
   create_table "line_items", force: :cascade do |t|
-    t.integer  "order_id",       null: false
-    t.string   "orderable_type", null: false
-    t.integer  "orderable_id",   null: false
-    t.string   "item_cost",      null: false
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.string   "lineable_type", null: false
+    t.integer  "lineable_id",   null: false
+    t.integer  "order_id",      null: false
+    t.string   "item_cost",     null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["lineable_type", "lineable_id"], name: "index_line_items_on_lineable_type_and_lineable_id", using: :btree
     t.index ["order_id"], name: "index_line_items_on_order_id", using: :btree
-    t.index ["orderable_type", "orderable_id"], name: "index_line_items_on_orderable_type_and_orderable_id", using: :btree
   end
 
   create_table "notifications", force: :cascade do |t|
@@ -67,15 +69,6 @@ ActiveRecord::Schema.define(version: 20170227182050) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_orders_on_user_id", using: :btree
-  end
-
-  create_table "points", force: :cascade do |t|
-    t.string   "pointable_type"
-    t.integer  "pointable_id"
-    t.integer  "value",          default: 0, null: false
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-    t.index ["pointable_type", "pointable_id"], name: "index_points_on_pointable_type_and_pointable_id", using: :btree
   end
 
   create_table "products", force: :cascade do |t|
@@ -97,7 +90,7 @@ ActiveRecord::Schema.define(version: 20170227182050) do
     t.boolean  "daily_deal",       default: false,                 null: false
     t.boolean  "featured",         default: false,                 null: false
     t.integer  "cost",             default: 0,                     null: false
-    t.datetime "expiration",       default: '2017-03-10 22:36:43'
+    t.datetime "expiration",       default: '2017-03-14 20:12:53'
     t.datetime "created_at",                                       null: false
     t.datetime "updated_at",                                       null: false
     t.index ["promotional_type", "promotional_id"], name: "index_promotions_on_promotional_type_and_promotional_id", using: :btree

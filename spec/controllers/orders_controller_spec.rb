@@ -23,12 +23,97 @@ RSpec.describe OrdersController, type: :controller do
     end
   end
 
-#   describe "GET #index" do
-#     it "returns http success" do
-#       get :index
-#       expect(response).to have_http_status(:success)
-#     end
-#   end
+  describe "GET #index" do
+    before :each do
+      @test_order = FactoryGirl.create(:order)
+    end
+    
+    shared_examples_for "html request" do
+      
+      it "returns http success" do
+        expect(response).to have_http_status(:success)
+      end
+      
+      it "renders index template" do
+        expect(response).to render_template :index
+      end
+
+    end
+    
+    shared_examples_for "json request" do
+      render_views
+      let(:json) { JSON.parse(response.body) }
+      before do
+        get :index, format: :json
+      end
+      
+      it "returns amount of orders user has" do
+        expect(json["orders"].count).to eql controller.current_user.orders == nil ? 0: controller.current_user.orders.count
+      end
+    end
+    
+    context "as user" do
+      login_user
+      before :each do
+        get :index
+      end
+      
+      it_should_behave_like "html request"
+      it_should_behave_like "json request"
+      
+      it "returns 0 orders if user does not belong to any" do
+        expect(assigns(:orders).count).to eql 0
+      end
+    end
+    
+    context "as user with orders" do
+      login_user
+      before :each do
+        @test_order.user = controller.current_user
+        @test_order.save
+        get :index
+      end
+      
+      it_should_behave_like "html request"
+      it_should_behave_like "json request"
+      
+      it "returns orders to which user belongs" do
+        expect(assigns(:orders).count).to eql subject.current_user.orders.count
+        expect(assigns(:orders)).to include subject.current_user.orders.last
+      end
+    end
+    
+    context "as admin" do
+      login_admin
+      
+      context "as html request" do
+        before :each do
+          FactoryGirl.create(:order)
+          get :index
+        end
+        
+        it_should_behave_like "html request"
+        
+        it "returns all orders" do
+          expect(assigns(:orders).count).to eql Order.count
+        end
+      end
+      
+      context "as json request" do
+        render_views
+        let(:json) { JSON.parse(response.body) }
+        before do
+          @test_order2 = FactoryGirl.create(:order)
+          get :index, format: :json
+        end
+        
+        it "includes all orders" do
+          expect(json["orders"].count).to eql Order.count
+          expect(json["orders"].collect{|l| l["id"]}).to include(@test_order2.id)
+        end
+      end
+    end
+  end
 
  describe "GET #show" do
     before :each do
@@ -75,31 +160,45 @@ RSpec.describe OrdersController, type: :controller do
         
       context "as html request" do
         before :each do
-          get :show, params: {id: @test_order}
+          get :show, params: { id: @test_order }
         end
-        
+
         it_should_behave_like "has appropriate permissions" do 
-          let(:test_order) {@test_order}
+          let(:test_order) { @test_order }
         end
       end
-      
+
       context "as json request" do
         render_views
         let(:json) { JSON.parse(response.body) }
         before do
+          @product = FactoryGirl.create(:product)
+          @promotion = FactoryGirl.create(:promotion)
+          @test_order.products << @product
+          @test_order.promotions << @promotion
+          @test_order.save
           get :show, format: :json, params: { id: @test_order.id }
         end
-        
-        it_should_behave_like "has appropriate permissions" do 
-          let(:test_order) {@test_order}
+
+        it_should_behave_like "has appropriate permissions" do
+          let(:test_order) { @test_order }
         end
-        
+
         it "returns the order" do
           expect(json["id"]).to eql @test_order.id
         end
-        
+
+        it "displays line_items belonging to order" do
+          expect(json["line_items"].count).to eql @test_order.line_items.count
+          expect(json["line_items"].collect{|line_item| line_item["id"]}).to include @test_order.line_items.first.id
+        end
+
+        it "displays products belonging to order" do
+          expect(json["line_items"][0]['item']["title"]).to include @product.title
+        end
+
         it "displays promotions belonging to order" do
-          expect(json["promotions"].count).to eql @test_order.promotions.count
+          expect(json["line_items"][1]['item']["title"]).to include @promotion.title
         end
       end
     end
