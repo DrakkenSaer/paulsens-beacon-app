@@ -35,13 +35,14 @@ RSpec.describe Notification, :type => :model do
       @test_notification = FactoryGirl.build(:notification, beacon_id: nil)
     end
     
-    it "is not valid if the title is not unique" do
+    it "is not valid if the title and description are not unique" do
       expect(@test_notification).to_not be_valid
     end
     
-    it "is not valid if the title is not unique" do
+    it "is valid if the title and description are both unique" do
       @test_notification.title = "Unique Title"
-      expect(@test_notification).to_not be_valid
+      @test_notification.description = "Unique description"
+      expect(@test_notification).to be_valid
     end
   end
   
