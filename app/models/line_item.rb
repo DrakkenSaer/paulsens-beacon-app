@@ -4,7 +4,7 @@ class LineItem < ApplicationRecord
   before_validation :set_default_item_cost
   
   belongs_to :lineable, polymorphic: true
-  belongs_to :order
+  belongs_to :order, inverse_of: :line_items
 
   validates :item_cost, presence: true
 
