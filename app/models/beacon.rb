@@ -4,8 +4,10 @@ class Beacon < ApplicationRecord
 
     has_many :notifications
     
+    accepts_nested_attributes_for :notifications, reject_if: :all_blank
+
     validates :title, :description, :uuid, :major_uuid, :minor_uuid, presence: true
-    validates :title, :uuid, :major_uuid, :minor_uuid, uniqueness: true
+    validates :title, :major_uuid, :minor_uuid, uniqueness: true
     
     resourcify
 

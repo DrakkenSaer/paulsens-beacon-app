@@ -1,2 +1,26 @@
-<h1>Orders#show</h1>
-<p>Find me in app/views/orders/show.html.erb</p>
+<p id="notice"><%= notice %></p>
+
+<h1>Order <%= @order.id %></h1>
+
+<h2>User: <%= @order.user.email %></h2>
+<h2>Line Items:</h2>
+
+<% @order.line_items.each_with_index do |line_item, index| %>
+<ul>
+    <h3><%= line_item.lineable_type + ' #' + index.to_s %></h3>
+    <h3>Item Cost: <%= line_item.item_cost %></h3>
+
+    <ul>
+    <% line_item.find_resource.attributes.map do |key, value| %>
+        <li>
+            <%= key %>: <%= value %>
+        </li>
+    <% end %>
+    </ul>
+</ul>
+<% end %>
+
+
+
+<%= link_to 'Edit', edit_order_path(@order) %> |
+<%= link_to 'Back', orders_path %>
