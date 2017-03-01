@@ -1,10 +1,10 @@
-<%= form_for(beacon) do |f| %>
-  <% if beacon.errors.any? %>
+<%= form_for(notification) do |f| %>
+  <% if notification.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(beacon.errors.count, "error") %> prohibited this beacon from being saved:</h2>
+      <h2><%= pluralize(notification.errors.count, "error") %> prohibited this notification from being saved:</h2>
 
       <ul>
-      <% beacon.errors.full_messages.each do |message| %>
+      <% notification.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>
       </ul>
@@ -22,18 +22,13 @@
   </div>
 
   <div class="field">
-    <%= f.label :uuid %>
-    <%= f.text_field :uuid %>
+    <%= f.label :entry_message %>
+    <%= f.text_field :entry_message %>
   </div>
 
   <div class="field">
-    <%= f.label :major_uuid %>
-    <%= f.text_field :major_uuid %>
-  </div>
-
-  <div class="field">
-    <%= f.label :minor_uuid %>
-    <%= f.text_field :minor_uuid %>
+    <%= f.label :exit_message %>
+    <%= f.text_field :exit_message %>
   </div>
 
   <div class="actions">

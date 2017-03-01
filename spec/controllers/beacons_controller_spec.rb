@@ -26,8 +26,8 @@ RSpec.describe BeaconsController, type: :controller do
 
   describe "GET #index" do
     before :each do
-      @test_beacon = FactoryGirl.create(:beacon)
-      @test_beacon_2 = FactoryGirl.create(:beacon, title: "test2", description: "test2 description")
+      @test_beacon = FactoryGirl.create(:beacon, title: "test2", description: "test2 description")
+      @test_beacon_2 = FactoryGirl.create(:beacon, title: "test3", description: "test3 description")
       @test_beacon.notifications << FactoryGirl.create(:notification)
     end
     
@@ -107,7 +107,7 @@ RSpec.describe BeaconsController, type: :controller do
     shared_examples_for "json request" do
       render_views
       let(:json) { JSON.parse(response.body) }
-      before do
+      before :each do
         @notification = FactoryGirl.create(:notification)
         @test_beacon.notifications << @notification
         get :show, format: :json, params: { id: @test_beacon.id }
@@ -124,11 +124,12 @@ RSpec.describe BeaconsController, type: :controller do
       it "displays notifications belonging to beacon" do
         expect(json["notifications"].count).to eql @test_beacon.notifications.count
         expect(json["notifications"][0]["title"]).to eql @notification.title
+        expect(json["notifications"][0]["entry_message"]).to eql @notification.entry_message
       end
     end
 
     before :each do
-      @test_beacon = FactoryGirl.create(:beacon)
+      @test_beacon = FactoryGirl.create(:beacon, title: "test2", description: "test2 description")
     end
 
     context "logged in as user" do
