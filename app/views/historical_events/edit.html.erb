@@ -1,2 +1,6 @@
-<h1>HistoricalEvents#edit</h1>
-<p>Find me in app/views/historical_events/edit.html.erb</p>
+<h1>Editing Historical Event</h1>
+
+<%= render 'form', historical_event: @historical_event %>
+
+<%= link_to 'Show', @historical_event %> |
+<%= link_to 'Back', historical_events_path %>

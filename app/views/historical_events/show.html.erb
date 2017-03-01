@@ -1,2 +1,17 @@
-<h1>HistoricalEvents#show</h1>
-<p>Find me in app/views/historical_events/show.html.erb</p>
+<p>
+  <strong>Title:</strong>
+  <%= @historical_event.title %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @historical_event.description %>
+</p>
+
+<p>
+  <strong>Date:</strong>
+  <%= @historical_event.date %>
+</p>
+
+<%= link_to 'Edit', edit_historical_event_path(@historical_event) %> |
+<%= link_to 'Back', historical_events_path %>
