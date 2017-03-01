@@ -59,7 +59,7 @@ end
 
 Beacon.all.each_with_index do |beacon, index|
     5.times do |i|
-      beacon.notifications.create!(title: Faker::Commerce.product_name + "_#{index}_#{i}", description: Faker::Lorem.paragraph)
+      beacon.notifications.create!(title: Faker::Commerce.product_name + "_#{index}_#{i}", description: Faker::Lorem.paragraph )
     end
 end
 
