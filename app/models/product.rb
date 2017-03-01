@@ -1,5 +1,6 @@
 class Product < ApplicationRecord
     include Concerns::Purchasable
+    include Concerns::Images::ValidatesAttachment
     
     before_validation :set_default_cost, 
                       :set_default_featured
