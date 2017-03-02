@@ -1,2 +1,43 @@
-<h1>Promotions#show</h1>
-<p>Find me in app/views/promotions/show.html.erb</p>
+<p>
+  <strong>Title:</strong>
+  <%= @promotion.title %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @promotion.description %>
+</p>
+
+<p>
+  <strong>Code:</strong>
+  <%= @promotion.code %>
+</p>
+
+<p>
+  <strong>Redeem Count:</strong>
+  <%= @promotion.redeem_count %>
+</p>
+
+<p>
+  <strong>Daily Deal:</strong>
+  <%= @promotion.daily_deal %>
+</p>
+
+<p>
+  <strong>Featured:</strong>
+  <%= @promotion.featured %>
+</p>
+
+<p>
+  <strong>Cost:</strong>
+  <%= @promotion.cost %>
+</p>
+
+<p>
+  <strong>Expiration:</strong>
+  <%= @promotion.expiration %>
+</p>
+
+<%= link_to 'Edit', edit_promotion_path(@promotion) %> |
+<%= link_to 'Back', promotions_path %>
+
