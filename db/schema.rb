@@ -10,7 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20170303192204) do
+=======
+ActiveRecord::Schema.define(version: 20170301215131) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+>>>>>>> staging
 
   create_table "beacons", force: :cascade do |t|
     t.string   "uuid",        null: false
@@ -34,11 +41,15 @@ ActiveRecord::Schema.define(version: 20170303192204) do
   end
 
   create_table "historical_events", force: :cascade do |t|
-    t.string   "title",       null: false
-    t.text     "description", null: false
-    t.date     "date",        null: false
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.string   "title",              null: false
+    t.text     "description",        null: false
+    t.date     "date",               null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
   end
 
   create_table "line_items", force: :cascade do |t|
@@ -53,14 +64,22 @@ ActiveRecord::Schema.define(version: 20170303192204) do
   end
 
   create_table "notifications", force: :cascade do |t|
-    t.string   "title",         null: false
-    t.text     "description",   null: false
+    t.string   "title",              null: false
+    t.text     "description",        null: false
     t.integer  "beacon_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
     t.string   "entry_message"
     t.string   "exit_message"
+<<<<<<< HEAD
     t.index ["beacon_id"], name: "index_notifications_on_beacon_id"
+=======
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
+    t.index ["beacon_id"], name: "index_notifications_on_beacon_id", using: :btree
+>>>>>>> staging
   end
 
   create_table "orders", force: :cascade do |t|
@@ -71,17 +90,22 @@ ActiveRecord::Schema.define(version: 20170303192204) do
   end
 
   create_table "products", force: :cascade do |t|
-    t.boolean  "featured",    default: false, null: false
-    t.string   "cost",        default: "0",   null: false
-    t.string   "title",                       null: false
-    t.text     "description",                 null: false
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.boolean  "featured",           default: false, null: false
+    t.string   "cost",               default: "0",   null: false
+    t.string   "title",                              null: false
+    t.text     "description",                        null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
   end
 
   create_table "promotions", force: :cascade do |t|
     t.string   "promotional_type"
     t.integer  "promotional_id"
+<<<<<<< HEAD
     t.string   "title",                                            null: false
     t.text     "description",                                      null: false
     t.string   "code",                                             null: false
@@ -93,6 +117,23 @@ ActiveRecord::Schema.define(version: 20170303192204) do
     t.datetime "created_at",                                       null: false
     t.datetime "updated_at",                                       null: false
     t.index ["promotional_type", "promotional_id"], name: "index_promotions_on_promotional_type_and_promotional_id"
+=======
+    t.string   "title",                                              null: false
+    t.text     "description",                                        null: false
+    t.string   "code",                                               null: false
+    t.integer  "redeem_count",       default: 0,                     null: false
+    t.boolean  "daily_deal",         default: false,                 null: false
+    t.boolean  "featured",           default: false,                 null: false
+    t.integer  "cost",               default: 0,                     null: false
+    t.datetime "expiration",         default: '2017-03-15 21:20:30'
+    t.datetime "created_at",                                         null: false
+    t.datetime "updated_at",                                         null: false
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
+    t.index ["promotional_type", "promotional_id"], name: "index_promotions_on_promotional_type_and_promotional_id", using: :btree
+>>>>>>> staging
   end
 
   create_table "roles", force: :cascade do |t|

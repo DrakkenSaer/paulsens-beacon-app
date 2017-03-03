@@ -1,4 +1,4 @@
-<%= form_for(historical_event) do |f| %>
+<%= form_for(historical_event), html: { multipart: true } do |f| %>
   <% if historical_event.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(historical_event.errors.count, "error") %> prohibited this historical_event from being saved:</h2>
@@ -24,6 +24,10 @@
   <div class="field">
     <%= f.label :date %>
     <%= f.date_field :date %>
+  </div>
+
+  <div class="field">
+    <%= f.file_field :image %>
   </div>
 
   <div class="actions">

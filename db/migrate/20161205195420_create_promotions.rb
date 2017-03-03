@@ -9,7 +9,7 @@ class CreatePromotions < ActiveRecord::Migration[5.0]
       t.boolean :daily_deal, default: false, null: false
       t.boolean :featured, default: false, null: false
       t.integer :cost, default: 0, null: false
-      t.datetime :expiration, default: Time.now + 2.weeks
+      t.datetime :expiration
 
       t.timestamps
     end

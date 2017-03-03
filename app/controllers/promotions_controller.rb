@@ -74,7 +74,8 @@ class PromotionsController < ApplicationController
                                         :daily_deal, 
                                         :featured, 
                                         :cost, 
-                                        :expiration)
+                                        :expiration,
+                                        :image)
     end
     
     def set_promotion
