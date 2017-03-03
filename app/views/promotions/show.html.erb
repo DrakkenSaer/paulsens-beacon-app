@@ -40,12 +40,12 @@
 
 <p>
   <strong>Promotional Type:</strong>
-  <%= @promotion.promotional_type.blank? ? "N/A": @promotion.promotional_type %>
+  <%= @promotion.promotional_type.blank? ? "N/A" : @promotion.promotional_type %>
 </p>
 
 <p>
   <strong>Promotional:</strong>
-  <%= @promotion.promotional.blank? ? "N/A": @promotion.promotional.title %>
+  <%= @promotion.promotional.blank? ? "N/A" : @promotion.promotional.title %>
 </p>
 
 <%= link_to 'Edit', edit_promotion_path(@promotion) %> |

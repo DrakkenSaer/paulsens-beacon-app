@@ -78,7 +78,7 @@ class PromotionsController < ApplicationController
     end
     
     def set_promotion
-      @promotion = params[:id] ? Promotion.find(params[:id]): Promotion.new
+      @promotion = params[:id] ? Promotion.find(params[:id]) : Promotion.new
     end
     
     def authorize_promotion
