@@ -1,2 +1,6 @@
-<h1>Notifications#edit</h1>
-<p>Find me in app/views/notifications/edit.html.erb</p>
+<h1>Editing Notification</h1>
+
+<%= render 'form', notification: @notification %>
+
+<%= link_to 'Show', @notification %> |
+<%= link_to 'Back', notifications_path %>
