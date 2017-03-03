@@ -69,7 +69,7 @@ class HistoricalEventsController < ApplicationController
   private
   
     def historical_event_params
-      params.require(:historical_event).permit(:title, :description, :date)
+      params.require(:historical_event).permit(:title, :description, :date, :image)
     end
   
     def set_historical_event
