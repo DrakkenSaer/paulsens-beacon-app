@@ -5,7 +5,6 @@ class Promotion < ApplicationRecord
   before_validation :set_default_cost, 
                     :set_default_daily_deal, 
                     :set_default_featured, 
-                    :set_default_expiration,
                     :set_default_redeem_count
   
   belongs_to :promotional, polymorphic: true, optional: true
@@ -13,7 +12,6 @@ class Promotion < ApplicationRecord
   validates :title, 
             :description, 
             :code, 
-            :expiration, 
             :cost, 
             :redeem_count, presence: true
 
@@ -22,8 +20,12 @@ class Promotion < ApplicationRecord
 
   resourcify
   
-  def expired?
-     self.expiration < Time.now
+  def expired?(object = self)
+    if object.expiration.nil?
+      false
+    else
+      object.expiration < Time.now
+    end
   end
 
   protected
@@ -42,10 +44,6 @@ class Promotion < ApplicationRecord
 
     def set_default_daily_deal
         self.daily_deal = false if (self.has_attribute? :daily_deal) && self.daily_deal.nil?
-    end
-
-    def set_default_expiration
-      self.expiration = Time.now + 2.weeks if self.expiration.nil?
     end
 
 end

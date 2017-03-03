@@ -34,13 +34,8 @@
   <%= f.fields_for :promotions do |promotions_form| %>
 
     <div class="field">
-      <%= promotions_form.label :id, :promotion_id %>
+      <%= promotions_form.label :id, :promotion %>
       <%= promotions_form.select :id, Promotion.all.map { |c| [c.title, c.id] } %>
-    </div>
-
-    <div class="field">
-      <%= promotions_form.label :cost %>
-      <%= promotions_form.text_field :cost %>
     </div>
 
   <% end %>
