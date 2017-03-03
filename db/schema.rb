@@ -97,16 +97,16 @@ ActiveRecord::Schema.define(version: 20170301215131) do
   create_table "promotions", force: :cascade do |t|
     t.string   "promotional_type"
     t.integer  "promotional_id"
-    t.string   "title",                                              null: false
-    t.text     "description",                                        null: false
-    t.string   "code",                                               null: false
-    t.integer  "redeem_count",       default: 0,                     null: false
-    t.boolean  "daily_deal",         default: false,                 null: false
-    t.boolean  "featured",           default: false,                 null: false
-    t.integer  "cost",               default: 0,                     null: false
-    t.datetime "expiration",         default: '2017-03-15 21:20:30'
-    t.datetime "created_at",                                         null: false
-    t.datetime "updated_at",                                         null: false
+    t.string   "title",                              null: false
+    t.text     "description",                        null: false
+    t.string   "code",                               null: false
+    t.integer  "redeem_count",       default: 0,     null: false
+    t.boolean  "daily_deal",         default: false, null: false
+    t.boolean  "featured",           default: false, null: false
+    t.integer  "cost",               default: 0,     null: false
+    t.datetime "expiration"
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.string   "image_file_name"
     t.string   "image_content_type"
     t.integer  "image_file_size"

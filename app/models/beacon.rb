@@ -10,6 +10,13 @@ class Beacon < ApplicationRecord
     validates :title, :major_uuid, :minor_uuid, uniqueness: true
     
     resourcify
+    
+    # This is temporary, waiting to think of a better solution. Do not test.
+    def notifications_attributes=(notifications_attributes)
+        notifications_attributes.each do |notification_attributes|
+            self.notifications << Notification.find(notification_attributes[:id])
+        end
+    end
 
     protected
     

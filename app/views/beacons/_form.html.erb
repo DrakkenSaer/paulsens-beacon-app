@@ -35,6 +35,15 @@
     <%= f.label :minor_uuid %>
     <%= f.text_field :minor_uuid %>
   </div>
+  
+    <%= f.fields_for :notifications do |notifications_form| %>
+
+    <div class="field">
+      <%= notifications_form.label :id, :notification_id %>
+      <%= notifications_form.select :id, Notification.all.map { |c| [c.title, c.id] } %>
+    </div>
+
+  <% end %>
 
   <div class="actions">
     <%= f.submit %>
