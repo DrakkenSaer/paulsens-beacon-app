@@ -1,3 +1,3 @@
 json.promotions @promotions do |promotion|
-  json.(promotion, :id, :title, :description, :code, :redeem_count, :daily_deal, :featured, :cost, :expiration, :created_at, :updated_at)
+  json.partial! 'promotions/promotion', promotion: promotion
 end

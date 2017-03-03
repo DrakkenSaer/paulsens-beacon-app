@@ -1,2 +1,37 @@
-<h1>Products#show</h1>
-<p>Find me in app/views/products/show.html.erb</p>
+<p>
+  <strong>Title:</strong>
+  <%= @product.title %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @product.description %>
+</p>
+
+<p>
+  <strong>Cost:</strong>
+  <%= @product.cost %>
+</p>
+
+<p>
+  <strong>Featured:</strong>
+  <%= @product.featured %>
+</p>
+
+<% @product.promotions.each_with_index do |promotion, index| %>
+  <ul>
+      <h3><%= promotion.promotional_type + ' #' + index.to_s %></h3>
+  
+      <ul>
+      <% promotion.attributes.each_pair do |key, value| %>
+          <li>
+              <%= key %>: <%= value %>
+          </li>
+      <% end %>
+      </ul>
+  </ul>
+<% end %>
+
+<%= link_to 'Edit', edit_product_path(@product) %> |
+<%= link_to 'Back', products_path %>
+
