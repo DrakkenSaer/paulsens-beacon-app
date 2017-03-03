@@ -38,6 +38,16 @@
   <%= @promotion.expiration %>
 </p>
 
+<p>
+  <strong>Promotional Type:</strong>
+  <%= @promotion.promotional_type %>
+</p>
+
+<p>
+  <strong>Promotional:</strong>
+  <%= @promotion.promotional.title %>
+</p>
+
 <%= link_to 'Edit', edit_promotion_path(@promotion) %> |
 <%= link_to 'Back', promotions_path %>
 

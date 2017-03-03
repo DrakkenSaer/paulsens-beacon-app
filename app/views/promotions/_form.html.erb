@@ -50,6 +50,11 @@
     <%= f.label :expiration %>
     <%= f.date_field :expiration %>
   </div>
+  
+  <div class="field">
+    <%= f.label :promotional_id, :promotional %>
+    <%= f.select :promotional_id, Product.all.map { |c| [c.title, c.id] } %>
+  </div>
 
   <div class="actions">
     <%= f.submit %>
