@@ -1,2 +1,28 @@
-<h1>Notifications#show</h1>
-<p>Find me in app/views/notifications/show.html.erb</p>
+<p>
+  <strong>Title:</strong>
+  <%= @notification.title %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @notification.description %>
+</p>
+
+<p>
+  <strong>Entry Message:</strong>
+  <%= @notification.entry_message %>
+</p>
+
+<p>
+  <strong>Exit Message:</strong>
+  <%= @notification.exit_message %>
+</p>
+
+<p>
+  <strong>Beacon Id:</strong>
+  <%= @notification.beacon_id %>
+</p>
+
+<%= link_to 'Edit', edit_notification_path(@notification) %> |
+<%= link_to 'Back', notifications_path %>
+

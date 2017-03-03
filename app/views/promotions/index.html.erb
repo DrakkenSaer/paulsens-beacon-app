@@ -1,2 +1,38 @@
-<h1>Promotions#index</h1>
-<p>Find me in app/views/promotions/index.html.erb</p>
+<h1>Promotions</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Code</th>
+      <th>Redeem Count</th>
+      <th>Daily Deal</th>
+      <th>Featured</th>
+      <th>Cost</th>
+      <th>Expiration</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @promotions.each do |promotion| %>
+      <tr>
+        <td><%= promotion.title %></td>
+        <td><%= promotion.description %></td>
+        <td><%= promotion.code %></td>
+        <td><%= promotion.redeem_count %></td>
+        <td><%= promotion.daily_deal %></td>
+        <td><%= promotion.featured %></td>
+        <td><%= promotion.cost %></td>
+        <td><%= promotion.expiration %></td>
+        <td><%= link_to 'Show', promotion %></td>
+        <td><%= link_to 'Edit', edit_promotion_path(promotion) %></td>
+        <td><%= link_to 'Destroy', promotion, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New promotion', new_promotion_path %>
