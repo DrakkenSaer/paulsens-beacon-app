@@ -1,5 +1,6 @@
 class UserRolesController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_user
   before_action :set_user_role, except: [:index, :create]
   before_action :authorize_role, except: [:index, :create]
 
@@ -24,6 +25,10 @@ class UserRolesController < ApplicationController
     def user_role_params
       params.require(:role).permit(:name)
     end
+    
+    def set_user
+       @user = User.find(params[:user_id])
+    end
 
     def set_user_role
       @role = User.find(params[:account_id]).roles { params[:id] ? find(params[:id]) : new }
@@ -31,5 +36,12 @@ class UserRolesController < ApplicationController
     
     def authorize_user_role
       authorize @role
+      authorize @user
     end
+    
+    # def build_notifications
+    #   @notifications = policy_scope(Notification)
+    #   2.times { @beacon.notifications.build }
+    # end
+
 end

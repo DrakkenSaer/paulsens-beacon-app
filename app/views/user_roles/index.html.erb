@@ -1,2 +1,28 @@
-<h1>UserRoles#index</h1>
-<p>Find me in app/views/user_roles/index.html.erb</p>
+<h1>User #<%= @user.id %>'s Roles</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Resource</th>
+      <th>Resource Id</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @roles.each do |role| %>
+      <tr>
+        <td><%= role.name %></td>
+        <td><%= role.resource_type.blank? ? "N/A" : role.resource_type %></td>
+        <td><%= role.resource_id.blank? ? "N/A" : role.resource_id %></td>
+        <td><%= link_to 'Show', role %></td>
+        <td><%= link_to 'Destroy', role, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Role', new_role_path %>
+
