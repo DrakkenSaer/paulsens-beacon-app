@@ -2,7 +2,7 @@ class BeaconsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_beacon, except: [:index, :create]
   before_action :authorize_beacon, except: [:index, :create]
-  before_action :build_notifications, only: [:new]
+  before_action :build_notifications, only: [:new, :edit]
   
   # GET /beacons
   # GET /beacons.json
@@ -67,7 +67,12 @@ class BeaconsController < ApplicationController
   private 
 
     def beacon_params
-      params.require(:beacon).permit(:title, :description, :uuid, :minor_uuid, :major_uuid)
+      params.require(:beacon).permit(:title, 
+                                      :description, 
+                                      :uuid, 
+                                      :minor_uuid, 
+                                      :major_uuid, 
+                                      notifications_attributes: [:id, :_destroy])
     end
     
     def set_beacon
@@ -79,6 +84,7 @@ class BeaconsController < ApplicationController
     end
     
     def build_notifications
+      @notifications = policy_scope(Notification)
       2.times { @beacon.notifications.build }
     end
 

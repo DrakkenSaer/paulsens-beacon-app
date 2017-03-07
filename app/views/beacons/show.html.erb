@@ -26,6 +26,7 @@
 <p>
   <strong> Notifications</strong>
 </p>
+
 <% @beacon.notifications.each_with_index do |notification, index| %>
 <ul>
     <li><strong><%= (index + 1).to_s + ". " + notification.title  %></strong></li>

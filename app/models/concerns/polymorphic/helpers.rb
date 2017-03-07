@@ -24,4 +24,11 @@ module Concerns::Polymorphic::Helpers
             @resources << find_resource
         end
     end
+
+    def remove_resource_association(object = self)
+        object[resourcable_type_name] = nil
+        object[resourcable_id_name] = nil
+        object.save!
+    end
+
 end
