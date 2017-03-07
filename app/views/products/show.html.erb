@@ -24,7 +24,7 @@
 
 <% @product.promotions.each_with_index do |promotion, index| %>
   <ul>
-      <h3><%= promotion.promotional_type + ' #' + index.to_s %></h3>
+      <h3><%= 'Promotion #' + index.to_s %></h3>
   
       <ul>
       <% promotion.attributes.each_pair do |key, value| %>

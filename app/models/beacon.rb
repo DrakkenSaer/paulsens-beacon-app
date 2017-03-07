@@ -3,7 +3,6 @@ class Beacon < ApplicationRecord
     before_validation :set_default_extra_uuids
 
     has_many :notifications, as: :notifiable
-    
     accepts_nested_attributes_for :notifications, reject_if: :all_blank, allow_destroy: true
 
     validates :title, :description, :uuid, :major_uuid, :minor_uuid, presence: true
@@ -16,9 +15,9 @@ class Beacon < ApplicationRecord
         notifications_attributes.each do |key, notification_attributes|
             notification = notifications_attributes[key]
 
-            if !notification[:id].nil? && notification[:_destroy] == "0"
+            if !notification[:id].empty? && notification[:_destroy] != "1"
                 notifications << Notification.find(notification[:id])
-            elsif !notification[:id].nil? && notification[:_destroy] == "1"
+            elsif !notification[:id].empty? && notification[:_destroy] == "1"
                 Notification.find(notification[:id]).remove_resource_association
                 break
             else

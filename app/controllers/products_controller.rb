@@ -2,6 +2,7 @@ class ProductsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_product, except: [:index, :create]
   before_action :authorize_product, except: [:index, :create]
+  before_action :build_promotions, only: [:new, :edit]
 
   def index
     @products = policy_scope(Product)
@@ -56,7 +57,12 @@ class ProductsController < ApplicationController
   private
   
     def product_params
-      params.require(:product).permit(:featured, :cost, :title, :description, :image)
+      params.require(:product).permit(:featured, 
+                                      :cost, 
+                                      :title, 
+                                      :description, 
+                                      :image, 
+                                      promotions_attributes: [:id, :_destroy])
     end
   
     def set_product
@@ -66,4 +72,10 @@ class ProductsController < ApplicationController
     def authorize_product
       authorize(@product)
     end
+
+    def build_promotions
+      @promotions = policy_scope(Promotion)
+      2.times { @product.promotions.build }
+    end
+
 end
