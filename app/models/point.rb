@@ -6,7 +6,7 @@ class Point < Currency
     protected
     
         def set_default_value
-            self.value ||= '0.0' if self.has_attribute? :value
+            self.value ||= 0 if self.has_attribute? :value
         end
 
 end

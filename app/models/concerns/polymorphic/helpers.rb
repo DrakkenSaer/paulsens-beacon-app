@@ -12,4 +12,16 @@ module Concerns::Polymorphic::Helpers
         id = object.send(resourcable_id_name)
         @resource ||= resource.singularize.classify.constantize.find(id)
     end
+
+    def find_resources(object = self)
+        @resources = Array.new
+
+        if object.respond_to? :each
+            object.each do |item|
+                @resources << find_resource(item)
+            end
+        else
+            @resources << find_resource
+        end
+    end
 end

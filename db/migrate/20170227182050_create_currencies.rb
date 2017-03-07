@@ -3,7 +3,7 @@ class CreateCurrencies < ActiveRecord::Migration[5.0]
     create_table :currencies do |t|
       t.belongs_to :cashable, polymorphic: true, index: true
       t.string :type
-      t.string :value
+      t.integer :value
 
       t.timestamps
     end

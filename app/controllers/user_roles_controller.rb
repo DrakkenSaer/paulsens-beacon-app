@@ -4,7 +4,7 @@ class UserRolesController < ApplicationController
   before_action :authorize_role, except: [:index, :create]
 
   def index
-    @roles = policy_scope(User.find(params[:account_id]).roles)
+    @roles = policy_scope(User.find(params[:user_id]).roles)
   end
 
   def show

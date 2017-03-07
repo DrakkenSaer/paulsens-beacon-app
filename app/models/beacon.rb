@@ -2,7 +2,7 @@ class Beacon < ApplicationRecord
     before_validation :set_default_uuid
     before_validation :set_default_extra_uuids
 
-    has_many :notifications
+    has_many :notifications, as: :notifiable
     
     accepts_nested_attributes_for :notifications, reject_if: :all_blank
 
