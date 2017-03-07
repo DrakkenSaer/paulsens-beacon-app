@@ -13,21 +13,19 @@
 
   <div class="field">
     <%= f.label :user_id, :user %>
-    <%= f.select :user_id, User.all.map { |c| [c.email, c.id] } %>
+    <%= f.select :user_id, @users.map { |c| [c.email, c.id] } %>
   </div>
 
   <%= f.fields_for :promotions do |promotions_form| %>
-
     <div class="field">
       <%= promotions_form.label :id, :promotion_id %>
-      <%= promotions_form.select :id, Promotion.all.map { |c| [c.title, c.id] } %>
+      <%= promotions_form.select :id, @products.map { |c| [c.title, c.id] } %>
     </div>
 
     <div class="field">
       <%= promotions_form.label :cost %>
       <%= promotions_form.text_field :cost %>
     </div>
-
   <% end %>
 
   <div class="actions">

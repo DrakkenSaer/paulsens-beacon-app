@@ -60,6 +60,8 @@ class OrdersController < ApplicationController
     end
 
     def build_promotions
+      @products = policy_scope(Product)
+      @users = policy_scope(User)
       2.times { @order.promotions.build }
     end
 end
