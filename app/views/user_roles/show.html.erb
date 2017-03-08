@@ -1,2 +1,16 @@
-<h1>UserRoles#show</h1>
-<p>Find me in app/views/user_roles/show.html.erb</p>
+<p>
+  <strong>Name:</strong>
+  <%= @role.name %>
+</p>
+
+<p>
+  <strong>Resource:</strong>
+  <%= @role.resource_type.blank? ? "N/A" : @role.resource_type %>
+</p>
+
+<p>
+  <strong>Resource:</strong>
+  <%= @role.resource_id.blank? ? "N/A" : @role.resource_id %>
+</p>
+
+<%= link_to 'Back', user_user_roles_path %>

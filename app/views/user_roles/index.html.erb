@@ -15,7 +15,7 @@
         <td><%= role.name %></td>
         <td><%= role.resource_type.blank? ? "N/A" : role.resource_type %></td>
         <td><%= role.resource_id.blank? ? "N/A" : role.resource_id %></td>
-        <td><%= link_to 'Show', role %></td>
+        <td><%= link_to 'Show', user_user_role_path(@user.id, role.id) %></td>
         <td><%= link_to 'Destroy', role, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
@@ -24,5 +24,5 @@
 
 <br>
 
-<%= link_to 'New Role', new_role_path %>
+<%= link_to 'New Role', new_user_user_role_path %>
 

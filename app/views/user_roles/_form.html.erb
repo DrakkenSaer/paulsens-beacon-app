@@ -1,22 +1,13 @@
-<%= form_for(role) do |f| %>
-<% if role.errors.any? %>
-  <div id="error_explanation">
-    <h2><%= pluralize(role.errors.count, "error") %> prohibited this role from being saved:</h2>
-
-    <ul>
-    <% role.errors.full_messages.each do |message| %>
-      <li><%= message %></li>
-    <% end %>
-    </ul>
+<%= form_tag("/users/#{@user.id}/roles", method: "post") do %>
+  <div class = "field">
+    <%= label_tag("role_id", "Add Existing Role:") %>
+    <%= select_tag "role_id", options_from_collection_for_select(@roles, "id", "name"), include_blank: true %>
   </div>
-  <div class="field">
-    <%= f.label :id, :role %>
-    <%= f.collection_select(:id, @roles, :id, :title, include_blank: true) %>
-  </div>
-  <% unless f.object.new_record? %>
-    <div>
-      <%= f.label :_destroy, 'Remove:' %>
-      <%= f.check_box :_destroy %>
+   <%= fields_for :role do |role_form| %>
+    <div class="field">
+      <%= role_form.label :name, "Add New Role" %>
+      <%= role_form.text_field :name %>
     </div>
   <% end %>
+  <%= submit_tag("Add Role") %>
 <% end %>

@@ -8,6 +8,10 @@ class UserPolicy < ApplicationPolicy
             end
         end
     end
+    
+    def create?
+        is_admin?
+    end
 
     def show?
         is_admin? or matching_user?
