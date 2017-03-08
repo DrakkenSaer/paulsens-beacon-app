@@ -17,7 +17,7 @@ Role.destroy_all
 User.destroy_all
 
 
-resource_interval = 100
+resource_interval = 30
 resource_roles = { user: ["customer", "employee", "admin"] }
 
 admin_user = User.create!( email: "test@test.com", password: "password123" )

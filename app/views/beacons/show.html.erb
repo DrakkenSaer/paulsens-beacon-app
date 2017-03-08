@@ -23,6 +23,17 @@
   <%= @beacon.minor_uuid %>
 </p>
 
+<p>
+  <strong> Notifications</strong>
+</p>
+
+<% @beacon.notifications.each_with_index do |notification, index| %>
+<ul>
+    <li><strong><%= (index + 1).to_s + ". " + notification.title  %></strong></li>
+    <li>description: <%= notification.description %></li>
+</ul>
+<% end %>
+
 <%= link_to 'Edit', edit_beacon_path(@beacon) %> |
 <%= link_to 'Back', beacons_path %>
 

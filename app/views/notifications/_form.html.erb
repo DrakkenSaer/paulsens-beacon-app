@@ -1,4 +1,4 @@
-<%= form_for(notification), html: { multipart: true } do |f| %>
+<%= form_for(notification) do |f| %>
   <% if notification.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(notification.errors.count, "error") %> prohibited this notification from being saved:</h2>
@@ -29,11 +29,6 @@
   <div class="field">
     <%= f.label :exit_message %>
     <%= f.text_field :exit_message %>
-  </div>
-  
-  <div class="field">
-    <%= f.label :beacon_id, :beacon %>
-    <%= f.collection_select :beacon_id, Beacon.all, :id, :title %>
   </div>
   
   <div class="field">
