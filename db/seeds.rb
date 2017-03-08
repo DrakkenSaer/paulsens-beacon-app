@@ -86,3 +86,51 @@ end
 #     beacon.notifications.create!(title: "Notification-#{i}-#{i_2}", description: "This is notification ##{i}-#{i_2}")
 #   end
 # end
+
+
+
+
+# Thaddeus Requirements
+
+Beacon.create!(
+    uuid: 'B9407F30-F5F8-466E-AFF9-25556B57FE6D', 
+    major_uuid: "54381",
+    minor_uuid: "53700",
+    title: "Entrance beacon",
+    description: "Beacon to be placed at the entrance to the store."
+)
+
+Beacon.create!(
+    uuid: "B9407F30-F5F8-466E-AFF9-25556B57FE6D",
+    major_uuid: "51207",
+    minor_uuid: "48452",
+    title: "Coffee beacon",
+    description: "Beacon to be placed near the coffee in the store."
+)
+
+Beacon.create!(
+    uuid: "B9407F30-F5F8-466E-AFF9-25556B57FE6D",
+    major_uuid: "22179",
+    minor_uuid: "32626",
+    title: "Promotions beacon", 
+    description: "Beacon to be placed near the store promotions." 
+)
+
+Notification.create!(
+    title: "Entrance notification",
+    description: "Notification to be displayed when customers enter the store.",
+    entry_message: "Welcome to Paulsen's!",
+    exit_message: "Thank you for stopping by!"
+)
+
+Notification.create!(
+    title: "Coffee notification",
+    description: "Notification to be displayed when users approach the coffee.",
+    entry_message: "How about a nice cup of coffee?"
+)
+
+Notification.create!(
+    title: "Promotions notification", 
+    description: "Notification to be displayed when users approach in-store promotions.",
+    entry_message: "Check out these great deals!"
+)
