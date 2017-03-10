@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   devise_for :users, path: 'account', skip: [:sessions], path_names: { cancel: 'deactivate' }
 
   resources :users, only: [:index, :show] do
-    resources :user_roles, path: "roles", except: [:edit, :update]
+    resources :roles, path: "roles", except: [:edit, :update], controller: :user_roles
   end
 
   as :user do

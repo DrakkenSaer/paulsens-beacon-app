@@ -1,9 +1,9 @@
-<%= form_tag("/users/#{@user.id}/roles", method: "post") do %>
-  <div class = "field">
-    <%= label_tag("role_id", "Add Existing Role:") %>
-    <%= select_tag "role_id", options_from_collection_for_select(@roles, "id", "name"), include_blank: true %>
+<%= form_tag("/users/#{@user.id}/roles") do %>
+  <div class= "field">
+    <%= label_tag :role_id, "Add Existing Role:" %>
+    <%= select_tag :role_id, options_from_collection_for_select(@roles, "id", "name"), include_blank: true %>
   </div>
-   <%= fields_for :role do |role_form| %>
+  <%= fields_for :role do |role_form| %>
     <div class="field">
       <%= role_form.label :name, "Add New Role" %>
       <%= role_form.text_field :name %>
