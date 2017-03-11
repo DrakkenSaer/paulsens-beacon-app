@@ -38,7 +38,10 @@ end
 
 resource_interval.times do |i|
     Beacon.create!( title: Faker::Company.name + "_#{i}", 
-                  description: Faker::Lorem.paragraph )
+                    description: Faker::Lorem.paragraph,
+                    uuid: SecureRandom.uuid,
+                    major_uuid: rand(10000 * i),
+                    minor_uuid: rand(10000 * i))
 
     HistoricalEvent.create!( title: Faker::Company.name + "_#{i}",
                     description: Faker::Lorem.paragraph,
@@ -92,7 +95,7 @@ end
 
 # Thaddeus Requirements
 
-Beacon.create!(
+beacon_1 = Beacon.create!(
     uuid: 'B9407F30-F5F8-466E-AFF9-25556B57FE6D', 
     major_uuid: "54381",
     minor_uuid: "53700",
@@ -100,7 +103,7 @@ Beacon.create!(
     description: "Beacon to be placed at the entrance to the store."
 )
 
-Beacon.create!(
+beacon_2 = Beacon.create!(
     uuid: "B9407F30-F5F8-466E-AFF9-25556B57FE6D",
     major_uuid: "51207",
     minor_uuid: "48452",
@@ -108,7 +111,7 @@ Beacon.create!(
     description: "Beacon to be placed near the coffee in the store."
 )
 
-Beacon.create!(
+beacon_3 = Beacon.create!(
     uuid: "B9407F30-F5F8-466E-AFF9-25556B57FE6D",
     major_uuid: "22179",
     minor_uuid: "32626",
@@ -116,20 +119,20 @@ Beacon.create!(
     description: "Beacon to be placed near the store promotions." 
 )
 
-Notification.create!(
+beacon_1.notifications << Notification.create!(
     title: "Entrance notification",
     description: "Notification to be displayed when customers enter the store.",
     entry_message: "Welcome to Paulsen's!",
     exit_message: "Thank you for stopping by!"
 )
 
-Notification.create!(
+beacon_2.notifications << Notification.create!(
     title: "Coffee notification",
     description: "Notification to be displayed when users approach the coffee.",
     entry_message: "How about a nice cup of coffee?"
 )
 
-Notification.create!(
+beacon_3.notifications << Notification.create!(
     title: "Promotions notification", 
     description: "Notification to be displayed when users approach in-store promotions.",
     entry_message: "Check out these great deals!"
