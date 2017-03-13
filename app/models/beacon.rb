@@ -4,7 +4,7 @@ class Beacon < ApplicationRecord
 
     validates :title, :description, :uuid, :major_uuid, :minor_uuid, presence: true
     validates :title, :major_uuid, :minor_uuid, uniqueness: true
-    validates :major_uuid, :minor_uuid, numericality: true
+    validates :major_uuid, :minor_uuid, numericality: { only_integer: true }
 
     resourcify
     

@@ -40,8 +40,8 @@ resource_interval.times do |i|
     Beacon.create!( title: Faker::Company.name + "_#{i}", 
                     description: Faker::Lorem.paragraph,
                     uuid: SecureRandom.uuid,
-                    major_uuid: rand(10000 * i),
-                    minor_uuid: rand(10000 * i))
+                    major_uuid: rand(10000..99999),
+                    minor_uuid: rand(10000..99999))
 
     HistoricalEvent.create!( title: Faker::Company.name + "_#{i}",
                     description: Faker::Lorem.paragraph,
