@@ -11,6 +11,12 @@
     <%= csrf_meta_tags %>
   </head>
   <body>
+    <%= content_tag :div do %>
+      <% if user_signed_in? %>
+        curl -X GET --header 'Authorization: Bearer <%= JWTEncoder.encode({ user_id: current_user.id }) %>' <%= request.original_url %>
+      <% end %>
+    <% end if Rails.env.development? %>
+
     <%= render 'shared/header' %>
 
     <% flash.each do |key, value| %>

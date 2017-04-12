@@ -12,7 +12,7 @@ class Order < ApplicationRecord
     resourcify
 
     include AASM
-    STATES = [:pending, :completed, :canceled]
+    STATES = [:pending, :activated, :completed, :canceled]
     aasm :column => 'resource_state' do
         STATES.each do |status|
             state(status, initial: STATES[0] == status)
