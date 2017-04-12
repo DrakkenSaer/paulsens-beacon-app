@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170412045239) do
+ActiveRecord::Schema.define(version: 20170412211443) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,12 +51,14 @@ ActiveRecord::Schema.define(version: 20170412045239) do
   end
 
   create_table "line_items", force: :cascade do |t|
-    t.string   "lineable_type", null: false
-    t.integer  "lineable_id",   null: false
-    t.integer  "order_id",      null: false
-    t.string   "item_cost",     null: false
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.string   "lineable_type",  null: false
+    t.integer  "lineable_id",    null: false
+    t.integer  "order_id",       null: false
+    t.string   "item_cost",      null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.string   "resource_state"
+    t.datetime "redeemed_date"
     t.index ["lineable_type", "lineable_id"], name: "index_line_items_on_lineable_type_and_lineable_id", using: :btree
     t.index ["order_id"], name: "index_line_items_on_order_id", using: :btree
   end
