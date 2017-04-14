@@ -4,9 +4,9 @@
       <h2><%= pluralize(beacon.errors.count, "error") %> prohibited this beacon from being saved:</h2>
 
       <ul>
-      <% beacon.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
+        <% beacon.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
       </ul>
     </div>
   <% end %>
@@ -35,19 +35,14 @@
     <%= f.label :minor_uuid %>
     <%= f.text_field :minor_uuid %>
   </div>
-  
-  <%= f.fields_for :notifications do |notification_form| %>
-    <div class="field">
-      <%= notification_form.label :id, :notification %>
-      <%= notification_form.collection_select(:id, @notifications, :id, :title, include_blank: true) %>
-    </div>
-    <% unless notification_form.object.new_record? %>
-      <div>
-        <%= notification_form.label :_destroy, 'Remove:' %>
-        <%= notification_form.check_box :_destroy %>
-      </div>
-    <% end %>
+
+
+  <h3>Notifactions</h3>
+  <%= f.fields_for :notifications do |builder| %>
+    <%= render 'notifications_fields', f: builder %>
   <% end %>
+
+  <%= link_to_add_fields 'Add Notifaction', f, :notifications %>
 
   <div class="actions">
     <%= f.submit %>
