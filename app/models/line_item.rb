@@ -10,16 +10,16 @@ class LineItem < ApplicationRecord
   validates :item_cost, presence: true
 
   include AASM
-  STATES = [:pending, :redeemed]
+  STATES = [:pending, :activated, :redeemed]
   aasm :column => 'resource_state' do
     STATES.each do |status|
-        state(status, initial: STATES[0] == status)
+      state(status, initial: STATES[0] == status)
     end
 
     before_all_events :set_state_user
 
     event :redeem do
-        transitions from: STATES, to: :redeemed, success: :set_redeemed_date!
+      transitions from: STATES, to: :redeemed, success: :set_redeemed_date!
     end
   end
 
@@ -30,7 +30,7 @@ class LineItem < ApplicationRecord
     end
 
     def set_redeemed_date!(date = DateTime.now)
-       self.update!(redeemed_date: date)
+      self.update!(redeemed_date: date)
     end
 
 end

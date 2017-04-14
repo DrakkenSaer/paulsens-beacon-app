@@ -1,0 +1,9 @@
+<div class="field">
+  <%= f.label :id, :promotion_id %>
+  <%= f.select :id, @products.map { |c| [c.title, c.id] } %>
+</div>
+
+<div class="field">
+  <%= f.label :cost %>
+  <%= f.text_field :cost %>
+</div>

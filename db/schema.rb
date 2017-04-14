@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170412211443) do
+ActiveRecord::Schema.define(version: 20170414070308) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,9 +30,9 @@ ActiveRecord::Schema.define(version: 20170412211443) do
     t.string   "cashable_type"
     t.integer  "cashable_id"
     t.string   "type"
-    t.integer  "value"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.float    "value",                     default: 0.0, null: false
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
     t.integer  "last_transmutation_amount"
     t.datetime "last_transmutation_date"
     t.index ["cashable_type", "cashable_id"], name: "index_currencies_on_cashable_type_and_cashable_id", using: :btree
@@ -54,7 +54,7 @@ ActiveRecord::Schema.define(version: 20170412211443) do
     t.string   "lineable_type",  null: false
     t.integer  "lineable_id",    null: false
     t.integer  "order_id",       null: false
-    t.string   "item_cost",      null: false
+    t.float    "item_cost",      null: false
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
     t.string   "resource_state"
@@ -145,7 +145,6 @@ ActiveRecord::Schema.define(version: 20170412211443) do
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.string   "phone"
-    t.integer  "points",                 default: 0
     t.string   "address"
     t.integer  "visit_count",            default: 0
     t.text     "preferences"

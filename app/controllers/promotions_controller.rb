@@ -64,6 +64,7 @@ class PromotionsController < ApplicationController
   end
   
   private
+
     def promotion_params
       params.require(:promotion).permit(:promotional_id, 
                                         :promotional_type, 
@@ -85,4 +86,5 @@ class PromotionsController < ApplicationController
     def authorize_promotion
       authorize @promotion
     end
+
 end

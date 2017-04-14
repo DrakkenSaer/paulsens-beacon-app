@@ -21,7 +21,7 @@ class Order < ApplicationRecord
         before_all_events :set_state_user
 
         event :complete do
-            transitions from: [:pending], to: :completed, success: :set_completion_date!
+            transitions from: STATES, to: :completed, success: [lambda { user.points.spend!(total_cost) }, :set_completion_date!]
         end
 
         event :cancel do
@@ -35,9 +35,18 @@ class Order < ApplicationRecord
             line_items.build(lineable_type: 'Promotion', lineable_id: promotions_attributes[key][:id], item_cost: promotions_attributes[key][:cost])
         end
     end
-
-    def set_completion_date!(date = DateTime.now)
-       self.update!(completion_date: date)
+    
+    # Tallies up the cost of each LineItem rounded to the second decimal place
+    def total_cost
+        cost_array = line_items.map &:item_cost
+        sum_of_cost_array = cost_array.inject(:+)
+        sum_of_cost_array.round(2)
     end
+
+    protected
+
+        def set_completion_date!(date = DateTime.now)
+           self.update!(completion_date: date)
+        end
 
 end
