@@ -61,6 +61,11 @@ RSpec.describe HistoricalEventsController, type: :controller do
         get :new
         expect(response).to have_http_status(302)
       end
+
+      it "redirect to login page" do
+        get :new
+        expect(response.body).to eq("<html><body>You are being <a href=\"http://test.host/login\">redirected</a>.</body></html>")
+      end
     end
   end
 
@@ -90,6 +95,11 @@ RSpec.describe HistoricalEventsController, type: :controller do
       it "returns http 302" do
         get :edit, id: @historical_event.id
         expect(response).to have_http_status(302)
+      end
+
+      it "redirect to login page" do
+        get :edit, id: @historical_event.id
+        expect(response.body).to eq("<html><body>You are being <a href=\"http://test.host/login\">redirected</a>.</body></html>")
       end
     end
   end
@@ -135,6 +145,18 @@ RSpec.describe HistoricalEventsController, type: :controller do
           post :create, params: { historical_event: invalid_params }
           expect(response).to render_template :new
         end
+      end
+    end
+
+    context "as non-user" do
+      it "returns http 302" do
+        post :create, params: { historical_event: valid_params }
+        expect(response).to have_http_status(302)
+      end
+
+      it "redirect to login page" do
+        post :create, params: { historical_event: valid_params }
+        expect(response.body).to eq("<html><body>You are being <a href=\"http://test.host/login\">redirected</a>.</body></html>")
       end
     end
   end

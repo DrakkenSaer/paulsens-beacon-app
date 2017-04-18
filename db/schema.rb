@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 20170414070308) do
     t.float    "value",                     default: 0.0, null: false
     t.datetime "created_at",                              null: false
     t.datetime "updated_at",                              null: false
-    t.integer  "last_transmutation_amount"
+    t.float    "last_transmutation_amount"
     t.datetime "last_transmutation_date"
     t.index ["cashable_type", "cashable_id"], name: "index_currencies_on_cashable_type_and_cashable_id", using: :btree
   end
