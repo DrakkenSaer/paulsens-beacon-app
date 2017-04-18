@@ -107,13 +107,13 @@ RSpec.describe RolesController, type: :controller do
 
     context "as non-user" do
       it "returns http 302" do
-          get :show, id: @role.id
+        get :show, id: @role.id
         expect(response).to have_http_status(302)
       end
     end
   end
 
-describe "POST create" do
+  describe "POST create" do
 
     context "as user" do
       login_user
@@ -125,32 +125,32 @@ describe "POST create" do
     end
 
     context "user have admin right" do
-        login_admin
+      login_admin
 
-        context "with valid parameters" do
-          it "increases amount of Role by 1" do
-            expect {
-              post :create, params: { role: { name: "test" } }
-            }.to change(Role, :count).by(1)
-          end
-
-          it "redirects to the new role after was made" do
-            post :create, params: { role: { name: "test"} }
-            expect(response).to redirect_to Role.last
-          end
+      context "with valid parameters" do
+        it "increases amount of Role by 1" do
+          expect {
+            post :create, params: { role: { name: "test" } }
+          }.to change(Role, :count).by(1)
         end
 
-        context "with invalid parameters" do
-          it "does not save new Role" do
-            expect{
-              post :create, params: { role: { resource_type: "Test" } }
-            }.to_not change(Role, :count)
-          end
+        it "redirects to the new role after was made" do
+          post :create, params: { role: { name: "test"} }
+          expect(response).to redirect_to Role.last
+        end
+      end
 
-          it "re-renders the new method" do
+      context "with invalid parameters" do
+        it "does not save new Role" do
+          expect{
             post :create, params: { role: { resource_type: "Test" } }
-            expect(response).to render_template :new
-          end
+          }.to_not change(Role, :count)
+        end
+
+        it "re-renders the new method" do
+          post :create, params: { role: { resource_type: "Test" } }
+          expect(response).to render_template :new
+        end
       end
     end
   end
@@ -168,28 +168,28 @@ describe "POST create" do
     end
 
     context "user have admin right" do
-        login_admin
+      login_admin
 
-        it "should return an ActiveRecord error if the role id does not exist" do
-          expect do
-            delete :destroy, params: {id: -1}
-          end.to raise_error(ActiveRecord::RecordNotFound)
+      it "should return an ActiveRecord error if the role id does not exist" do
+        expect do
+          delete :destroy, params: {id: -1}
+        end.to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      context "with valid id" do
+        it "decreases amount of Role by 1" do
+          role = FactoryGirl.create(:role)
+          expect{
+            delete :destroy, params: { id: role.id }
+          }.to change(Role, :count).by(-1)
         end
 
-        context "with valid id" do
-          it "decreases amount of Role by 1" do
-            role = FactoryGirl.create(:role)
-            expect{
-              delete :destroy, params: { id: role.id }
-            }.to change(Role, :count).by(-1)
-          end
-
-          it "redirects to roles_url after destroy role" do
-            role = FactoryGirl.create(:role)
-            post :destroy, params: { id: role.id }
-            expect(response).to redirect_to(roles_url)
-          end
+        it "redirects to roles_url after destroy role" do
+          role = FactoryGirl.create(:role)
+          post :destroy, params: { id: role.id }
+          expect(response).to redirect_to(roles_url)
         end
+      end
     end
   end
 
@@ -205,7 +205,7 @@ describe "POST create" do
       end
     end
 
-   context "as admin" do
+    context "as admin" do
       let (:valid_params) { { name: "bob" } }
       let (:invalid_params) { { name: nil, resource_type: nil } }
 
@@ -227,7 +227,7 @@ describe "POST create" do
       end
 
       context "invalid params" do
-         before(:each) do
+        before(:each) do
           @role = FactoryGirl.create(:role)
           put :update, params: { id: @role.id, role: invalid_params }
           @role.reload
@@ -244,5 +244,4 @@ describe "POST create" do
       end
     end
   end
-
 end
