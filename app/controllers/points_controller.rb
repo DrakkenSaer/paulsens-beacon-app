@@ -63,18 +63,18 @@ class PointsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_points
-      @point = params[:id] ? Point.find(params[:id]) : current_user.points
-      @resource = @point.find_resource if @point.persisted?
-    end
-    
-    def authorize_points
-      authorize @point
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_points
+    @point = params[:id] ? Point.find(params[:id]) : current_user.points
+    @resource = @point.find_resource if @point.persisted?
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def points_params
-      params.require(:points).permit(:user_id, :value)
-    end
+  def authorize_points
+    authorize @point
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def points_params
+    params.require(:points).permit(:user_id, :value)
+  end
 end

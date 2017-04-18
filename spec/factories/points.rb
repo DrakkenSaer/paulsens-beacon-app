@@ -1,5 +1,5 @@
 FactoryGirl.define do
   factory :point do
-    value "MyString"
+    value 123
   end
 end
