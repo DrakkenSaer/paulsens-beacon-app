@@ -26,6 +26,7 @@ class PointsController < ApplicationController
   # POST /points.json
   def create
     @point = Point.new(points_params)
+    authorize_points
 
     respond_to do |format|
       if @point.save
@@ -68,13 +69,13 @@ class PointsController < ApplicationController
       @point = params[:id] ? Point.find(params[:id]) : current_user.points
       @resource = @point.find_resource if @point.persisted?
     end
-    
+
     def authorize_points
       authorize @point
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def points_params
-      params.require(:points).permit(:user_id, :value)
+      params.require(:point).permit(:user_id, :value, :cashable_type, :cashable_id)
     end
 end
