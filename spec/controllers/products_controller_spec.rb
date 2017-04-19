@@ -35,6 +35,7 @@ RSpec.describe ProductsController, type: :controller do
       end
 # Test Bug here
       it 'HERE!!!!!!!!!!!! returns the listings' do
+        binding.pry
         expect(json["products"].count).to eql Product.count
         expect(json["products"].collect{|l| l["title"]}).to eq([@test_product.title, @test_product_2.title])
       end
@@ -42,19 +43,19 @@ RSpec.describe ProductsController, type: :controller do
 
     context "as user" do
       login_user
-      before :each do
-        get :index
-      end
 
       it "returns http success" do
+        get :index
         expect(response).to have_http_status(:success)
       end
 
       it "renders index template" do
+        get :index
         expect(response).to render_template :index
       end
 
       it "returns products" do
+        get :index
         expect(assigns(:products)).to_not be_nil
       end
 
