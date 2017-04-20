@@ -1,4 +1,5 @@
 class PointsController < ApplicationController
+  include Resource::Nested::SetResource
   before_action :authenticate_user!
   before_action :set_points, except: [:index, :create]
   before_action :authorize_points, except: [:index, :create]
@@ -76,6 +77,6 @@ class PointsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def points_params
-      params.require(:point).permit(:user_id, :value, :cashable_type, :cashable_id)
+      params.require(:point).permit(:user_id, :value)
     end
 end
