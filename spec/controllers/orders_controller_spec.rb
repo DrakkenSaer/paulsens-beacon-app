@@ -3,18 +3,18 @@ require 'rails_helper'
 RSpec.describe OrdersController, type: :controller do
   shared_examples_for "does not have permission" do | http_verb, controller_method |
     it "should raise a Pundit exception" do
-    expect do
-      send(http_verb, controller_method, params: sent_params)
-    end.to raise_error(Pundit::NotAuthorizedError)
-  end
+      expect do
+        send(http_verb, controller_method, params: sent_params)
+      end.to raise_error(Pundit::NotAuthorizedError)
+    end
   end
 
   shared_examples_for "invalid id" do | http_verb, controller_method |
     it "should raise an ActiveRecord exception" do
-    expect do
-      send(http_verb, controller_method, params: {id: -1})
-    end.to raise_error(ActiveRecord::RecordNotFound)
-  end
+      expect do
+        send(http_verb, controller_method, params: {id: -1})
+      end.to raise_error(ActiveRecord::RecordNotFound)
+    end
   end
 
   shared_examples_for "valid id" do
