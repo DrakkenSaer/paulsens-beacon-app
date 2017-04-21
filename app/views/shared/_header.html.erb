@@ -1,3 +1,8 @@
 <h1>
     <%= link_to "Paulsens Mobile Application Manager", root_path %>
 </h1>
+
+<% if user_signed_in? %>
+    Hello, <%= current_user.email %>
+    <%= link_to :logout, destroy_user_session_path, method: :delete %>
+<% end %>

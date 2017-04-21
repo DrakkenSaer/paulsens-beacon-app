@@ -1,5 +1,5 @@
 class BeaconsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, excepts: [:index, :show]
   before_action :set_beacon, except: [:index, :create]
   before_action :authorize_beacon, except: [:index, :create]
   before_action :build_notifications, only: [:new, :edit]
