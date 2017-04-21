@@ -60,7 +60,7 @@ class PointsController < ApplicationController
   def destroy
     @point.destroy
     respond_to do |format|
-      format.html { redirect_to points_index_url, notice: 'Points was successfully destroyed.' }
+      format.html { redirect_to points_url, notice: 'Points was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
