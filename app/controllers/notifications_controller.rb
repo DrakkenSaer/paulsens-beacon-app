@@ -2,7 +2,7 @@ class NotificationsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_notification, except: [:index, :create]
   before_action :authorize_notification, except: [:index, :create]
-  
+
   # GET /notifications
   # GET /notifications.json
   def index
@@ -17,7 +17,7 @@ class NotificationsController < ApplicationController
   # GET /notifications/new
   def new
   end
-  
+
   # GET /notifications/1/edit
   def edit
   end
@@ -38,7 +38,7 @@ class NotificationsController < ApplicationController
       end
     end
   end
-  
+
   # PATCH/PUT /notifications/1
   # PATCH/PUT /notifications/1.json
   def update
@@ -62,21 +62,21 @@ class NotificationsController < ApplicationController
       format.json { head :no_content }
     end
   end
-  
-  private 
+
+  private
     def notification_params
-      params.require(:notification).permit(:title, 
-                                            :description, 
-                                            :entry_message, 
-                                            :exit_message, 
-                                            :beacon_id, 
+      params.require(:notification).permit(:title,
+                                            :description,
+                                            :entry_message,
+                                            :exit_message,
+                                            :beacon_id,
                                             :image)
     end
-    
+
     def set_notification
       @notification = params[:id] ? Notification.find(params[:id]): Notification.new
     end
-    
+
     def authorize_notification
        authorize(@notification)
     end
