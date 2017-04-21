@@ -30,7 +30,7 @@ RSpec.describe NotificationsController, type: :controller do
 
       it "page should have" do
         get :index
-        expect(response.body).to eq("<html><body>You are being <a href=\"http://test.host/login\">redirected</a>.</body></html>")
+        expect(response.body).to eq('<html><body>You are being <a href=\"http://test.host/login\">redirected</a>.</body></html>')
       end
     end
   end
@@ -38,8 +38,7 @@ RSpec.describe NotificationsController, type: :controller do
   describe "GET #show" do
     before :each do
       @beacon = FactoryGirl.create(:beacon)
-      @beacon.notifications.create(attributes_for(:notification))
-      @notification = @beacon.notifications.first
+      @notification = @beacon.notifications.create(attributes_for(:notification))
     end
 
     context "as admin" do
@@ -66,7 +65,7 @@ RSpec.describe NotificationsController, type: :controller do
 
       it "page should have" do
         get :show, id: @notification.id
-        expect(response.body).to eq("<html><body>You are being <a href=\"http://test.host/login\">redirected</a>.</body></html>")
+        expect(response.body).to eq('<html><body>You are being <a href=\"http://test.host/login\">redirected</a>.</body></html>')
       end
     end
   end
@@ -97,7 +96,7 @@ RSpec.describe NotificationsController, type: :controller do
 
       it "page should have" do
         get :new
-        expect(response.body).to eq("<html><body>You are being <a href=\"http://test.host/login\">redirected</a>.</body></html>")
+        expect(response.body).to eq('<html><body>You are being <a href=\"http://test.host/login\">redirected</a>.</body></html>')
       end
     end
   end
@@ -139,7 +138,7 @@ RSpec.describe NotificationsController, type: :controller do
 
       it "page should have" do
         get :create, notification: @attr
-        expect(response.body).to eq("<html><body>You are being <a href=\"http://test.host/login\">redirected</a>.</body></html>")
+        expect(response.body).to eq('<html><body>You are being <a href=\"http://test.host/login\">redirected</a>.</body></html>')
       end
     end
   end
@@ -175,7 +174,7 @@ RSpec.describe NotificationsController, type: :controller do
 
       it "page should have" do
         get :edit, id: @notification.id
-        expect(response.body).to eq("<html><body>You are being <a href=\"http://test.host/login\">redirected</a>.</body></html>")
+        expect(response.body).to eq('<html><body>You are being <a href=\"http://test.host/login\">redirected</a>.</body></html>')
       end
     end
   end
@@ -189,12 +188,12 @@ RSpec.describe NotificationsController, type: :controller do
     context "as admin" do
       login_admin
       it "returns http 302 when updated" do
-        put :update,params: {id: @notification.id, notification: valid_params}
+        put :update, params: {id: @notification.id, notification: valid_params}
         expect(response).to have_http_status(302)
       end
 
       it "with invalid params should render template edit" do
-        put :update,params: {id: @notification.id, notification: invalid_params}
+        put :update, params: {id: @notification.id, notification: invalid_params}
         expect(response).to render_template("edit")
       end
     end
@@ -203,20 +202,20 @@ RSpec.describe NotificationsController, type: :controller do
       login_user
       it "should raise_error if not admin" do
         expect {
-        put :update,params: {id: @notification.id, notification: valid_params}
+        put :update, params: {id: @notification.id, notification: valid_params}
         }.to raise_error(Pundit::NotAuthorizedError)
       end
     end
 
     context "as non-user" do
       it "returns http 302 if user not logged in" do
-        put :update,params: {id: @notification.id, notification: valid_params}
+        put :update, params: {id: @notification.id, notification: valid_params}
         expect(response).to have_http_status(302)
       end
 
       it "page should have" do
-        put :update,params: {id: @notification.id, notification: valid_params}
-        expect(response.body).to eq("<html><body>You are being <a href=\"http://test.host/login\">redirected</a>.</body></html>")
+        put :update, params: {id: @notification.id, notification: valid_params}
+        expect(response.body).to eq('<html><body>You are being <a href=\"http://test.host/login\">redirected</a>.</body></html>')
       end
     end
   end
@@ -227,7 +226,7 @@ RSpec.describe NotificationsController, type: :controller do
       @notification = beacon.notifications.create(attributes_for(:notification))
     end
 
-    context "ad admin" do
+    context "as admin" do
       login_admin
       it "returns http 302 when deleted" do
         get :destroy, id: @notification
@@ -237,7 +236,7 @@ RSpec.describe NotificationsController, type: :controller do
       it "returns http 302 when deleted" do
         expect{
           get :destroy, id: @notification
-        }.to change{Notification.count}.by -1
+        }.to change{Notification.count}.by(-1)
       end
     end
 
@@ -258,7 +257,7 @@ RSpec.describe NotificationsController, type: :controller do
 
       it "page should have" do
         get :destroy, id: @notification
-        expect(response.body).to eq("<html><body>You are being <a href=\"http://test.host/login\">redirected</a>.</body></html>")
+        expect(response.body).to eq('<html><body>You are being <a href=\"http://test.host/login\">redirected</a>.</body></html>')
       end
     end
   end
