@@ -66,9 +66,9 @@ RSpec.describe PromotionsController, type: :controller do
 
     context "as user" do
       login_user
-      it "returns http success" do
+      it "raises Pundit::NotAuthorizedError" do
         expect {
-        get :new
+          get :new
         }.to raise_error(Pundit::NotAuthorizedError)
       end
     end
@@ -244,7 +244,7 @@ RSpec.describe PromotionsController, type: :controller do
 
       it "should return an ActiveRecord error if the promotion id does not exist" do
         expect do
-          delete :destroy, params: {id: 999}
+          delete :destroy, params: {id: -1}
         end.to raise_error(ActiveRecord::RecordNotFound)
       end
 
