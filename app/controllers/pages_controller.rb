@@ -1,6 +1,6 @@
 class PagesController < ApplicationController
     include Concerns::String::SqlFilters
-    
+
     before_action :authorize_page
 
     def show
@@ -11,7 +11,7 @@ class PagesController < ApplicationController
 
         render template: "pages/#{params[:page]}"
     end
-    
+
     private
 
         def authorize_page

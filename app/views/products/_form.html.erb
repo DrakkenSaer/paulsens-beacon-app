@@ -4,9 +4,9 @@
       <h2><%= pluralize(product.errors.count, "error") %> prohibited this product from being saved:</h2>
 
       <ul>
-      <% product.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
+        <% product.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
       </ul>
     </div>
   <% end %>
@@ -31,25 +31,16 @@
     <%= f.check_box :featured %>
   </div>
 
-  <%= f.fields_for :promotions do |promotions_form| %>
-    <div class="field">
-      <%= promotions_form.label :id, :promotion %>
-      <%= promotions_form.collection_select :id, @promotions, :id, :title, include_blank: true %>
-    </div>
-
-    <% unless promotions_form.object.new_record? %>
-      <div>
-        <%= promotions_form.label :_destroy, 'Remove:' %>
-        <%= promotions_form.check_box :_destroy %>
-      </div>
-    <% end %>
-
-    </div>
-  <% end %>
-  
   <div class="field">
     <%= f.file_field :image %>
   </div>
+
+  <h3>Promotions</h3>
+  <%= f.fields_for :promotions do |builder| %>
+    <%= render 'promotion_fields', f: builder %>
+  <% end %>
+  
+  <%= link_to_add_fields 'Add Promotion', f, :promotions %>
 
   <div class="actions">
     <%= f.submit %>
