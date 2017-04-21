@@ -1,11 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe Notification, :type => :model do
-  FactoryGirl.create(:beacon, title: "#{rand(1..1000000)}",major_uuid: "#{rand(1..10000000)}", minor_uuid: "#{rand(1..100000)}")
 
   before :each do
-    beacon = Beacon.first
-    @notification = beacon.notifications.create(FactoryGirl.attributes_for(:notification))
+    @beacon = FactoryGirl.create(:beacon, title: "#{rand(1..1000000)}", major_uuid: "#{rand(1..10000000)}", minor_uuid: "#{rand(1..100000)}")
+    @notification = @beacon.notifications.create(FactoryGirl.attributes_for(:notification))
   end
 
   describe "Presence Validations" do
@@ -36,7 +35,6 @@ RSpec.describe Notification, :type => :model do
 
   describe "Uniqueness Validations" do
     before :each do
-      @beacon = Beacon.last
       @test_notification = @beacon.notifications.build(FactoryGirl.attributes_for(:notification, title: nil, description: nil))
     end
 
