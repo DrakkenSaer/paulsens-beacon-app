@@ -1,4 +1,6 @@
 class Order < ApplicationRecord
+    require 'validators/points/has_enough_points_validator'
+    
     include Helpers::ResourceStateHelper
     include Helpers::ResourceRecordHelper
 
@@ -40,8 +42,8 @@ class Order < ApplicationRecord
     
     # Tallies up the cost of each LineItem rounded to the second decimal place
     def total_cost
-        cost_array = line_items.map &:item_cost
-        sum_of_cost_array = cost_array.inject(:+)
+        cost_array = line_items.map(&:item_cost)
+        sum_of_cost_array = cost_array.present? ? cost_array.inject(:+) : 0
         sum_of_cost_array.round(2)
     end
 

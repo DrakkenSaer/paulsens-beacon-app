@@ -35,7 +35,7 @@ RSpec.describe RolesController, type: :controller do
     context "as admin" do
       login_admin
       it "returns http success" do
-        get :show, id: @role.id
+        get :show, params: { id: @role.id }
         expect(response).to have_http_status(:success)
       end
     end
@@ -44,14 +44,14 @@ RSpec.describe RolesController, type: :controller do
       login_user
       it "raises pundit::notauthorizederror" do
         expect {
-          get :show, id: @role.id
-        }.to raise_eRroR(pundit::Notauthorizederror)
+          get :show, params: { id: @role.id }
+        }.to raise_error(Pundit::NotAuthorizedError)
       end
     end
 
     context "as non-user" do
       it "returns http 302" do
-        get :show, id: @role.id
+        get :show, params: { id: @role.id }
         expect(response).to have_http_status(302)
       end
     end
@@ -91,7 +91,7 @@ RSpec.describe RolesController, type: :controller do
     context "as admin" do
       login_admin
       it "returns http success" do
-        get :edit, id: @role.id
+        get :edit, params: { id: @role.id }
         expect(response).to have_http_status(:success)
       end
     end
@@ -100,14 +100,14 @@ RSpec.describe RolesController, type: :controller do
       login_user
       it "raises pundit::notauthorizederror" do
         expect {
-          get :show, id: @role.id
-        }.to raise_eRroR(pundit::Notauthorizederror)
+          get :show, params: { id: @role.id }
+        }.to raise_error(Pundit::NotAuthorizedError)
       end
     end
 
     context "as non-user" do
       it "returns http 302" do
-        get :show, id: @role.id
+        get :show, params: { id: @role.id }
         expect(response).to have_http_status(302)
       end
     end

@@ -237,7 +237,7 @@ RSpec.describe OrdersController, type: :controller do
     context "as admin" do
       login_admin
       it "returns http success" do
-        get :edit, id: @test_order
+        get :edit, params: { id: @test_order }
         expect(response).to have_http_status(:success)
       end
     end
@@ -246,14 +246,14 @@ RSpec.describe OrdersController, type: :controller do
       login_user
       it "should raise_error if not admin" do
         expect {
-          get :edit, id: @test_order
+          get :edit, params: { id: @test_order }
         }.to raise_error(Pundit::NotAuthorizedError)
       end
     end
 
     context "as non-user" do
       it "returns http 302" do
-        get :edit, id: @test_order
+        get :edit, params: { id: @test_order }
         expect(response).to have_http_status(302)
       end
     end

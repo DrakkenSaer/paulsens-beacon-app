@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe PointsController, type: :controller do
 
-  let(:valid_attributes) { FactoryGirl.attributes_for(:points) }
-  let(:invalid_attributes) { FactoryGirl.create(:points, value: nil) }
+  let(:valid_attributes) { FactoryGirl.build(:points).attributes }
+  let(:invalid_attributes) { FactoryGirl.attributes_for(:points, value: nil) }
 
   describe "GET #index" do
     context "as admin" do
@@ -84,14 +84,13 @@ RSpec.describe PointsController, type: :controller do
 
   describe "GET #edit" do
     before :each do
-      @currencies = FactoryGirl.create(:currency)
-      @point = @currencies.points.create(attributes_for(:point))
+      @point = FactoryGirl.create(:points)
     end
 
     context "as admin" do
       login_admin
       it "assigns the requested point as @point" do
-        get :edit, params: {id: @point, point: valid_attributes}
+        get :edit, params: {id: @point, point: valid_attributes.slice('value')}
         expect(response).to have http_status(200)
       end
     end
@@ -106,25 +105,25 @@ RSpec.describe PointsController, type: :controller do
       end
 
       it "assigns a newly created point as @point" do
-        post :create, params: {point: valid_attributes}, session: valid_session
-        expect(assigns(:point)).to be_a(Point)
-        expect(assigns(:point)).to be_persisted
+        post :create, params: {point: valid_attributes}
+        expect(assigns(:points)).to be_a(Point)
+        expect(assigns(:points)).to be_persisted
       end
 
       it "redirects to the created point" do
-        post :create, params: {point: valid_attributes}, session: valid_session
+        post :create, params: {point: valid_attributes}
         expect(response).to redirect_to(Point.last)
       end
     end
 
     context "with invalid params" do
       it "assigns a newly created but unsaved point as @point" do
-        post :create, params: {point: invalid_attributes}, session: valid_session
-        expect(assigns(:point)).to be_a_new(Point)
+        post :create, params: {point: invalid_attributes}
+        expect(assigns(:points)).to be_a_new(Point)
       end
 
       it "re-renders the 'new' template" do
-        post :create, params: {point: invalid_attributes}, session: valid_session
+        post :create, params: {point: invalid_attributes}
         expect(response).to render_template("new")
       end
     end
@@ -138,20 +137,20 @@ RSpec.describe PointsController, type: :controller do
 
       it "updates the requested point" do
         point = Point.create! valid_attributes
-        put :update, params: {id: point.to_param, point: new_attributes}, session: valid_session
+        put :update, params: {id: point.to_param, point: new_attributes}
         point.reload
         skip("Add assertions for updated state")
       end
 
       it "assigns the requested point as @point" do
         point = Point.create! valid_attributes
-        put :update, params: {id: point.to_param, point: valid_attributes}, session: valid_session
-        expect(assigns(:point)).to eq(point)
+        put :update, params: {id: point.to_param, point: valid_attributes}
+        expect(assigns(:points)).to eq(point)
       end
 
       it "redirects to the point" do
         point = Point.create! valid_attributes
-        put :update, params: {id: point.to_param, point: valid_attributes}, session: valid_session
+        put :update, params: {id: point.to_param, point: valid_attributes}
         expect(response).to redirect_to(point)
       end
     end
@@ -159,13 +158,13 @@ RSpec.describe PointsController, type: :controller do
     context "with invalid params" do
       it "assigns the point as @point" do
         point = Point.create! valid_attributes
-        put :update, params: {id: point.to_param, point: invalid_attributes}, session: valid_session
-        expect(assigns(:point)).to eq(point)
+        put :update, params: {id: point.to_param, point: invalid_attributes}
+        expect(assigns(:points)).to eq(point)
       end
 
       it "re-renders the 'edit' template" do
         point = Point.create! valid_attributes
-        put :update, params: {id: point.to_param, point: invalid_attributes}, session: valid_session
+        put :update, params: {id: point.to_param, point: invalid_attributes}
         expect(response).to render_template("edit")
       end
     end
@@ -175,13 +174,13 @@ RSpec.describe PointsController, type: :controller do
     it "destroys the requested point" do
       point = Point.create! valid_attributes
       expect {
-        delete :destroy, params: {id: point.to_param}, session: valid_session
+        delete :destroy, params: {id: point.to_param}
       }.to change(Point, :count).by(-1)
     end
 
     it "redirects to the points list" do
       point = Point.create! valid_attributes
-      delete :destroy, params: {id: point.to_param}, session: valid_session
+      delete :destroy, params: {id: point.to_param}
       expect(response).to redirect_to(points_url)
     end
   end

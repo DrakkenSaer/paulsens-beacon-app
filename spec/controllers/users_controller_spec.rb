@@ -28,7 +28,7 @@ RSpec.describe UsersController, type: :controller do
     context "as admin" do
       login_admin
       it "returns http 200" do
-        get :show, id: @user.id
+        get :show, params: { id: @user.id }
         expect(response).to have_http_status(200)
       end
     end
@@ -37,7 +37,7 @@ RSpec.describe UsersController, type: :controller do
       login_user
       it "returns http 200" do
         expect {
-          get :show, id: @user.id
+          get :show, params: { id: @user.id }
         }.to raise_error(Pundit::NotAuthorizedError)
       end
     end

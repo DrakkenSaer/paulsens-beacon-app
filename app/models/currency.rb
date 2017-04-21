@@ -9,7 +9,7 @@ class Currency < ApplicationRecord
   validates :value, presence: true, numericality: { greater_than_or_equal_to: 0 }
 
   def spend!(value)
-    raise ArgumentError, 'Argument is not positive' unless value > 0
+    raise ArgumentError, 'Argument is not positive' unless value >= 0
     self.update!(value: self.value - value)
   end
 

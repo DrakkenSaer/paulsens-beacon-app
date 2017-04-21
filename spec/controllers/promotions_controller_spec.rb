@@ -89,7 +89,7 @@ RSpec.describe PromotionsController, type: :controller do
     context "as admin" do
       login_admin
       it "returns http success" do
-        get :edit, id: @promotion.id
+        get :edit, params: { id: @promotion.id }
         expect(response).to have_http_status(:success)
       end
     end
@@ -98,14 +98,14 @@ RSpec.describe PromotionsController, type: :controller do
       login_user
       it "returns http success" do
         expect {
-          get :edit, id: @promotion.id
+          get :edit, params: { id: @promotion.id }
         }.to raise_error(Pundit::NotAuthorizedError)
       end
     end
 
     context "as non-user" do
       it "returns http 302" do
-        get :edit, id: @promotion.id
+        get :edit, params: { id: @promotion.id }
         expect(response).to have_http_status(302)
       end
     end

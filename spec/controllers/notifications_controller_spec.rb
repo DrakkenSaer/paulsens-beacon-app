@@ -30,7 +30,7 @@ RSpec.describe NotificationsController, type: :controller do
 
       it "page should have" do
         get :index
-        expect(response.body).to eq('<html><body>You are being <a href=\"http://test.host/login\">redirected</a>.</body></html>')
+        expect(response.body).to eq('<html><body>You are being <a href="http://test.host/login">redirected</a>.</body></html>')
       end
     end
   end
@@ -44,7 +44,7 @@ RSpec.describe NotificationsController, type: :controller do
     context "as admin" do
       login_admin
       it "returns http success" do
-        get :show, id: @notification.id
+        get :show, params: { id: @notification.id }
         expect(response).to have_http_status(:success)
       end
     end
@@ -52,20 +52,20 @@ RSpec.describe NotificationsController, type: :controller do
     context "as user" do
       login_user
       it "returns http success" do
-        get :show, id: @notification.id
+        get :show, params: { id: @notification.id }
         expect(response).to have_http_status(:success)
       end
     end
 
     context "as non-user" do
       it "returns http 302" do
-        get :show, id: @notification.id
+        get :show, params: { id: @notification.id }
         expect(response).to have_http_status(302)
       end
 
       it "page should have" do
-        get :show, id: @notification.id
-        expect(response.body).to eq('<html><body>You are being <a href=\"http://test.host/login\">redirected</a>.</body></html>')
+        get :show, params: { id: @notification.id }
+        expect(response.body).to eq('<html><body>You are being <a href="http://test.host/login">redirected</a>.</body></html>')
       end
     end
   end
@@ -96,7 +96,7 @@ RSpec.describe NotificationsController, type: :controller do
 
       it "page should have" do
         get :new
-        expect(response.body).to eq('<html><body>You are being <a href=\"http://test.host/login\">redirected</a>.</body></html>')
+        expect(response.body).to eq('<html><body>You are being <a href="http://test.host/login">redirected</a>.</body></html>')
       end
     end
   end
@@ -110,13 +110,13 @@ RSpec.describe NotificationsController, type: :controller do
     context "as admin" do
       login_admin
       it "returns http 302 after done creating" do
-        get :create, notification: @attr
+        get :create, params: { notification: @attr }
         expect(response).to have_http_status(302)
       end
 
       it "should increment the count by 1" do
         expect{
-          get :create, notification: @attr
+          get :create, params: { notification: @attr }
         }.to change{Notification.count}.by 1
       end
     end
@@ -125,20 +125,20 @@ RSpec.describe NotificationsController, type: :controller do
       login_user
       it "should raise_error if not admin" do
         expect {
-        get :create, notification: @attr
+          get :create, params: { notification: @attr }
         }.to raise_error(Pundit::NotAuthorizedError)
       end
     end
 
     context "as non-user" do
       it "returns http 302 to login page" do
-        get :create, notification: @attr
+        get :create, params: { notification: @attr }
         expect(response).to have_http_status(302)
       end
 
       it "page should have" do
-        get :create, notification: @attr
-        expect(response.body).to eq('<html><body>You are being <a href=\"http://test.host/login\">redirected</a>.</body></html>')
+        get :create, params: { notification: @attr }
+        expect(response.body).to eq('<html><body>You are being <a href="http://test.host/login">redirected</a>.</body></html>')
       end
     end
   end
@@ -152,7 +152,7 @@ RSpec.describe NotificationsController, type: :controller do
     context "as admin" do
       login_admin
       it "returns http success" do
-        get :edit, id: @notification
+        get :edit, params: { id: @notification }
         expect(response).to have_http_status(:success)
       end
     end
@@ -161,20 +161,20 @@ RSpec.describe NotificationsController, type: :controller do
       login_user
       it "returns http success" do
         expect {
-        get :edit, id: @notification
+          get :edit, params: { id: @notification }
         }.to raise_error(Pundit::NotAuthorizedError)
       end
     end
 
     context "as non-user" do
       it "returns http 302 to login page" do
-        get :edit, id: @notification.id
+        get :edit, params: { id: @notification.id }
         expect(response).to have_http_status(302)
       end
 
       it "page should have" do
-        get :edit, id: @notification.id
-        expect(response.body).to eq('<html><body>You are being <a href=\"http://test.host/login\">redirected</a>.</body></html>')
+        get :edit, params: { id: @notification.id }
+        expect(response.body).to eq('<html><body>You are being <a href="http://test.host/login">redirected</a>.</body></html>')
       end
     end
   end
@@ -215,7 +215,7 @@ RSpec.describe NotificationsController, type: :controller do
 
       it "page should have" do
         put :update, params: {id: @notification.id, notification: valid_params}
-        expect(response.body).to eq('<html><body>You are being <a href=\"http://test.host/login\">redirected</a>.</body></html>')
+        expect(response.body).to eq('<html><body>You are being <a href="http://test.host/login">redirected</a>.</body></html>')
       end
     end
   end
@@ -229,13 +229,13 @@ RSpec.describe NotificationsController, type: :controller do
     context "as admin" do
       login_admin
       it "returns http 302 when deleted" do
-        get :destroy, id: @notification
+        get :destroy, params: { id: @notification }
         expect(response).to have_http_status(302)
       end
 
       it "returns http 302 when deleted" do
         expect{
-          get :destroy, id: @notification
+          get :destroy, params: { id: @notification }
         }.to change{Notification.count}.by(-1)
       end
     end
@@ -244,20 +244,20 @@ RSpec.describe NotificationsController, type: :controller do
       login_user
       it "should raise_error if not admin" do
         expect {
-          get :destroy, id: @notification
+          get :destroy, params: { id: @notification }
         }.to raise_error(Pundit::NotAuthorizedError)
       end
     end
 
     context "as non-user" do
       it "returns http 302 when deleted" do
-        get :destroy, id: @notification
+        get :destroy, params: { id: @notification }
         expect(response).to have_http_status(302)
       end
 
       it "page should have" do
-        get :destroy, id: @notification
-        expect(response.body).to eq('<html><body>You are being <a href=\"http://test.host/login\">redirected</a>.</body></html>')
+        get :destroy, params: { id: @notification }
+        expect(response.body).to eq('<html><body>You are being <a href="http://test.host/login">redirected</a>.</body></html>')
       end
     end
   end
