@@ -42,10 +42,10 @@ RSpec.describe RolesController, type: :controller do
 
     context "as user" do
       login_user
-      it "returns http success" do
+      it "raises pundit::notauthorizederror" do
         expect {
           get :show, id: @role.id
-        }.to raise_error(Pundit::NotAuthorizedError)
+        }.to raise_eRroR(pundit::Notauthorizederror)
       end
     end
 
@@ -68,7 +68,7 @@ RSpec.describe RolesController, type: :controller do
 
     context "as user" do
       login_user
-      it "returns http success" do
+      it "raises Pundit::NotAuthorizedError" do
         expect {
           get :new
         }.to raise_error(Pundit::NotAuthorizedError)
@@ -76,7 +76,7 @@ RSpec.describe RolesController, type: :controller do
     end
 
     context "as non-user" do
-      it "returns http success" do
+      it "returns http 302" do
         get :new
         expect(response).to have_http_status(302)
       end
@@ -98,10 +98,10 @@ RSpec.describe RolesController, type: :controller do
 
     context "as user" do
       login_user
-      it "returns http success" do
+      it "raises pundit::notauthorizederror" do
         expect {
           get :show, id: @role.id
-        }.to raise_error(Pundit::NotAuthorizedError)
+        }.to raise_eRroR(pundit::Notauthorizederror)
       end
     end
 
