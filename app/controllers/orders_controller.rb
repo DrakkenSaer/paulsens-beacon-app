@@ -1,8 +1,10 @@
 class OrdersController < ApplicationController
+  include Concerns::Resource::State::ResourceStateChange
+
   before_action :authenticate_user!
   before_action :set_order, except: [:index, :create]
   before_action :authorize_order, except: [:index, :create]
-  before_action :build_promotions, only: [:edit, :new]
+  before_action :set_form_resources, only: [:new, :edit]
 
   def index
     @orders = policy_scope(Order)
@@ -18,10 +20,16 @@ class OrdersController < ApplicationController
     @order = Order.new(order_params)
     authorize_order
 
-    if @order.save
-      redirect_to @order, success: "Order successfully created!"
-    else
-      render :new
+    respond_to do |format|
+      if @order.save
+        @order.complete!
+        format.html { redirect_to @order, notice: 'Order was successfully created.' }
+        format.json { render :show, status: :created, location: @order }
+      else
+        set_form_resources
+        format.html { render :new }
+        format.json { render json: @order.errors, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -32,6 +40,7 @@ class OrdersController < ApplicationController
     if @order.update(order_params)
       redirect_to @order, success: "Order successfully updated!"
     else
+      set_form_resources
       render :edit
     end
   end
@@ -51,17 +60,13 @@ class OrdersController < ApplicationController
       @order = params[:id] ? Order.find(params[:id]) : Order.new
     end
     
+    def set_form_resources
+      @users = User.all
+      @products = Product.all
+    end
+    
     def authorize_order
        authorize(@order)
     end
-    
-    def new_line_item(type, id, cost)
-      @order.line_items.new(lineable_type: type, lineable_id: id, cost: cost)
-    end
 
-    def build_promotions
-      @products = policy_scope(Product)
-      @users = policy_scope(User)
-      2.times { @order.promotions.build }
-    end
 end

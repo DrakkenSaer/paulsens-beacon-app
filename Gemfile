@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 
-
 gem 'rails', '~> 5.0.0', '>= 5.0.0.1'
 gem 'puma', '~> 3.0'
 gem 'sass-rails', '~> 5.0'
@@ -8,10 +7,21 @@ gem 'uglifier', '>= 1.3.0'
 gem 'jquery-rails'
 gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5'
+gem 'bootstrap-sass', '~> 3.3.6'
+gem 'font-awesome-rails'
+gem 'kaminari'
+gem "paperclip", "~> 5.0.0"
 
+gem 'compass-rails'
+# https://github.com/Compass/compass/pull/2088
+git 'https://github.com/ably-forks/compass', branch: 'sass-deprecation-warning-fix' do
+  gem 'compass-core'
+end
 
 # https://github.com/plataformatec/devise
 gem 'devise'
+gem 'devise_invitable', '~> 1.7.0'
+gem 'jwt'
 
 # https://github.com/elabs/pundit
 gem 'pundit'
@@ -19,11 +29,12 @@ gem 'pundit'
 # https://github.com/RolifyCommunity/rolify
 gem 'rolify'
 
-# PostgreSQL
-gem 'pg'
+# Use postgresql as the database for Active Record
+gem 'pg', '~> 0.18'
 
-# Use Paperclip to handle image attributes on resources
-gem "paperclip", "~> 5.0.0"
+# State Machine
+gem 'aasm'
+
 
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
@@ -39,11 +50,10 @@ gem "paperclip", "~> 5.0.0"
 group :development, :test do
   # Use RSpec for testing
   gem 'rspec-rails', '~> 3.5'
-  
+
   # Added for assert_template helper
   gem 'rails-controller-testing'
 
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
 
   # Use sqlite3 as the database for Active Record
@@ -52,22 +62,25 @@ group :development, :test do
   # Use factory girl to generate test resources
   gem 'factory_girl_rails'
 
-  # Use Faker to generate test resources
+  # Use Faker to generate test info for resources
   gem 'faker'
+
+  # Use Poltergeist to test responsive views using PhantomJS
+  gem 'poltergeist'
+
+  # Use Pry to inspect dynamic and ghost methods which are created at runtime
+  gem 'pry-rails'
 end
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem 'web-console'
+  gem 'meta_request'
   gem 'listen', '~> 3.0.5'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
-
-# For some reason heroku needs these to be global
-gem 'listen', '~> 3.0.5'
-gem 'faker'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]

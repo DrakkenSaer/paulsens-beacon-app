@@ -28,8 +28,8 @@ resource_roles[:user].each do |role|
 end
 
 resource_interval.times do |i|
-    user = User.new( email: Faker::Internet.email, 
-                        password: Faker::Internet.password, 
+    user = User.new( email: Faker::Internet.email,
+                        password: Faker::Internet.password,
                         phone: Faker::PhoneNumber.phone_number,
                         address: Faker::Address.street_address)
     user.save!
@@ -37,18 +37,21 @@ resource_interval.times do |i|
 end
 
 resource_interval.times do |i|
-    Beacon.create!( title: Faker::Company.name + "_#{i}", 
-                  description: Faker::Lorem.paragraph )
+    Beacon.create!( title: Faker::Company.name + "_#{i}",
+                    description: Faker::Lorem.paragraph,
+                    uuid: SecureRandom.uuid,
+                    major_uuid: rand(10000..99999),
+                    minor_uuid: rand(10000..99999))
 
     HistoricalEvent.create!( title: Faker::Company.name + "_#{i}",
                     description: Faker::Lorem.paragraph,
                     date: Date.today.prev_day(i))
-                    
+
     Product.create!( title: Faker::Commerce.product_name + "_#{i}",
                     description: Faker::Lorem.paragraph,
                     cost: Faker::Commerce.price)
-                    
-                    
+
+
     Promotion.create!( title: Faker::Company.name + "_#{i}",
                     description: Faker::Lorem.paragraph,
                     code: Faker::Commerce.promotion_code,
@@ -86,3 +89,51 @@ end
 #     beacon.notifications.create!(title: "Notification-#{i}-#{i_2}", description: "This is notification ##{i}-#{i_2}")
 #   end
 # end
+
+
+
+
+# Thaddeus Requirements
+
+beacon_1 = Beacon.create!(
+    uuid: 'B9407F30-F5F9-466E-AFF9-25556B57FE6D',
+    major_uuid: "54382",
+    minor_uuid: "53701",
+    title: "Entrance beacon",
+    description: "Beacon to be placed at the entrance to the store."
+)
+
+beacon_2 = Beacon.create!(
+    uuid: "B9407F30-F5F8-466E-AFF9-25556B57FE6D",
+    major_uuid: "51207",
+    minor_uuid: "48452",
+    title: "Coffee beacon",
+    description: "Beacon to be placed near the coffee in the store."
+)
+
+beacon_3 = Beacon.create!(
+    uuid: "B9407F30-F5F8-466E-AFF9-25556B57FE6D",
+    major_uuid: "22179",
+    minor_uuid: "32626",
+    title: "Promotions beacon",
+    description: "Beacon to be placed near the store promotions."
+)
+
+beacon_1.notifications << Notification.create!(
+    title: "Entrance notification",
+    description: "Notification to be displayed when customers enter the store.",
+    entry_message: "Welcome to Paulsen's!",
+    exit_message: "Thank you for stopping by!"
+)
+
+beacon_2.notifications << Notification.create!(
+    title: "Coffee notification",
+    description: "Notification to be displayed when users approach the coffee.",
+    entry_message: "How about a nice cup of coffee?"
+)
+
+beacon_3.notifications << Notification.create!(
+    title: "Promotions notification",
+    description: "Notification to be displayed when users approach in-store promotions.",
+    entry_message: "Check out these great deals!"
+)

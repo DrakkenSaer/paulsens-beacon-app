@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170301215131) do
+ActiveRecord::Schema.define(version: 20170414070308) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,9 +30,11 @@ ActiveRecord::Schema.define(version: 20170301215131) do
     t.string   "cashable_type"
     t.integer  "cashable_id"
     t.string   "type"
-    t.integer  "value"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.float    "value",                     default: 0.0, null: false
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
+    t.float    "last_transmutation_amount"
+    t.datetime "last_transmutation_date"
     t.index ["cashable_type", "cashable_id"], name: "index_currencies_on_cashable_type_and_cashable_id", using: :btree
   end
 
@@ -49,12 +51,14 @@ ActiveRecord::Schema.define(version: 20170301215131) do
   end
 
   create_table "line_items", force: :cascade do |t|
-    t.string   "lineable_type", null: false
-    t.integer  "lineable_id",   null: false
-    t.integer  "order_id",      null: false
-    t.string   "item_cost",     null: false
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.string   "lineable_type",  null: false
+    t.integer  "lineable_id",    null: false
+    t.integer  "order_id",       null: false
+    t.float    "item_cost",      null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.string   "resource_state"
+    t.datetime "redeemed_date"
     t.index ["lineable_type", "lineable_id"], name: "index_line_items_on_lineable_type_and_lineable_id", using: :btree
     t.index ["order_id"], name: "index_line_items_on_order_id", using: :btree
   end
@@ -76,9 +80,11 @@ ActiveRecord::Schema.define(version: 20170301215131) do
   end
 
   create_table "orders", force: :cascade do |t|
-    t.integer  "user_id",    null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "user_id",         null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.string   "resource_state"
+    t.datetime "completion_date"
     t.index ["user_id"], name: "index_orders_on_user_id", using: :btree
   end
 
@@ -139,7 +145,6 @@ ActiveRecord::Schema.define(version: 20170301215131) do
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.string   "phone"
-    t.integer  "points",                 default: 0
     t.string   "address"
     t.integer  "visit_count",            default: 0
     t.text     "preferences"

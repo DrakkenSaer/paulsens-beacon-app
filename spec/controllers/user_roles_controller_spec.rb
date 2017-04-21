@@ -24,7 +24,7 @@ RSpec.describe UserRolesController, type: :controller do
 #   end
 
   describe "POST #create" do
-    login_user
+    login_admin
 
     before(:each) do
       @role = FactoryGirl.create(:role)

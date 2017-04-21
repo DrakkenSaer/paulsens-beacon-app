@@ -18,18 +18,18 @@ class UserRolesController < ApplicationController
 
   def destroy
   end
-  
+
   private
 
-    def user_role_params
-      params.require(:role).permit(:name)
-    end
+  def user_role_params
+    params.require(:role).permit(:name)
+  end
 
-    def set_user_role
-      @role = User.find(params[:account_id]).roles { params[:id] ? find(params[:id]) : new }
-    end
-    
-    def authorize_user_role
-      authorize @role
-    end
+  def set_user_role
+    @role = User.find(params[:account_id]).roles { params[:id] ? find(params[:id]) : new }
+  end
+
+  def authorize_user_role
+    authorize @role
+  end
 end

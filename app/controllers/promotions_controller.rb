@@ -17,7 +17,7 @@ class PromotionsController < ApplicationController
   # GET /promotions/new
   def new
   end
-  
+
   # GET /promotions/1/edit
   def edit
   end
@@ -27,13 +27,13 @@ class PromotionsController < ApplicationController
   def create
     @promotion = Promotion.new(promotion_params)
     authorize_promotion
-    
+
     respond_to do |format|
       if @promotion.save
         format.html { redirect_to @promotion, success: "Promotion successfully created!" }
         format.json { render :show, status: :created, location: @promotion }
       else
-        format.html { ender :new }
+        format.html { render :new }
         format.json { render json: @promotion.errors, status: :unprocessable_entity }
       end
     end
@@ -59,30 +59,32 @@ class PromotionsController < ApplicationController
     @promotion.destroy
     respond_to do |format|
       format.html { redirect_to promotions_url, notice: "Promotion was successfully deleted" }
-      format.json { head :no_content } 
+      format.json { head :no_content }
     end
   end
-  
+
   private
-    def promotion_params
-      params.require(:promotion).permit(:promotional_id, 
-                                        :promotional_type, 
-                                        :title, 
-                                        :description, 
-                                        :code, 
-                                        :redeem_count, 
-                                        :daily_deal, 
-                                        :featured, 
-                                        :cost, 
-                                        :expiration,
-                                        :image)
-    end
-    
-    def set_promotion
-      @promotion = params[:id] ? Promotion.find(params[:id]) : Promotion.new
-    end
-    
-    def authorize_promotion
-      authorize @promotion
-    end
+
+  def promotion_params
+    params.require(:promotion).permit(:promotional_id,
+                                      :promotional_type,
+                                      :title,
+                                      :description,
+                                      :code,
+                                      :redeem_count,
+                                      :daily_deal,
+                                      :featured,
+                                      :cost,
+                                      :expiration,
+                                      :image)
+  end
+
+  def set_promotion
+    @promotion = params[:id] ? Promotion.find(params[:id]) : Promotion.new
+  end
+
+  def authorize_promotion
+    authorize @promotion
+  end
+
 end

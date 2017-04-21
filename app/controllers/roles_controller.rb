@@ -15,7 +15,7 @@ class RolesController < ApplicationController
 
   def create
     @role = Role.new(role_params)
-    
+
     authorize_role
 
     respond_to do |format|
@@ -35,8 +35,8 @@ class RolesController < ApplicationController
   def update
     respond_to do |format|
       if @role.update_attributes(role_params)
-       format.html { redirect_to @role, notice: 'Role was successfully updated.' }
-       format.json { head :no_content }
+        format.html { redirect_to @role, notice: 'Role was successfully updated.' }
+        format.json { head :no_content }
       else
         format.html { render action: :edit }
         format.json { render json: @product.errors, status: :unprocessable_entity }
@@ -46,24 +46,24 @@ class RolesController < ApplicationController
 
   def destroy
     @role.destroy
-    
+
     respond_to do |format|
       format.html { redirect_to roles_url }
       format.json { head :no_content }
     end
   end
-  
-  private
-  
-    def role_params
-      params.require(:role).permit(:name, :resource_type, :resource_id)
-    end
-  
-    def set_role
-      @role = params[:id] ? Role.find(params[:id]) : Role.new
-    end
 
-    def authorize_role
-      authorize(@role)
-    end
+  private
+
+  def role_params
+    params.require(:role).permit(:name, :resource_type, :resource_id)
+  end
+
+  def set_role
+    @role = params[:id] ? Role.find(params[:id]) : Role.new
+  end
+
+  def authorize_role
+    authorize(@role)
+  end
 end

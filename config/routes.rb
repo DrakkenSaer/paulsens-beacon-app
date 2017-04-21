@@ -11,9 +11,9 @@ Rails.application.routes.draw do
   end
 
   as :user do
-    get 'login', to: 'devise/sessions#new', as: :new_user_session
-    post 'login', to: 'devise/sessions#create', as: :user_session
-    match 'logout', to: 'devise/sessions#destroy', as: :destroy_user_session, via: Devise.mappings[:user].sign_out_via
+    get 'login', to: 'sessions#new', as: :new_user_session
+    post 'login', to: 'sessions#create', as: :user_session
+    match 'logout', to: 'sessions#destroy', as: :destroy_user_session, via: Devise.mappings[:user].sign_out_via
     get 'account', to: 'users#show', as: :account
     get 'account/points', to: 'points#show', as: :account_points
   end

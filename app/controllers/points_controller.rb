@@ -1,4 +1,6 @@
 class PointsController < ApplicationController
+  include Concerns::Resource::Nested::SetResource
+
   before_action :authenticate_user!
   before_action :set_points, except: [:index, :create]
   before_action :authorize_points, except: [:index, :create]
@@ -26,6 +28,7 @@ class PointsController < ApplicationController
   # POST /points.json
   def create
     @point = Point.new(points_params)
+    authorize_points
 
     respond_to do |format|
       if @point.save
@@ -57,24 +60,24 @@ class PointsController < ApplicationController
   def destroy
     @point.destroy
     respond_to do |format|
-      format.html { redirect_to points_index_url, notice: 'Points was successfully destroyed.' }
+      format.html { redirect_to points_url, notice: 'Points was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_points
-      @point = params[:id] ? Point.find(params[:id]) : current_user.points
-      @resource = @point.find_resource if @point.persisted?
-    end
-    
-    def authorize_points
-      authorize @point
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_points
+    @point = params[:id] ? Point.find(params[:id]) : current_user.points
+    @resource = @point.find_resource if @point.persisted?
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def points_params
-      params.require(:points).permit(:user_id, :value)
-    end
+  def authorize_points
+    authorize @point
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def points_params
+    params.require(:point).permit(:user_id, :value)
+  end
 end

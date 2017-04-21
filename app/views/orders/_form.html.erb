@@ -16,17 +16,12 @@
     <%= f.select :user_id, @users.map { |c| [c.email, c.id] } %>
   </div>
 
-  <%= f.fields_for :promotions do |promotions_form| %>
-    <div class="field">
-      <%= promotions_form.label :id, :promotion_id %>
-      <%= promotions_form.select :id, @products.map { |c| [c.title, c.id] } %>
-    </div>
-
-    <div class="field">
-      <%= promotions_form.label :cost %>
-      <%= promotions_form.text_field :cost %>
-    </div>
+  <h3>Promotions</h3>
+  <%= f.fields_for :promotions do |builder| %>
+    <%= render 'promotion_fields', f: builder %>
   <% end %>
+  
+  <%= link_to_add_fields 'Add Promotion', f, :promotions %>
 
   <div class="actions">
     <%= f.submit %>
