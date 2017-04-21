@@ -33,9 +33,8 @@ RSpec.describe ProductsController, type: :controller do
         @test_product_2 = FactoryGirl.create(:product, title: "test2", description: "test2 description")
         get :index, format: :json
       end
-# Test Bug here
-      it 'HERE!!!!!!!!!!!! returns the listings' do
-        binding.pry
+
+      it 'returns the listings' do
         expect(json["products"].count).to eql Product.count
         expect(json["products"].collect{|l| l["title"]}).to eq([@test_product.title, @test_product_2.title])
       end

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe PointsController, type: :controller do
 
-  let(:valid_attributes) { FactoryGirl.attributes_for(:points)}
+  let(:valid_attributes) { FactoryGirl.attributes_for(:points) }
   let(:invalid_attributes) { FactoryGirl.create(:points, value: nil) }
 
   describe "GET #index" do
@@ -85,15 +85,15 @@ RSpec.describe PointsController, type: :controller do
   describe "GET #edit" do
     before :each do
       @currencies = FactoryGirl.create(:currency)
-      @currencies.points.create(attributes_for(:point))
+      @point = @currencies.points.create(attributes_for(:point))
     end
 
     context "as admin" do
-login_admin
-    it "assigns the requested point as @point" do
-      get :edit, params: {id: @point, point: valid_attributes}
-      expect(response).to have http_status(200)
-    end
+      login_admin
+      it "assigns the requested point as @point" do
+        get :edit, params: {id: @point, point: valid_attributes}
+        expect(response).to have http_status(200)
+      end
     end
   end
 
@@ -101,7 +101,7 @@ login_admin
     context "with valid params" do
       it "creates a new Point" do
         expect {
-          post :create, params: {point: valid_attributes}, session: valid_session
+          post :create, params: {point: valid_attributes}
         }.to change(Point, :count).by(1)
       end
 
