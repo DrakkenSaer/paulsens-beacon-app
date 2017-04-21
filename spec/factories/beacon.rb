@@ -1,9 +1,9 @@
 FactoryGirl.define do
   factory :beacon do
-    title "test"
-    description "test description"
-    uuid "B9407F30-F5F8-466E-AFF9-25556B57FE6D"
-    major_uuid "123123123123123123123123123123123123"
-    minor_uuid "123123123123123123123123123123123123"
+    title Faker::Lorem.word
+    description Faker::Lorem.sentence
+    uuid "#{ SecureRandom.uuid }"
+    major_uuid Random.rand(1000..9999)
+    minor_uuid Random.rand(1000..9999)
   end
 end
