@@ -22,12 +22,6 @@ RSpec.describe Promotion, type: :model do
         subject.code = nil
         expect(subject).to_not be_valid
     end
-    
-    it "assigns a default expiration date if it becomes nil" do
-      subject.expiration = nil
-      subject.save
-      expect(subject.expiration).to_not be_nil
-    end
   end
     
   describe "Assigning default values" do

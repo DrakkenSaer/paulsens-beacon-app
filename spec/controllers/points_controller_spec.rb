@@ -2,9 +2,8 @@ require 'rails_helper'
 
 RSpec.describe PointsController, type: :controller do
 
-  let(:valid_attributes) { FactoryGirl.attributes_for(:point, value: "2", cashable_id: @resource.id, cashable_type: @resource.class.name) }
-
-  let(:invalid_attributes) { FactoryGirl.attributes_for(:point, value: nil) }
+  let(:valid_attributes) { FactoryGirl.build(:points).attributes }
+  let(:invalid_attributes) { FactoryGirl.attributes_for(:points, value: nil) }
 
   describe "GET #index" do
     context "as admin" do
@@ -52,11 +51,18 @@ RSpec.describe PointsController, type: :controller do
         expect(response).to have_http_status(200)
       end
     end
+  end
 
-    context "as non-user" do
-      it "returns http 302" do
-        get :show, id: @point.id
-        expect(response).to have_http_status(302)
+  describe "GET #edit" do
+    before :each do
+      @point = FactoryGirl.create(:points)
+    end
+
+    context "as admin" do
+      login_admin
+      it "assigns the requested point as @point" do
+        get :edit, params: {id: @point, point: valid_attributes.slice('value')}
+        expect(response).to have http_status(200)
       end
     end
   end
@@ -148,14 +154,15 @@ RSpec.describe PointsController, type: :controller do
         end
       end
     end
+  end
 
     context "with invalid attributes" do
       context "as admin" do
         login_admin
         it "change the count by 2" do
-            @resource = FactoryGirl.create(:user)
-            post :create, id: @resource.id, point: invalid_attributes
-            expect(response).to render_template(:new)
+          @resource = FactoryGirl.create(:user)
+          post :create, id: @resource.id, point: invalid_attributes
+          expect(response).to render_template(:new)
         end
       end
 
@@ -177,21 +184,20 @@ RSpec.describe PointsController, type: :controller do
         end
       end
     end
-  end
 
-  describe "PUT #update" do
-    # before :each do
-    #   @resource = FactoryGirl.create(:user)
-    # end
+    describe "PUT #update" do
+      # before :each do
+      #   @resource = FactoryGirl.create(:user)
+      # end
 
-    # context "with valid attributes" do
-    #   context "as admin" do
-    #     login_admin
-    #     it "returns a 302" do
-    #         put :update, id: @resource.id, point: valid_attributes
-    #       expect(response).to have_http_status(302)
-    #     end
-    #   end
+      # context "with valid attributes" do
+      #   context "as admin" do
+      #     login_admin
+      #     it "returns a 302" do
+      #         put :update, id: @resource.id, point: valid_attributes
+      #       expect(response).to have_http_status(302)
+      #     end
+      #   end
 
       # context "as user" do
       #   login_user
@@ -209,16 +215,16 @@ RSpec.describe PointsController, type: :controller do
       #     expect(response).to have_http_status(302)
       #   end
       # end
-    # end
+      # end
 
-    # context "with invalid attributes" do
-    #   context "as admin" do
-    #     login_admin
-    #     it "should render template edit if params are invalid" do
-    #         put :create, id: @resource.id, point: invalid_attributes
-    #         expect(response).to render_template(:edit)
-    #     end
-    #   end
+      # context "with invalid attributes" do
+      #   context "as admin" do
+      #     login_admin
+      #     it "should render template edit if params are invalid" do
+      #         put :create, id: @resource.id, point: invalid_attributes
+      #         expect(response).to render_template(:edit)
+      #     end
+      #   end
 
       # context "as user" do
       #   login_user
@@ -235,21 +241,21 @@ RSpec.describe PointsController, type: :controller do
       #     expect(response).to have_http_status(302)
       #   end
       # end
-    # end
-  end
+      # end
+    end
 
-  describe "DELETE #destroy" do
-    # it "destroys the requested point" do
-    #   point = Point.create! valid_attributes
-    #   expect {
-    #     delete :destroy, params: {id: point.to_param}, session: valid_session
-    #   }.to change(Point, :count).by(-1)
-    # end
+    describe "DELETE #destroy" do
+      # it "destroys the requested point" do
+      #   point = Point.create! valid_attributes
+      #   expect {
+      #     delete :destroy, params: {id: point.to_param}, session: valid_session
+      #   }.to change(Point, :count).by(-1)
+      # end
 
-    # it "redirects to the points list" do
-    #   point = Point.create! valid_attributes
-    #   delete :destroy, params: {id: point.to_param}, session: valid_session
-    #   expect(response).to redirect_to(points_url)
-    # end
+      # it "redirects to the points list" do
+      #   point = Point.create! valid_attributes
+      #   delete :destroy, params: {id: point.to_param}, session: valid_session
+      #   expect(response).to redirect_to(points_url)
+      # end
+    end
   end
-end

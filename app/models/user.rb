@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  include Concerns::Purchasable
+
   has_many :orders
   has_many :line_items, through: :orders, as: :lineable
   has_many :products, -> { distinct }, through: :line_items, source: :lineable, source_type: 'Product'

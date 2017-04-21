@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :currency do
-    type ""
-    cashable nil
-    value "MyString"
+    type "Cash"
+    cashable ""
+    value 123
   end
 end

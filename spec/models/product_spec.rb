@@ -64,26 +64,27 @@ RSpec.describe Product, type: :model do
       context "purchase!" do
         before(:each) do
           @user = FactoryGirl.create(:user)
+          @user.points.update!(value: subject.cost)
         end
         
-        it "takes in a user as an argument" do
-          expect { subject.purchase! }.to raise_error(ArgumentError)
+        it "takes in an orderable object as an argument" do
+          expect { @user.purchase! }.to raise_error(ArgumentError)
         end
         
         it "adds a line_item to the order" do
          subject.save
-         expect { subject.purchase!(@user) }.to change { @user.line_items.count }.by(1)
+         expect { @user.purchase!(subject) }.to change { @user.line_items.count }.by(1)
         end
           
         it "line_item is also associated with an order" do
           subject.save
-          subject.purchase!(@user)
+          @user.purchase!(subject)
           expect(@user.line_items.last.order).to_not be_nil
         end
         
         it "the order is associated to the passed in user" do
           subject.save
-          subject.purchase!(@user)
+          @user.purchase!(subject)
           expect(@user.line_items.last.find_resource).to eql subject
         end
     end

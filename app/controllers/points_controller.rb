@@ -1,5 +1,6 @@
 class PointsController < ApplicationController
-  include Resource::Nested::SetResource
+  include Concerns::Resource::Nested::SetResource
+
   before_action :authenticate_user!
   before_action :set_points, except: [:index, :create]
   before_action :authorize_points, except: [:index, :create]
@@ -65,18 +66,18 @@ class PointsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_points
-      @point = params[:id] ? Point.find(params[:id]) : current_user.points
-      @resource = @point.find_resource if @point.persisted?
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_points
+    @point = params[:id] ? Point.find(params[:id]) : current_user.points
+    @resource = @point.find_resource if @point.persisted?
+  end
 
-    def authorize_points
-      authorize @point
-    end
+  def authorize_points
+    authorize @point
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def points_params
-      params.require(:point).permit(:user_id, :value)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def points_params
+    params.require(:point).permit(:user_id, :value)
+  end
 end
