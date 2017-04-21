@@ -1,4 +1,6 @@
 class PointsController < ApplicationController
+  include Concerns::Resource::Nested::SetResource
+
   before_action :authenticate_user!
   before_action :set_points, except: [:index, :create]
   before_action :authorize_points, except: [:index, :create]
