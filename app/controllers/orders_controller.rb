@@ -26,6 +26,7 @@ class OrdersController < ApplicationController
         format.html { redirect_to @order, notice: 'Order was successfully created.' }
         format.json { render :show, status: :created, location: @order }
       else
+        set_form_resources
         format.html { render :new }
         format.json { render json: @order.errors, status: :unprocessable_entity }
       end
@@ -39,6 +40,7 @@ class OrdersController < ApplicationController
     if @order.update(order_params)
       redirect_to @order, success: "Order successfully updated!"
     else
+      set_form_resources
       render :edit
     end
   end
@@ -65,10 +67,6 @@ class OrdersController < ApplicationController
     
     def authorize_order
        authorize(@order)
-    end
-    
-    def new_line_item(type, id, cost)
-      @order.line_items.new(lineable_type: type, lineable_id: id, cost: cost)
     end
 
 end

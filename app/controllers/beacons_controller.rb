@@ -86,6 +86,6 @@ class BeaconsController < ApplicationController
     end
 
     def set_form_resources
-      @notifications = Notification.all
+      @notifications = policy_scope(Notification)
     end
 end
