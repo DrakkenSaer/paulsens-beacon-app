@@ -64,7 +64,7 @@ RSpec.describe HistoricalEventsController, type: :controller do
 
       it "redirect to login page" do
         get :new
-        expect(response.body).to eq("<html><body>You are being <a href=\"http://test.host/login\">redirected</a>.</body></html>")
+        expect(response.body).to eq('<html><body>You are being <a href=\"http://test.host/login\">redirected</a>.</body></html>')
       end
     end
   end
@@ -99,7 +99,7 @@ RSpec.describe HistoricalEventsController, type: :controller do
 
       it "redirect to login page" do
         get :edit, id: @historical_event.id
-        expect(response.body).to eq("<html><body>You are being <a href=\"http://test.host/login\">redirected</a>.</body></html>")
+        expect(response.body).to eq('<html><body>You are being <a href=\"http://test.host/login\">redirected</a>.</body></html>')
       end
     end
   end
@@ -118,7 +118,7 @@ RSpec.describe HistoricalEventsController, type: :controller do
       end
     end
 
-    context "user have admin right" do
+    context "with admin rights" do
       login_admin
 
       context "with valid parameters" do
@@ -156,7 +156,7 @@ RSpec.describe HistoricalEventsController, type: :controller do
 
       it "redirect to login page" do
         post :create, params: { historical_event: valid_params }
-        expect(response.body).to eq("<html><body>You are being <a href=\"http://test.host/login\">redirected</a>.</body></html>")
+        expect(response.body).to eq('<html><body>You are being <a href=\"http://test.host/login\">redirected</a>.</body></html>')
       end
     end
   end
