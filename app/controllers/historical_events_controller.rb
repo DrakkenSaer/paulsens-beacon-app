@@ -26,7 +26,7 @@ class HistoricalEventsController < ApplicationController
   # POST /historical_events.json
   def create
     @historical_event = HistoricalEvent.new(historical_event_params)
-    
+
     authorize_historical_event
 
     respond_to do |format|
@@ -39,14 +39,14 @@ class HistoricalEventsController < ApplicationController
       end
     end
   end
-  
+
   # PATCH/PUT /historical_events/1
   # PATCH/PUT /historical_events/1.json
   def update
     respond_to do |format|
       if @historical_event.update_attributes(historical_event_params)
-       format.html { redirect_to @historical_event, notice: 'Historical Event was successfully updated.' }
-       format.json { render :show, status: :ok, location: @historical_event }
+        format.html { redirect_to @historical_event, notice: 'Historical Event was successfully updated.' }
+        format.json { render :show, status: :ok, location: @historical_event }
       else
         format.html { render :edit }
         format.json { render json: @historical_event.errors, status: :unprocessable_entity }
@@ -59,25 +59,24 @@ class HistoricalEventsController < ApplicationController
   # DELETE /historical_events/1.json
   def destroy
     @historical_event.destroy
-    
+
     respond_to do |format|
       format.html { redirect_to historical_events_url, notice: 'historical_event was successfully destroyed.'  }
       format.json { head :no_content }
     end
   end
-  
+
   private
-  
-    def historical_event_params
-      params.require(:historical_event).permit(:title, :description, :date, :image)
-    end
-  
-    def set_historical_event
-      @historical_event = params[:id] ? HistoricalEvent.find(params[:id]) : HistoricalEvent.new
-    end
 
-    def authorize_historical_event
-      authorize(@historical_event)
-    end
+  def historical_event_params
+    params.require(:historical_event).permit(:title, :description, :date, :image)
+  end
 
+  def set_historical_event
+    @historical_event = params[:id] ? HistoricalEvent.find(params[:id]) : HistoricalEvent.new
+  end
+
+  def authorize_historical_event
+    authorize(@historical_event)
+  end
 end

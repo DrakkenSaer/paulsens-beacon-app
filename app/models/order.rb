@@ -10,6 +10,8 @@ class Order < ApplicationRecord
     accepts_nested_attributes_for :products, :promotions, reject_if: :all_blank
 
     resourcify
+    
+    validates :user, has_enough_points: true
 
     include AASM
     STATES = [:pending, :activated, :completed, :canceled]
