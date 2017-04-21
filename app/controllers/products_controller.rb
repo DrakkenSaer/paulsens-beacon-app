@@ -76,6 +76,6 @@ class ProductsController < ApplicationController
     end
 
     def set_form_resources
-      @promotions = Promotion.all
+      @promotions = policy_scope(Promotion)
     end
 end
