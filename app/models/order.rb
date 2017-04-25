@@ -1,6 +1,6 @@
 class Order < ApplicationRecord
     require 'validators/points/has_enough_points_validator'
-    
+  
     include Helpers::ResourceStateHelper
     include Helpers::ResourceRecordHelper
 
@@ -13,7 +13,7 @@ class Order < ApplicationRecord
 
     resourcify
     
-    validates :user, has_enough_points: true, on: :create
+    validates :user, has_enough_points: true, if: lambda { transitioning_to_state?(:complete) }
 
     include AASM
     STATES = [:pending, :activated, :completed, :canceled]
@@ -24,7 +24,7 @@ class Order < ApplicationRecord
 
         before_all_events :set_state_user
 
-        event :complete do
+        event :complete, guards: lambda { @user.has_enough_points?(self) } do
             transitions from: STATES, to: :completed, success: [lambda { user.points.spend!(total_cost) }, :set_completion_date!]
         end
 

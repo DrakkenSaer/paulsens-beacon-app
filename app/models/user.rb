@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  include Concerns::Purchasable
+  include Validators::Currency  
 
   has_many :orders
   has_many :line_items, through: :orders, as: :lineable

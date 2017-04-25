@@ -1,6 +1,8 @@
 class HasEnoughPointsValidator < ActiveModel::EachValidator
+    include Validators::Currency  
+
     def validate_each(record, attribute, object)
-        unless object.respond_to?(:points) && (object.points.value - record.total_cost) >= 0
+        unless object.has_enough_points?(record)
             record.errors[attribute] << (options[:message] || "does not have enough points")
         end
     end
