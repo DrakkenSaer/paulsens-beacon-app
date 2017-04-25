@@ -65,6 +65,7 @@ RSpec.describe PointsController, type: :controller do
       end
     end
 
+    context "as user" do
       login_user
       it "should raise_error if not admin" do
         expect {
