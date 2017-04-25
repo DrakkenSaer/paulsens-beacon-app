@@ -310,8 +310,14 @@ RSpec.describe BeaconsController, type: :controller do
       context "invalid params" do
         before(:each) do
           @test_beacon = FactoryGirl.create(:beacon)
+          @beacon_attributes = @test_beacon.attributes
           put :update, params: { id: @test_beacon.id, beacon: invalid_params }
           @test_beacon.reload
+        end
+
+        it "should not update object paramaters" do
+          expect(@test_beacon.title).to eql @beacon_attributes['title']
+          expect(@test_beacon.description).to eql @beacon_attributes['description']
         end
 
         it "should rerender edit page when update unsuccessful" do
