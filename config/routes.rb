@@ -10,12 +10,17 @@ Rails.application.routes.draw do
     resources :user_roles, path: "roles", except: [:edit, :update]
   end
 
-  as :user do
+  devise_scope :user do
     get 'login', to: 'sessions#new', as: :new_user_session
     post 'login', to: 'sessions#create', as: :user_session
     match 'logout', to: 'sessions#destroy', as: :destroy_user_session, via: Devise.mappings[:user].sign_out_via
     get 'account', to: 'users#show', as: :account
     get 'account/points', to: 'points#show', as: :account_points
-  end
 
+    namespace :api do
+      get 'login', to: 'sessions#new', as: :new_user_session
+      post 'login', to: 'sessions#create', as: :user_session
+      match 'logout', to: 'sessions#destroy', as: :destroy_user_session, via: Devise.mappings[:user].sign_out_via
+    end
+  end
 end

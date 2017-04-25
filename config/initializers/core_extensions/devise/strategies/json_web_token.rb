@@ -9,7 +9,8 @@ module Devise
                 return fail! unless claims
                 return fail! unless claims.has_key?('email') && claims.has_key?('password')
 
-                success! User.find_by_id claims['user_id']
+                user = User.find_for_authentication(email: claims['email'])
+                success! user if user.valid_password?(claims['password'])
             end
             
             protected
