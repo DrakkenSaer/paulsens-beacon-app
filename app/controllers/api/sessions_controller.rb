@@ -9,4 +9,18 @@ class Api::SessionsController < SessionsController
                 status: :created, 
                 location: after_sign_in_path_for(resource)
     end
+    
+
+
+    def respond_to_on_destroy
+        flash[:notice] = find_message(:signed_out)
+
+        # We actually need to hardcode this as Rails default responder doesn't
+        # support returning empty response on GET request
+        respond_to do |format|
+            format.all { head :no_content }
+            format.any(*navigational_formats) { render json: flash.to_hash, status: :ok }
+        end
+    end
+
 end  

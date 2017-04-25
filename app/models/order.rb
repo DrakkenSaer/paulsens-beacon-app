@@ -13,7 +13,7 @@ class Order < ApplicationRecord
 
     resourcify
     
-    validates :user, has_enough_points: true
+    validates :user, has_enough_points: true, on: :create
 
     include AASM
     STATES = [:pending, :activated, :completed, :canceled]

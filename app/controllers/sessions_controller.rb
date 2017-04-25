@@ -8,8 +8,7 @@ class SessionsController < Devise::SessionsController
         # support returning empty response on GET request
         respond_to do |format|
             format.all { head :no_content }
-            format.json { render json: flash.to_hash }
-            format.any(*navigational_formats) { redirect_to after_sign_out_path_for(resource_name) }
+            format.any(*navigational_formats) { redirect_to after_sign_out_path_for(resource_name), flash: flash.to_hash }
         end
     end
 end

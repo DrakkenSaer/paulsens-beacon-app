@@ -12,4 +12,8 @@ class UserPolicy < ApplicationPolicy
     def show?
         is_admin? or matching_user?
     end
+
+    def edit?
+        is_admin? or matching_user?
+    end
 end

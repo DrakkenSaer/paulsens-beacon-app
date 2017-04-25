@@ -1,4 +1,4 @@
-class UsersController < ApplicationController
+class UsersController < DeviseController
   before_action :set_user, except: [:index]
   before_action :authorize_user, except: [:index]
 
@@ -13,13 +13,26 @@ class UsersController < ApplicationController
   def show
   end
 
-  private
-  # Use callbacks to share common setup or constraints between actions.
-  def set_user
-    @user = params[:id] ? User.find(params[:id]) : current_user
+  def edit
+    render template: 'devise/registrations/edit'
   end
 
-  def authorize_user
-    authorize @user
-  end
+  private
+
+    # Use callbacks to share common setup or constraints between actions.
+    def set_user
+      @user = params[:id] ? User.find(params[:id]) : current_user
+    end
+  
+    def authorize_user
+      authorize @user
+    end
+
+  protected
+  
+    def devise_mapping
+      request.env["devise.mapping"] = Devise.mappings[:user]
+      @devise_mapping ||= request.env["devise.mapping"]
+    end
+
 end
