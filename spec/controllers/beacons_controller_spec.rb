@@ -26,7 +26,7 @@ RSpec.describe BeaconsController, type: :controller do
 
   describe "GET #index" do
     before :each do
-      @test_beacon = FactoryGirl.create(:beacon, title: "test2", description: "test2 description",  uuid: 'A9307F30-F5F9-466E-AFF9-25556B57FE6D', major_uuid: "54312", minor_uuid: "53701")
+      @test_beacon = FactoryGirl.create(:beacon)
       @test_beacon_2 = FactoryGirl.create(:beacon, title: "test3", description: "test3 description",  uuid: 'A9337F30-F5F9-466E-AFF9-25556B57FE6D', major_uuid: "34312", minor_uuid: "53301")
       @test_beacon.notifications.create(attributes_for(:notification))
     end
@@ -312,11 +312,6 @@ RSpec.describe BeaconsController, type: :controller do
           @test_beacon = FactoryGirl.create(:beacon)
           put :update, params: { id: @test_beacon.id, beacon: invalid_params }
           @test_beacon.reload
-        end
-
-        it "should not update object paramaters" do
-          expect(@test_beacon.title).to eql "test"
-          expect(@test_beacon.description).to eql "test description"
         end
 
         it "should rerender edit page when update unsuccessful" do
