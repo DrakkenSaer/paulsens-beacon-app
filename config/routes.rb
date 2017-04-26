@@ -17,7 +17,7 @@ Rails.application.routes.draw do
     get 'account', to: 'users#show', as: :account
     get 'account/points', to: 'points#show', as: :account_points
 
-    namespace :api do
+    namespace :api, constraints: { format: 'json' } do
       post 'login', to: 'sessions#create', as: :user_session
       match 'logout', to: 'sessions#destroy', as: :destroy_user_session, via: Devise.mappings[:user].sign_out_via
     end
