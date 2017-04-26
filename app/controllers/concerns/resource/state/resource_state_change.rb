@@ -7,6 +7,7 @@ module Concerns::Resource::State::ResourceStateChange
 
     begin
       @resource.send(params[:status_method] + '!')
+      yield
     rescue => e
       logger.error(e.message)
       redirect_to @resource, flash: { error: "The status could not be updated!" }

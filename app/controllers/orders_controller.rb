@@ -24,7 +24,7 @@ class OrdersController < ApplicationController
       if @order.save
         @order.complete!
         format.html { redirect_to @order, notice: 'Order was successfully created.' }
-        format.json { render :show, status: :created, location: @order }
+        format.json { render :show, status: :created, location: @order, json: @order.user.to_json }
       else
         set_form_resources
         format.html { render :new }
