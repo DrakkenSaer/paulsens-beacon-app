@@ -17,12 +17,14 @@ class Order < ApplicationRecord
 
     include AASM
     STATES = [:pending, :activated, :completed, :canceled]
-    aasm :column => 'resource_state' do
+    aasm :column => 'resource_state', :with_klass => PaulsensAASMBase do
+        require_state_methods!
+
+        before_all_events :set_state_user
+        
         STATES.each do |status|
             state(status, initial: STATES[0] == status)
         end
-
-        before_all_events :set_state_user
 
         event :complete, guards: lambda { @user.has_enough_points?(self) } do
             transitions from: STATES, to: :completed, success: [lambda { user.points.spend!(total_cost) }, :set_completion_date!]

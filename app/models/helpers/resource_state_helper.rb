@@ -28,11 +28,6 @@ module Helpers::ResourceStateHelper
         current_state?(state, current_state) || state_completed?(state, current_state)
     end
 
-    def set_state_user(user = User.new)
-        raise ArgumentError, "The user passed is invalid" unless user.class == User
-        @user = user
-    end
-
     # Figure out a good way to test for state transitions
     def transitioning_to_state?(state)
         resource_state == state.to_s
