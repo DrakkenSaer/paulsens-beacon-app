@@ -15,7 +15,7 @@
       <% if user_signed_in? %>
         curl -X GET --header 'Authorization: Bearer <%= JWTEncoder.encode({email: current_user.email, password: 'password123'}) %>' <%= request.original_url %>
       <% end %>
-    <% end if Rails.env.development? %>
+    <% end %>
 
     <%= render 'shared/header' %>
 

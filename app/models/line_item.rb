@@ -3,7 +3,7 @@ class LineItem < ApplicationRecord
   include Helpers::ResourceStateHelper
 
   before_validation :set_default_item_cost
-  
+
   belongs_to :lineable, polymorphic: true
   belongs_to :order, inverse_of: :line_items
 
