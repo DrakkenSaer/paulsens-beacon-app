@@ -14,6 +14,6 @@ class PointPolicy < ApplicationPolicy
     end
 
     def update?
-        is_admin?
+        is_admin? or resource_user?
     end
 end
