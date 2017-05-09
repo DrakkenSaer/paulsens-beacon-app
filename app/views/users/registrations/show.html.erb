@@ -1,0 +1,4 @@
+<p id="notice"><%= notice %></p>
+
+<%= link_to 'Edit', @user == current_user ? edit_user_registration_path : edit_user_path(@user) %> |
+<%= link_to 'Back', users_path %>

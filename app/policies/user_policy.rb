@@ -13,7 +13,11 @@ class UserPolicy < ApplicationPolicy
         is_admin? or matching_user?
     end
 
-    def edit?
+    def update?
         is_admin? or matching_user?
+    end
+
+    def create?
+        is_admin?
     end
 end

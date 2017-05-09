@@ -19,6 +19,10 @@ class User < ApplicationRecord
   after_create :assign_default_role
   after_create :assign_default_points
 
+  def admin?
+    self.has_role?(:admin)
+  end
+
   protected
   
     def assign_default_role
@@ -28,4 +32,5 @@ class User < ApplicationRecord
     def assign_default_points
       self.create_points! if self.points.nil?
     end
+
 end

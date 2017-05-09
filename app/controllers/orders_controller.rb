@@ -22,7 +22,7 @@ class OrdersController < ApplicationController
 
     respond_to do |format|
       if @order.save
-        @order.complete!
+        @order.complete!(current_user)
         format.html { redirect_to @order, notice: 'Order was successfully created.' }
         format.json { render :show, status: :created, location: @order, json: @order.user.to_json }
       else

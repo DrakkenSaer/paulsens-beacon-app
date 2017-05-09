@@ -1,4 +1,4 @@
-class SessionsController < Devise::SessionsController
+class Users::SessionsController < Devise::SessionsController
     private
     
     def respond_to_on_destroy
