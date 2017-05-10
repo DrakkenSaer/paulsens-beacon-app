@@ -8,7 +8,7 @@ class Api::Users::SessionsController < Devise::SessionsController
         yield resource if block_given?
         
         @encoded_token = JWTEncoder.encode({email: resource.email, password: params[:user][:password]})
-        render 'users/show.json', user: resource, status: :created
+        render 'users/registrations/show.json', user: resource, status: :created
     end
     
 
