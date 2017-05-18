@@ -1,5 +1,9 @@
 class Users::RegistrationsController < Devise::RegistrationsController
+  respond_to :json
+
   prepend_before_action :authenticate_scope!, except: [:new, :create, :cancel]
+  before_action :set_user, except: [:index, :create]
+  before_action :authorize_user, except: [:index, :create]
 
   # GET /users
   # GET /users.json
@@ -31,6 +35,29 @@ class Users::RegistrationsController < Devise::RegistrationsController
       respond_with resource
     end
   end
+  
+  
+    def respond_with(*resources, &block)
+      if self.class.mimes_for_respond_to.empty?
+        raise "In order to use respond_with, first you need to declare the " \
+          "formats your controller responds to in the class level."
+      end
+
+      mimes = collect_mimes_from_class_level
+      collector = ActionController::MimeResponds::Collector.new(mimes, request.variant)
+      block.call(collector) if block_given?
+
+      if format = collector.negotiate_format(request)
+        _process_format(format)
+        options = resources.size == 1 ? {} : resources.extract_options!
+        options = options.clone
+        options[:default_response] = collector.response
+        require 'pry'; binding.pry
+        (options.delete(:responder) || self.class.responder).call(self, resources, options)
+      else
+        raise ActionController::UnknownFormat
+      end
+    end
 
   private
 
@@ -50,7 +77,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   protected
   
     def update_resource(resource, params)
-      current_user.admin? ? resource.update_without_password(params) : super
+      (current_user.admin? && params[:current_password].nil?) ? resource.update(params) : super
     end
   
     def after_update_path_for(resource)

@@ -77,6 +77,6 @@ class PointsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def points_params
-    params.require(:points).permit(:user_id, :value)
+    params.require(:point).permit(:user_id, :value)
   end
 end

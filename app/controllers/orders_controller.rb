@@ -22,7 +22,7 @@ class OrdersController < ApplicationController
 
     respond_to do |format|
       if @order.save
-        @order.complete!(current_user)
+        @order.complete!(@order.user)
         format.html { redirect_to @order, notice: 'Order was successfully created.' }
         format.json { render :show, status: :created, location: @order, json: @order.user.to_json }
       else
@@ -55,16 +55,16 @@ class OrdersController < ApplicationController
     def order_params
       params.require(:order).permit(:user_id, promotions_attributes: [:id, :cost])
     end
-    
+
     def set_order
       @order = params[:id] ? Order.find(params[:id]) : Order.new
     end
-    
+
     def set_form_resources
       @users = User.all
       @products = Product.all
     end
-    
+
     def authorize_order
        authorize(@order)
     end
