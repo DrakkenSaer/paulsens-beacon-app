@@ -51,16 +51,16 @@ ActiveRecord::Schema.define(version: 20170414070308) do
   end
 
   create_table "line_items", force: :cascade do |t|
-    t.string   "lineable_type",  null: false
-    t.integer  "lineable_id",    null: false
+    t.string   "orderable_type", null: false
+    t.integer  "orderable_id",   null: false
     t.integer  "order_id",       null: false
     t.float    "item_cost",      null: false
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
     t.string   "resource_state"
     t.datetime "redeemed_date"
-    t.index ["lineable_type", "lineable_id"], name: "index_line_items_on_lineable_type_and_lineable_id", using: :btree
     t.index ["order_id"], name: "index_line_items_on_order_id", using: :btree
+    t.index ["orderable_type", "orderable_id"], name: "index_line_items_on_orderable_type_and_orderable_id", using: :btree
   end
 
   create_table "notifications", force: :cascade do |t|

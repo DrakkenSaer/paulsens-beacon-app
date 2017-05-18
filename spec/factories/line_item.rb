@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :line_item do
     association :order
-    association :lineable, factory: :product
+    association :orderable, factory: :product
   end
 end

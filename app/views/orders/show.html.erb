@@ -7,7 +7,7 @@
 
 <% @order.line_items.each_with_index do |line_item, index| %>
 <ul>
-    <h3><%= line_item.lineable_type + ' #' + index.to_s %></h3>
+    <h3><%= line_item.orderable_type + ' #' + index.to_s %></h3>
     <h3>Item Cost: <%= line_item.item_cost %></h3>
 
     <ul>
