@@ -9,6 +9,10 @@ class RewardPolicy < ApplicationPolicy
         end
     end
     
+    def show?
+       is_admin? || resource_user? 
+    end
+
     def create?
         true 
     end
@@ -20,4 +24,5 @@ class RewardPolicy < ApplicationPolicy
     def destroy?
         is_admin?
     end
+    
 end

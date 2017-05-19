@@ -68,7 +68,6 @@ class PointsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_points
     @point = params[:id] ? Point.find(params[:id]) : current_user.points
-    @resource = @point.polymorphic_resource if @point.persisted?
   end
 
   def authorize_points

@@ -75,6 +75,7 @@ User.all.each do |user|
   order.products << products
   order.promotions << promotions
   order.save!
+  order.complete!
 end
 
 # 5.times do |i|
