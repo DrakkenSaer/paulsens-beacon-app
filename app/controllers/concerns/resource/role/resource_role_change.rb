@@ -1,29 +1,20 @@
-module Resource::Role::ResourceRoleChange
+module Concerns::Resource::Role::ResourceRoleChange
   
-  # Takes a parameter, which is the name of the role method to be invoked. 
+  # Takes a parameter list of roles to be added to the resource
   def resource_role_change
     model = controller_name.singularize.capitalize.constantize
-    @resource ||= model.send(:find, params[:id])
-    roles = params[:roles].nil? ? [] : params[:roles].map(&:to_sym)
+    id = params[:id] || params["#{controller_name.singularize}_id"]
+    resource = model.send(:find, id)
 
-    begin
-      roles.each do |role_name|
-        role = Role.find_by_name(role_name)
-        if @resource.roles.include? role
-          next
-        else
-          @resource.roles << role
-        end
-      end
+    # Allow the controller to optionally set the target resource with @resource
+    target_resource = @resource || resource
 
-      inverse_role_names = @resource.class::ROLES - roles
-      inverse_role_list = inverse_role_names.map { |role_name| Role.find_by_name(role_name) }
-      @resource.roles = @resource.roles - inverse_role_list
-    rescue => e
-      logger.error(e.message)
-      redirect_to @resource, flash: { error: "The role could not be updated!" }
+    roles = (params[:roles] || params[controller_name.singularize][:role_ids]).map { |role_id| Role.find(role_id) if role_id.present? }.compact
+
+    if resource.change_roles(roles, target_resource.roles)
+      redirect_to target_resource, flash: { success: "Role updated successfully!" }
     else
-      redirect_to @resource, flash: { success: "Role updated successfully!" }
+      redirect_to target_resource, flash: { error: "The role could not be updated!" }
     end
   end
 

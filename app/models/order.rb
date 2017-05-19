@@ -26,8 +26,11 @@ class Order < ApplicationRecord
             state(status, initial: STATES[0] == status)
         end
 
-        event :complete, guards: lambda { @user.has_enough_points?(self) } do
-            transitions from: STATES, to: :completed, success: [lambda { user.points.spend!(total_cost) }, :set_completion_date!]
+        event :complete, guards: lambda { @user.has_enough_points?(self.total_cost) } do
+            transitions from: STATES, to: :completed, success: [lambda { @user.points.spend!(total_cost) },
+                                                                lambda { @user.products << self.products },
+                                                                lambda { @user.promotions << self.promotions },
+                                                                :set_completion_date!]
         end
 
         event :cancel do

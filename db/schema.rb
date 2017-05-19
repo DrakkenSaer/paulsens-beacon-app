@@ -54,7 +54,7 @@ ActiveRecord::Schema.define(version: 20170519004059) do
     t.string   "orderable_type", null: false
     t.integer  "orderable_id",   null: false
     t.integer  "order_id",       null: false
-    t.float    "cost",      null: false
+    t.float    "cost",           null: false
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
     t.string   "resource_state"
@@ -89,7 +89,7 @@ ActiveRecord::Schema.define(version: 20170519004059) do
 
   create_table "products", force: :cascade do |t|
     t.boolean  "featured",           default: false, null: false
-    t.string   "cost",               default: "0",   null: false
+    t.float    "cost",               default: 0.0,   null: false
     t.string   "title",                              null: false
     t.text     "description",                        null: false
     t.datetime "created_at",                         null: false
@@ -109,7 +109,7 @@ ActiveRecord::Schema.define(version: 20170519004059) do
     t.integer  "redeem_count",       default: 0,     null: false
     t.boolean  "daily_deal",         default: false, null: false
     t.boolean  "featured",           default: false, null: false
-    t.integer  "cost",               default: 0,     null: false
+    t.float    "cost",               default: 0.0,   null: false
     t.datetime "expiration"
     t.datetime "created_at",                         null: false
     t.datetime "updated_at",                         null: false

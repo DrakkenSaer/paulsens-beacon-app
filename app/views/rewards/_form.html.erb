@@ -1,0 +1,22 @@
+<%= form_for(reward) do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+
+  <div class="field">
+    <%= f.label :user_id, :user %>
+    <%= f.select :user_id, @users.map { |c| [c.email, c.id] } %>
+  </div>
+
+  <div class="field">
+    <%= f.label :rewardable_id, :item %>
+    <%= f.select :rewardable_id, @rewards.map { |c| [c.title, c.id] } %>
+  </div>
+
+  <div class="field">
+    <%= f.label :rewardable_type, :item %>
+    <%= f.select :rewardable_type, @rewards.map { |c| [c.title, c.class.name] } %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

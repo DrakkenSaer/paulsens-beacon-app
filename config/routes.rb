@@ -2,7 +2,7 @@
 Rails.application.routes.draw do
   root to: "pages#show", page: "home"
 
-  resources :beacons, :historical_events, :notifications, :orders, :products, :promotions, :roles, :points
+  resources :beacons, :historical_events, :notifications, :orders, :products, :promotions, :roles, :points, :rewards
 
   devise_for :users, path: 'account', skip: [:sessions], path_names: { cancel: 'deactivate' }, controllers: { registrations: "users/registrations" }
 

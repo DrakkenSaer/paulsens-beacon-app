@@ -1,5 +1,5 @@
 module Concerns::Resource::Nested::SetResource
-    
+
     private
 
         # This method is used to infer an object's class and it's ID by using common patterns among routes
@@ -8,7 +8,6 @@ module Concerns::Resource::Nested::SetResource
             resource_route = route_array[1]
             klass = resource_route.singularize.capitalize.constantize
             object_id = route_array[2]
-            @resource = object_id ? klass.find(object_id) : klass.new
+            @resource = (object_id.present? && object_id.is_i?) ? klass.find(object_id) : klass.new
         end
-
 end

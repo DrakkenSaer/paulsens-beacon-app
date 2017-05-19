@@ -3,7 +3,8 @@ class PaulsensAASMBase < AASM::Base
     def require_state_methods!
         klass.class_eval do
             # Allows for passing User to state event method
-            def set_state_user(user = User.new)
+            def set_state_user(user = nil)
+                user ||= self.user || User.new
                 raise ArgumentError, "The user passed is invalid" unless user.class == User
                 @user = user
             end

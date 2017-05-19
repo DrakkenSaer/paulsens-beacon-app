@@ -1,5 +1,9 @@
 class User < ApplicationRecord
-  include Validators::Currency  
+  include Concerns::Roles::RoleModification
+  include Validators::Currency
+  Roles::Helper.invoke(self)
+
+  ROLES = [:customer, :employee, :admin]
 
   has_many :orders
   has_many :rewards

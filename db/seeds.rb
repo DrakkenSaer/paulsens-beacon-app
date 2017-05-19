@@ -36,6 +36,8 @@ resource_interval.times do |i|
     user.add_role resource_roles[:user].sample
 end
 
+User.all.map { |user| user.points.update(value: 10000 ) }
+
 resource_interval.times do |i|
     Beacon.create!( title: Faker::Company.name + "_#{i}",
                     description: Faker::Lorem.paragraph,
