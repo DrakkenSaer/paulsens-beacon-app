@@ -22,7 +22,7 @@ class Order < ApplicationRecord
 
         before_all_events :set_state_user
         
-        STATES.each do |status|
+        STATES.map do |status|
             state(status, initial: STATES[0] == status)
         end
 
@@ -38,13 +38,13 @@ class Order < ApplicationRecord
     # This is temporary, waiting to think of a better solution. Do not test.
     def promotions_attributes=(promotions_attributes)
         promotions_attributes.each do |key, promotion_attributes|
-            line_items.build(orderable_type: 'Promotion', orderable_id: promotions_attributes[key][:id], item_cost: promotions_attributes[key][:cost])
+            line_items.build(orderable_type: 'Promotion', orderable_id: promotions_attributes[key][:id], cost: promotions_attributes[key][:cost])
         end
     end
     
     # Tallies up the cost of each LineItem rounded to the second decimal place
     def total_cost
-        cost_array = line_items.map(&:item_cost)
+        cost_array = line_items.map(&:cost)
         sum_of_cost_array = cost_array.present? ? cost_array.inject(:+) : 0
         sum_of_cost_array.round(2)
     end

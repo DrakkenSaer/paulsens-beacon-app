@@ -1,6 +1,9 @@
 class Reward < ApplicationRecord
+  include Concerns::Polymorphic::Helpers
+  include Helpers::ResourceStateHelper
+
   belongs_to :user
-  belongs_to :rewardable
+  belongs_to :rewardable, polymorphic: true
 
   include AASM
   STATES = [:pending, :activated, :redeemed]
@@ -9,7 +12,7 @@ class Reward < ApplicationRecord
 
     before_all_events :set_state_user
 
-    STATES.each do |status|
+    STATES.map do |status|
       state(status, initial: STATES[0] == status)
     end
 

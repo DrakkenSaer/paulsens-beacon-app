@@ -8,10 +8,10 @@
 <% @order.line_items.each_with_index do |line_item, index| %>
 <ul>
     <h3><%= line_item.orderable_type + ' #' + index.to_s %></h3>
-    <h3>Item Cost: <%= line_item.item_cost %></h3>
+    <h3>Item Cost: <%= line_item.cost %></h3>
 
     <ul>
-    <% line_item.find_resource.attributes.map do |key, value| %>
+    <% line_item.polymorphic_resource.attributes.map do |key, value| %>
         <li>
             <%= key %>: <%= value %>
         </li>

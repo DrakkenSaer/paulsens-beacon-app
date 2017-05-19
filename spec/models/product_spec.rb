@@ -85,7 +85,7 @@ RSpec.describe Product, type: :model do
         it "the order is associated to the passed in user" do
           subject.save
           @user.purchase!(subject)
-          expect(@user.line_items.last.find_resource).to eql subject
+          expect(@user.line_items.last.polymorphic_resource).to eql subject
         end
     end
   end

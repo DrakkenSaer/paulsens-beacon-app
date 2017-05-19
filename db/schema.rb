@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170518202330) do
+ActiveRecord::Schema.define(version: 20170519004059) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,7 +54,7 @@ ActiveRecord::Schema.define(version: 20170518202330) do
     t.string   "orderable_type", null: false
     t.integer  "orderable_id",   null: false
     t.integer  "order_id",       null: false
-    t.float    "item_cost",      null: false
+    t.float    "cost",      null: false
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
     t.string   "resource_state"
@@ -127,6 +127,7 @@ ActiveRecord::Schema.define(version: 20170518202330) do
     t.datetime "redeemed_date"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
+    t.string   "resource_state"
     t.index ["rewardable_type", "rewardable_id"], name: "index_rewards_on_rewardable_type_and_rewardable_id", using: :btree
     t.index ["user_id"], name: "index_rewards_on_user_id", using: :btree
   end

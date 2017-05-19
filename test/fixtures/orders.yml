@@ -2,8 +2,8 @@
 
 one:
   user: one
-  item_cost: MyString
+  cost: MyString
 
 two:
   user: two
-  item_cost: MyString
+  cost: MyString
