@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170414070308) do
+ActiveRecord::Schema.define(version: 20170518202330) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,7 +58,6 @@ ActiveRecord::Schema.define(version: 20170414070308) do
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
     t.string   "resource_state"
-    t.datetime "redeemed_date"
     t.index ["order_id"], name: "index_line_items_on_order_id", using: :btree
     t.index ["orderable_type", "orderable_id"], name: "index_line_items_on_orderable_type_and_orderable_id", using: :btree
   end
@@ -121,6 +120,17 @@ ActiveRecord::Schema.define(version: 20170414070308) do
     t.index ["promotional_type", "promotional_id"], name: "index_promotions_on_promotional_type_and_promotional_id", using: :btree
   end
 
+  create_table "rewards", force: :cascade do |t|
+    t.integer  "user_id",         null: false
+    t.string   "rewardable_type", null: false
+    t.integer  "rewardable_id",   null: false
+    t.datetime "redeemed_date"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.index ["rewardable_type", "rewardable_id"], name: "index_rewards_on_rewardable_type_and_rewardable_id", using: :btree
+    t.index ["user_id"], name: "index_rewards_on_user_id", using: :btree
+  end
+
   create_table "roles", force: :cascade do |t|
     t.string   "name"
     t.string   "resource_type"
@@ -161,4 +171,5 @@ ActiveRecord::Schema.define(version: 20170414070308) do
 
   add_foreign_key "line_items", "orders"
   add_foreign_key "orders", "users"
+  add_foreign_key "rewards", "users"
 end

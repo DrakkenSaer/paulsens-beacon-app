@@ -10,7 +10,7 @@ class LineItem < ApplicationRecord
   validates :item_cost, presence: true
 
   include AASM
-  STATES = [:pending, :activated, :redeemed]
+  STATES = [:pending]
   aasm :column => 'resource_state', :with_klass => PaulsensAASMBase do
     require_state_methods!
 
@@ -18,10 +18,6 @@ class LineItem < ApplicationRecord
 
     STATES.each do |status|
       state(status, initial: STATES[0] == status)
-    end
-
-    event :redeem do
-      transitions from: STATES, to: :redeemed, success: :set_redeemed_date!
     end
   end
 
@@ -31,8 +27,5 @@ class LineItem < ApplicationRecord
       self.item_cost = self.send(resourcable_type_name).constantize.find( self.send(resourcable_id_name) ).cost if self.item_cost.nil?
     end
 
-    def set_redeemed_date!(date = DateTime.now)
-      self.update!(redeemed_date: date)
-    end
 
 end
