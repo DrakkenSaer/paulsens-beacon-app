@@ -2,17 +2,15 @@ class PointsController < ApplicationController
   include Concerns::Resource::Nested::SetResource
 
   before_action :authenticate_user!
+  before_action :set_resource
+  before_action :set_form_resources, only: [:new, :edit]
   before_action :set_points, except: [:index, :create]
   before_action :authorize_points, except: [:index, :create]
 
-  # GET /points
-  # GET /points.json
   def index
-    @points = policy_scope(Point)
+    @points = policy_scope(@resource.points)
   end
 
-  # GET /points/1
-  # GET /points/1.json
   def show
   end
 
@@ -65,17 +63,23 @@ class PointsController < ApplicationController
   end
 
   private
-  # Use callbacks to share common setup or constraints between actions.
-  def set_points
-    @point = params[:id] ? Point.find(params[:id]) : current_user.points
-  end
+  
+    # Use callbacks to share common setup or constraints between actions.
+    def set_points
+      @point = params[:id] ? Point.find(params[:id]) : current_user.points
+    end
+  
+    def authorize_points
+      authorize @point
+    end
+  
+    def set_form_resources
+      @users = User.all
+    end
 
-  def authorize_points
-    authorize @point
-  end
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def points_params
+      params.require(:point).permit(:user_id, :value)
+    end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
-  def points_params
-    params.require(:point).permit(:user_id, :value)
-  end
 end

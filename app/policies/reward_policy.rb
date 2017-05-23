@@ -24,5 +24,5 @@ class RewardPolicy < ApplicationPolicy
     def destroy?
         is_admin?
     end
-    
+
 end

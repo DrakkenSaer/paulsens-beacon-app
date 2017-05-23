@@ -11,6 +11,8 @@ class User < ApplicationRecord
   has_many :promotions, -> { distinct }, through: :rewards, source: :rewardable, source_type: 'Promotion'
   has_one :points, as: :cashable, class_name: 'Point'
 
+  accepts_nested_attributes_for :points, reject_if: [:all_blank, :new_record?]
+
   rolify
   
   # Include default devise modules. Others available are:

@@ -26,12 +26,16 @@
     <%= f.password_field :password_confirmation, autocomplete: "off" %>
   </div>
 
-    <% unless current_user.admin? %>
-      <div class="field">
-        <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-        <%= f.password_field :current_password, autocomplete: "off" %>
-      </div>
-    <% end %>
+  <% unless current_user.admin? && resource != current_user %>
+  <div class="field">
+    <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
+    <%= f.password_field :current_password, autocomplete: "off" %>
+  </div>
+  <% end %>
+  
+  <%= fields_for :points do |builder| %>
+    <%= render 'points/points_fields', f: builder %>
+  <% end %>
 
   <div class="actions">
     <%= f.submit "Update" %>

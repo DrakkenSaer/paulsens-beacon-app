@@ -18,6 +18,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     self.resource = @user
     prev_unconfirmed_email = resource.unconfirmed_email if resource.respond_to?(:unconfirmed_email)
 
+    require 'pry'; binding.pry
     resource_updated = update_resource(resource, account_update_params)
     yield resource if block_given?
     respond_to do |format|
@@ -56,9 +57,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
 
   protected
-  
+
     def update_resource(resource, params)
-      (current_user.admin? && params[:current_password].nil?) ? resource.update(params) : super
+      if resource != current_user && current_user.admin? && params[:current_password].nil?
+        resource.update(params)
+      else
+        super
+      end
     end
   
     def after_update_path_for(resource)

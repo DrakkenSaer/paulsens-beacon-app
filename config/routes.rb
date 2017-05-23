@@ -2,7 +2,11 @@
 Rails.application.routes.draw do
   root to: "pages#show", page: "home"
 
-  resources :beacons, :historical_events, :notifications, :orders, :products, :promotions, :roles, :points, :rewards
+  resources :historical_events, :products, :promotions, :roles, :points
+
+  resources :beacons, :rewards, :notifications, :orders do
+    patch 'status', action: :resource_state_change, as: :resource_state_change
+  end
 
   devise_for :users, path: 'account', skip: [:sessions], path_names: { cancel: 'deactivate' }, controllers: { registrations: "users/registrations" }
 

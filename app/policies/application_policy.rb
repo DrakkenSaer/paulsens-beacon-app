@@ -36,6 +36,11 @@ class ApplicationPolicy
     false
   end
 
+  # Non-standard routes
+  def resource_state_change?
+    is_admin? || resource_user? 
+  end
+
   def scope
     Pundit.policy_scope!(user, record.class)
   end

@@ -10,5 +10,14 @@
   <%= @reward.user.email %>
 </p>
 
+<p>
+  <strong>Status:</strong>
+  <%= @reward.aasm.current_state %>
+</p>
+
+<%= render "shared/resource_state_actions", 
+            object: @reward, 
+            button_class: "btn btn-default col-md-offset-4 col-md-4 buffer-margin-10" %>
+
 <%= link_to 'Edit', edit_reward_path(@reward) %> |
 <%= link_to 'Back', rewards_path %>
