@@ -1,5 +1,6 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   prepend_before_action :authenticate_scope!, except: [:new, :create, :cancel]
+  prepend_before_action :configure_permitted_parameters
   before_action :set_user, except: [:index, :create]
   before_action :authorize_user, except: [:index, :create]
 
@@ -57,6 +58,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
 
   protected
+
+    def configure_permitted_parameters
+      devise_parameter_sanitizer.permit(:sign_up, keys: [:phone, :address, :email])
+      devise_parameter_sanitizer.permit(:account_update, keys: [:phone, :address, :email, points_attributes: [:value]])
+    end
 
     def update_resource(resource, params)
       if resource != current_user && current_user.admin? && params[:current_password].nil?
