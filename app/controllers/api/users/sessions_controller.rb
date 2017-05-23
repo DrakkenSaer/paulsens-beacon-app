@@ -1,5 +1,6 @@
 class Api::Users::SessionsController < Devise::SessionsController
     respond_to :json
+    skip_before_filter :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/json' }
 
     def create
         self.resource = warden.authenticate!(auth_options.merge(store: false))
