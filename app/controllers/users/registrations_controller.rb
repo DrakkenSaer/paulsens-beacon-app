@@ -19,7 +19,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
     self.resource = @user
     prev_unconfirmed_email = resource.unconfirmed_email if resource.respond_to?(:unconfirmed_email)
 
-    require 'pry'; binding.pry
     resource_updated = update_resource(resource, account_update_params)
     yield resource if block_given?
     respond_to do |format|
