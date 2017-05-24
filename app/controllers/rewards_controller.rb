@@ -29,7 +29,7 @@ class RewardsController < ApplicationController
         format.json { render :show, status: :created, location: @reward }
       else
         format.html { render :new }
-        format.json { render json: @reward.errors, status: :unprocessable_entity }
+        format.json { render json: { errors: @reward.errors }, status: :unprocessable_entity }
       end
     end
   end
@@ -41,7 +41,7 @@ class RewardsController < ApplicationController
         format.json { render :show, status: :ok, location: @reward }
       else
         format.html { render :edit }
-        format.json { render json: @reward.errors, status: :unprocessable_entity }
+        format.json { render json: { errors: @reward.errors }, status: :unprocessable_entity }
       end
     end
   end

@@ -26,7 +26,7 @@ class ProductsController < ApplicationController
       else
         set_form_resources
         format.html { render action: :new }
-        format.json { render json: @product.errors, status: :unprocessable_entity }
+        format.json { render json: { errors: @product.errors }, status: :unprocessable_entity }
       end
     end
   end
@@ -42,7 +42,7 @@ class ProductsController < ApplicationController
       else
         set_form_resources
         format.html { render action: :edit }
-        format.json { render json: @product.errors, status: :unprocessable_entity }
+        format.json { render json: { errors: @product.errors }, status: :unprocessable_entity }
       end
     end
   end

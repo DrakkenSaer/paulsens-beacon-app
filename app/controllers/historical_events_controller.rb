@@ -35,7 +35,7 @@ class HistoricalEventsController < ApplicationController
         format.json { render :show, status: :created, location: @historical_event }
       else
         format.html { render :new }
-        format.json { render json: @historical_event.errors, status: :unprocessable_entity }
+        format.json { render json: { errors: @historical_event.errors }, status: :unprocessable_entity }
       end
     end
   end
@@ -49,7 +49,7 @@ class HistoricalEventsController < ApplicationController
         format.json { render :show, status: :ok, location: @historical_event }
       else
         format.html { render :edit }
-        format.json { render json: @historical_event.errors, status: :unprocessable_entity }
+        format.json { render json: { errors: @historical_event.errors }, status: :unprocessable_entity }
       end
     end
   end

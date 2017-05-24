@@ -33,7 +33,7 @@ class PointsController < ApplicationController
         format.json { render :show, status: :created, location: @point }
       else
         format.html { render :new }
-        format.json { render json: @point.errors, status: :unprocessable_entity }
+        format.json { render json: { errors: @point.errors }, status: :unprocessable_entity }
       end
     end
   end
@@ -47,7 +47,7 @@ class PointsController < ApplicationController
         format.json { render :show, status: :ok, location: @point }
       else
         format.html { render :edit }
-        format.json { render json: @point.errors, status: :unprocessable_entity }
+        format.json { render json: { errors: @point.errors }, status: :unprocessable_entity }
       end
     end
   end

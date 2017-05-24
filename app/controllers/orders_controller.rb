@@ -28,7 +28,7 @@ class OrdersController < ApplicationController
       else
         set_form_resources
         format.html { render :new }
-        format.json { render json: @order.errors, status: :unprocessable_entity }
+        format.json { render json: { errors: @order.errors }, status: :unprocessable_entity }
       end
     end
   end

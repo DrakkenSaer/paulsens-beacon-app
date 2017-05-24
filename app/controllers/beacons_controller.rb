@@ -36,7 +36,7 @@ class BeaconsController < ApplicationController
       else
         set_form_resources
         format.html { render :new }
-        format.json { render json: @beacon.errors, status: :unprocessable_entity }
+        format.json { render json: { errors: @beacon.errors }, status: :unprocessable_entity }
       end
     end
   end
@@ -51,7 +51,7 @@ class BeaconsController < ApplicationController
       else
         set_form_resources
         format.html { render :edit }
-        format.json { render json: @beacon.errors, status: :unprocessable_entity }
+        format.json { render json: { errors: @beacon.errors }, status: :unprocessable_entity }
       end
     end
   end

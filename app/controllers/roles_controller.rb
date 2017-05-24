@@ -21,10 +21,10 @@ class RolesController < ApplicationController
     respond_to do |format|
       if @role.save
         format.html { redirect_to @role, success: 'Role was successfully created.' }
-        format.json { render json: @role, status: :created, location: @role }
+        format.json { render json: { errors: @role, status: :created, location: @role }
       else
         format.html { render action: :new }
-        format.json { render json: @role.errors, status: :unprocessable_entity }
+        format.json { render json: { errors: @role.errors }, status: :unprocessable_entity }
       end
     end
   end
@@ -39,7 +39,7 @@ class RolesController < ApplicationController
         format.json { head :no_content }
       else
         format.html { render action: :edit }
-        format.json { render json: @product.errors, status: :unprocessable_entity }
+        format.json { render json: { errors: @product.errors }, status: :unprocessable_entity }
       end
     end
   end
