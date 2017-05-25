@@ -1,4 +1,6 @@
 class RolesController < ApplicationController
+  respond_to :html, :json
+
   before_action :authenticate_user!
   before_action :set_role, except: [:index, :create]
   before_action :authorize_role, except: [:index, :create]
@@ -14,39 +16,21 @@ class RolesController < ApplicationController
   end
 
   def create
-    @role = Role.new(role_params)
-
+    @role = Role.create(role_params)
     authorize_role
-
-    respond_to do |format|
-      if @role.save
-        format.html { redirect_to @role, success: 'Role was successfully created.' }
-        format.json { render json: { errors: @role, status: :created, location: @role }
-      else
-        format.html { render action: :new }
-        format.json { render json: { errors: @role.errors }, status: :unprocessable_entity }
-      end
-    end
+    respond_with @role
   end
 
   def edit
   end
 
   def update
-    respond_to do |format|
-      if @role.update_attributes(role_params)
-        format.html { redirect_to @role, notice: 'Role was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: :edit }
-        format.json { render json: { errors: @product.errors }, status: :unprocessable_entity }
-      end
-    end
+    @role.update_attributes(role_params)
+    respond_with @role
   end
 
   def destroy
     @role.destroy
-
     respond_to do |format|
       format.html { redirect_to roles_url }
       format.json { head :no_content }
@@ -55,15 +39,16 @@ class RolesController < ApplicationController
 
   private
 
-  def role_params
-    params.require(:role).permit(:name, :resource_type, :resource_id)
-  end
+    def role_params
+      params.require(:role).permit(:name, :resource_type, :resource_id)
+    end
+  
+    def set_role
+      @role = params[:id] ? Role.find(params[:id]) : Role.new
+    end
+  
+    def authorize_role
+      authorize(@role)
+    end
 
-  def set_role
-    @role = params[:id] ? Role.find(params[:id]) : Role.new
-  end
-
-  def authorize_role
-    authorize(@role)
-  end
 end

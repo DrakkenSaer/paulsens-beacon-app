@@ -1,63 +1,35 @@
 class BeaconsController < ApplicationController
+  respond_to :html, :json
+
   before_action :authenticate_user!, excepts: [:index, :show]
   before_action :set_beacon, except: [:index, :create]
   before_action :authorize_beacon, except: [:index, :create]
-  before_action :set_form_resources, only: [:new, :edit]
+  before_action :set_form_resources, only: [:new, :edit, :create]
 
-  # GET /beacons
-  # GET /beacons.json
   def index
     @beacons = policy_scope(Beacon)
   end
 
-  # GET /beacons/1
-  # GET /beacons/1.json
   def show
   end
 
-  # GET /beacons/new
   def new
   end
 
-  # GET /beacons/1/edit
   def edit
   end
 
-  # POST /beacons
-  # POST /beacons.json
   def create
-    @beacon = Beacon.new(beacon_params)
+    @beacon = Beacon.create(beacon_params)
     authorize_beacon
-
-    respond_to do |format|
-      if @beacon.save
-        format.html { redirect_to @beacon, notice: 'Beacon was successfully created.' }
-        format.json { render :show, status: :created, location: @beacon }
-      else
-        set_form_resources
-        format.html { render :new }
-        format.json { render json: { errors: @beacon.errors }, status: :unprocessable_entity }
-      end
-    end
+    respond_with @beacon
   end
 
-  # PATCH/PUT /beacons/1
-  # PATCH/PUT /beacons/1.json
   def update
-    respond_to do |format|
-      if @beacon.update_attributes(beacon_params)
-        format.html { redirect_to @beacon, notice: 'Beacon was successfully updated.' }
-        format.json { render :show, status: :ok, location: @beacon }
-      else
-        set_form_resources
-        format.html { render :edit }
-        format.json { render json: { errors: @beacon.errors }, status: :unprocessable_entity }
-      end
-    end
+    @beacon.update_attributes(beacon_params)
+    respond_with @beacon
   end
 
-  # DELETE /beacons/1
-  # DELETE /beacons/1.json
   def destroy
     @beacon.destroy
     respond_to do |format|
@@ -88,4 +60,5 @@ class BeaconsController < ApplicationController
     def set_form_resources
       @notifications = policy_scope(Notification)
     end
+
 end

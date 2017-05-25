@@ -1,5 +1,7 @@
 class RewardsController < ApplicationController
   include Concerns::Resource::State::ResourceStateChange
+  
+  respond_to :html, :json
 
   before_action :authenticate_user!
   before_action :set_reward, except: [:index, :create]
@@ -20,30 +22,14 @@ class RewardsController < ApplicationController
   end
 
   def create
-    @reward = Reward.new(reward_params)
+    @reward = Reward.create(reward_params)
     authorize_reward
-
-    respond_to do |format|
-      if @reward.save
-        format.html { redirect_to @reward, notice: 'Reward was successfully created.' }
-        format.json { render :show, status: :created, location: @reward }
-      else
-        format.html { render :new }
-        format.json { render json: { errors: @reward.errors }, status: :unprocessable_entity }
-      end
-    end
+    respond_with @reward
   end
 
   def update
-    respond_to do |format|
-      if @reward.update(reward_params)
-        format.html { redirect_to @reward, notice: 'Reward was successfully updated.' }
-        format.json { render :show, status: :ok, location: @reward }
-      else
-        format.html { render :edit }
-        format.json { render json: { errors: @reward.errors }, status: :unprocessable_entity }
-      end
-    end
+    @reward.update(reward_params)
+    respond_with @reward
   end
 
   def destroy

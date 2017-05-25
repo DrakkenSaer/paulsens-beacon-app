@@ -1,2 +1,6 @@
-<h1>Roles#edit</h1>
-<p>Find me in app/views/roles/edit.html.erb</p>
+<h1>Editing Role</h1>
+
+<%= render 'form', role: @role %>
+
+<%= link_to 'Show', role_path(id: @role) %> |
+<%= link_to 'Back', roles_path %>

@@ -1,60 +1,34 @@
 class NotificationsController < ApplicationController
+  respond_to :html, :json
+
   before_action :authenticate_user!
   before_action :set_notification, except: [:index, :create]
   before_action :authorize_notification, except: [:index, :create]
 
-  # GET /notifications
-  # GET /notifications.json
   def index
     @notifications = policy_scope(Notification)
   end
 
-  # GET /notifications/1
-  # GET /notifications/1.json
   def show
   end
 
-  # GET /notifications/new
   def new
   end
 
-  # GET /notifications/1/edit
   def edit
   end
 
-  # POST /notifications
-  # POST /notifications.json
   def create
-    @notification = Notification.new(notification_params)
+    @notification = Notification.create(notification_params)
     authorize_notification
-
-    respond_to do |format|
-      if @notification.save
-        format.html { redirect_to @notification, notice: 'Notification was successfully created.' }
-        format.json { render :show, status: :created, location: @notification }
-      else
-        format.html { render :new }
-        format.json { render json: { errors: @notification.errors }, status: :unprocessable_entity }
-      end
-    end
+    respond_with @notification
   end
 
-  # PATCH/PUT /notifications/1
-  # PATCH/PUT /notifications/1.json
   def update
-    respond_to do |format|
-      if @notification.update_attributes(notification_params)
-        format.html { redirect_to @notification, notice: 'Notification was successfully updated.' }
-        format.json { render :show, status: :ok, location: @notification }
-      else
-        format.html { render :edit }
-        format.json { render json: { errors: @notification.errors }, status: :unprocessable_entity }
-      end
-    end
+    @notification.update_attributes(notification_params)
+    respond_with @notification
   end
 
-  # DELETE /notifications/1
-  # DELETE /notifications/1.json
   def destroy
     @notification.destroy
     respond_to do |format|
@@ -64,6 +38,7 @@ class NotificationsController < ApplicationController
   end
 
   private
+
     def notification_params
       params.require(:notification).permit(:title,
                                             :description,

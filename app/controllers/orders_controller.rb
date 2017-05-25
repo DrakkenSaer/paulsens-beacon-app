@@ -1,10 +1,12 @@
 class OrdersController < ApplicationController
   include Concerns::Resource::State::ResourceStateChange
 
+  respond_to :html, :json
+
   before_action :authenticate_user!
   before_action :set_order, except: [:index, :create]
   before_action :authorize_order, except: [:index, :create]
-  before_action :set_form_resources, only: [:new, :edit]
+  before_action :set_form_resources, except: [:index, :show, :destroy]
 
   def index
     @orders = policy_scope(Order)
@@ -17,37 +19,26 @@ class OrdersController < ApplicationController
   end
 
   def create
-    @order = Order.new(order_params)
+    @order = Order.create(order_params)
     authorize_order
-
-    respond_to do |format|
-      if @order.save
-        @order.complete!(@order.user)
-        format.html { redirect_to @order, notice: 'Order was successfully created.' }
-        format.json { render :show, status: :created, location: @order, json: @order.user.to_json }
-      else
-        set_form_resources
-        format.html { render :new }
-        format.json { render json: { errors: @order.errors }, status: :unprocessable_entity }
-      end
-    end
+    @order.complete!(@order.user) if @order.persisted?
+    respond_with @order
   end
 
   def edit
   end
 
   def update
-    if @order.update(order_params)
-      redirect_to @order, success: "Order successfully updated!"
-    else
-      set_form_resources
-      render :edit
-    end
+    @order.update(order_params)
+    respond_with @order
   end
 
   def destroy
     @order.destroy
-    redirect_to orders_url, success: "Order successfully deleted!"
+    respond_to do |format|
+      format.html { redirect_to orders_url, notice: 'Order was successfully destroyed.' }
+      format.json { head :no_content }
+    end
   end
   
   private 
