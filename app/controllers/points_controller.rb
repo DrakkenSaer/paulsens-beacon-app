@@ -1,4 +1,4 @@
-class PointsController < Flexible::ApplicationController
+class PointsController < Flexible::ResourceController
   include Concerns::Resource::Nested::SetParentResource
 
   before_action :authenticate_user!

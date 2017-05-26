@@ -1,4 +1,5 @@
 class Users::RegistrationsController < Devise::RegistrationsController
+  include Concerns::Resource::Role::ResourceRoleChange
   respond_to :html, :json
 
   prepend_before_action :authenticate_scope!, except: [:new, :create, :cancel]
@@ -14,43 +15,53 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
   
   def update
-    self.resource = @user
     prev_unconfirmed_email = resource.unconfirmed_email if resource.respond_to?(:unconfirmed_email)
 
     resource_updated = update_resource(resource, account_update_params)
     yield resource if block_given?
-    respond_to do |format|
-      if resource_updated
-        if is_flashing_format?
-          flash_key = update_needs_confirmation?(resource, prev_unconfirmed_email) ?
-            :update_needs_confirmation : :updated
-          set_flash_message :notice, flash_key
-        end
-  
-        respond_with resource, location: after_update_path_for(resource)
-      else
-        clean_up_passwords resource
-        set_minimum_password_length
-        respond_with resource
+    if resource_updated
+      if is_flashing_format?
+        flash_key = update_needs_confirmation?(resource, prev_unconfirmed_email) ?
+          :update_needs_confirmation : :updated
+        set_flash_message :notice, flash_key
       end
+
+      respond_with resource, location: after_update_path_for(resource)
+    else
+      clean_up_passwords resource
+      set_minimum_password_length
+      respond_with resource
     end
+  end
+
+  def destroy
+    resource.destroy
+    warden.logout(resource)
+    warden.clear_strategies_cache!(scope: resource)
+    set_flash_message! :notice, :destroyed
+    yield resource if block_given?
+    respond_with_navigational(resource){ redirect_to users_path }
+  end
+  
+  def deactivate
+    resource.deactivate!
+    Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name)
+    set_flash_message! :notice, :deactivated
+    yield resource if block_given?
+    respond_with_navigational(resource){ redirect_to after_sign_out_path_for(resource_name) }
   end
 
 
   private
 
-    # Use callbacks to share common setup or constraints between actions.
     def set_user
-      if current_user.present?
-        @user = params[:id] ? User.find(params[:id]) : current_user
-      else
-        @user = params[:id] ? User.find(params[:id]) : User.new
-      end
+      @user = params[:id] ? User.find(params[:id]) : current_user || User.new
     end
-  
+
     def authorize_user
       authorize @user
     end
+
 
   protected
 
