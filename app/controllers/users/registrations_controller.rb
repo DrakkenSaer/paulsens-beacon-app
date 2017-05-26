@@ -19,6 +19,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
     resource_updated = update_resource(resource, account_update_params)
     yield resource if block_given?
+    respond_to do |format|
     if resource_updated
       if is_flashing_format?
         flash_key = update_needs_confirmation?(resource, prev_unconfirmed_email) ?
@@ -26,12 +27,17 @@ class Users::RegistrationsController < Devise::RegistrationsController
         set_flash_message :notice, flash_key
       end
 
-      require 'pry'; binding.pry
-      respond_with @user, location: after_update_path_for(resource)
+      # Respond_with returns no content for some reason
+      format.html { redirect_to after_update_path_for(resource), flash: { success: 'User was successfully updated.' } }
+      format.json { render :show, status: :ok, location: after_update_path_for(resource) }
     else
       clean_up_passwords resource
       set_minimum_password_length
-      respond_with @user
+
+      # Respond_with returns no content for some reason
+      format.html { render action: :edit }
+      format.json { render json: resource.errors, status: :unprocessable_entity }
+    end
     end
   end
 
