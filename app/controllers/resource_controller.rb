@@ -43,7 +43,7 @@ class ResourceController < ApplicationController
     end
 
     def resource_class
-      resource_name.titleize.constantize
+      resource_name.camelize.constantize
     end
 
     def resource_params
@@ -55,7 +55,7 @@ class ResourceController < ApplicationController
     end
 
     def set_resource
-        set_resource_variable(params[:id] ? resource_class.find(params[:id]) : resource_class.new)
+      set_resource_variable(params[:id] ? resource_class.find(params[:id]) : resource_class.new)
     end
     
     def resource

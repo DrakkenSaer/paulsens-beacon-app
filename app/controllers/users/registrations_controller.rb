@@ -72,14 +72,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   protected
 
-    def configure_permitted_parameters
-      devise_parameter_sanitizer.permit(:sign_up, keys: [:phone, :address, :email])
-      devise_parameter_sanitizer.permit(:account_update, keys: [:phone, :address, :email, points_attributes: [:value]])
-    end
-
     def update_resource(resource, params)
       if resource != current_user && current_user.admin? && params[:current_password].nil?
-        resource.update(params)
+        compacted_params = params.delete_if { |k, v| v.empty? }
+        resource.update(compacted_params)
       else
         super
       end

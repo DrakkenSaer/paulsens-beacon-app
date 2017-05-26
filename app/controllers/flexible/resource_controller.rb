@@ -24,6 +24,14 @@ class Flexible::ResourceController < ResourceController
     respond_with resource, location: helpers.flexible_resource_path(resource_path, resource)
   end
 
+  def destroy
+    resource.destroy
+    respond_to do |format|
+      format.html { redirect_to @parent_resource, notice: "#{resource_class.name} was successfully destroyed." }
+      format.json { head :no_content }
+    end
+  end
+
   private
 
     def resource_path
