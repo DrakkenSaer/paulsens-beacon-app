@@ -36,7 +36,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
       # Respond_with returns no content for some reason
       format.html { render action: :edit }
-      format.json { render json: resource.errors, status: :unprocessable_entity }
+      format.json { render json: { errors: resource.errors }, status: :unprocessable_entity }
     end
     end
   end
