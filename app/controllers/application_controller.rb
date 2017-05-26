@@ -3,5 +3,5 @@ class ApplicationController < ActionController::Base
   after_action :verify_authorized, except: :index, unless: :devise_controller?
   after_action :verify_policy_scoped, only: :index, unless: :devise_controller?
 
-  protect_from_forgery with: :exception, unless: -> { request.format.json? } || Rails.env.development?
+  protect_from_forgery with: :exception unless -> { request.format.json? } || Rails.env.development?
 end
