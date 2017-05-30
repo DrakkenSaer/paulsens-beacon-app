@@ -16,7 +16,7 @@
     <%= f.text_field :address %>
   </div>
 
-  <%= fields_for :credit do |builder| %>
+  <%= f.fields_for :credit do |builder| %>
     <%= render 'credits/credit_fields', f: builder %>
   <% end %>
 

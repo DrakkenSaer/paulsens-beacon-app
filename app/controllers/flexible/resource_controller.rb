@@ -27,15 +27,15 @@ class Flexible::ResourceController < ResourceController
   def destroy
     resource.destroy
     respond_to do |format|
-      format.html { redirect_to @parent_resource, notice: "#{resource_class.name} was successfully destroyed." }
+      format.html { redirect_to after_destroy_path, notice: "#{resource_class.name} was successfully destroyed." }
       format.json { head :no_content }
     end
   end
 
   private
 
-    def resource_path
-      "#{resource_name}_path".to_sym
+    def resource_path(name = resource_name)
+      eval("#{name}_path")
     end
 
     def set_resource
@@ -43,6 +43,14 @@ class Flexible::ResourceController < ResourceController
         set_resource_variable(@parent_resource)
       else
         set_resource_variable(params[:id] ? @parent_resource.send(resource_name.pluralize).find(params[:id]) : @parent_resource.send(resource_name.pluralize).build)
+      end
+    end
+    
+    def after_destroy_path
+      if @parent_resource.class == resource_class
+        resource_path(resource_name.pluralize)
+      else
+        @parent_resource
       end
     end
     

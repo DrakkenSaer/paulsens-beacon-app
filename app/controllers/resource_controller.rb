@@ -31,7 +31,7 @@ class ResourceController < ApplicationController
   def destroy
     resource.destroy
     respond_to do |format|
-      format.html { redirect_to @parent_resource, notice: "#{resource_class.name} was successfully destroyed." }
+      format.html { redirect_to action: :index, notice: "#{resource_class.name} was successfully destroyed." }
       format.json { head :no_content }
     end
   end
@@ -47,7 +47,7 @@ class ResourceController < ApplicationController
     end
 
     def resource_params
-      self.send("#{resource_name}_params")
+      eval("#{resource_name}_params")
     end
     
     def set_resource_variable(value, name = "@#{resource_name}")

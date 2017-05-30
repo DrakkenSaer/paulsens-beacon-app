@@ -16,4 +16,8 @@ class CreditPolicy < ApplicationPolicy
     def update?
         is_admin? or resource_user?
     end
+    
+    def destroy?
+        is_admin?
+    end
 end
