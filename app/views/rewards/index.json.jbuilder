@@ -1,1 +1,3 @@
-json.array! @rewards, partial: 'rewards/reward', as: :reward
+json.rewards @rewards do |reward| 
+    json.partial! 'rewards/reward', reward: reward
+end 

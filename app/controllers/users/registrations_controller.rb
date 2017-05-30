@@ -3,17 +3,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
   respond_to :html, :json
 
   prepend_before_action :authenticate_scope!, except: [:new, :create, :cancel]
-  prepend_before_action :configure_permitted_parameters
   before_action :set_user, except: [:index, :create]
   before_action :authorize_user, except: [:index, :create]
 
-  def index
-    @users = policy_scope(User)
-  end
-
-  def show
-  end
-  
   def update
     prev_unconfirmed_email = resource.unconfirmed_email if resource.respond_to?(:unconfirmed_email)
 
@@ -29,7 +21,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
       # Respond_with returns no content for some reason
       format.html { redirect_to after_update_path_for(resource), flash: { success: 'User was successfully updated.' } }
-      format.json { render :show, status: :ok, location: after_update_path_for(resource) }
+      format.json { render 'users/show', status: :ok, location: after_update_path_for(resource) }
     else
       clean_up_passwords resource
       set_minimum_password_length

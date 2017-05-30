@@ -24,6 +24,7 @@ class ResourceController < ApplicationController
   end
 
   def update
+    require 'pry'; binding.pry
     resource.update(resource_params)
     respond_with resource
   end
