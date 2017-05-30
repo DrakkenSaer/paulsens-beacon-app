@@ -1,7 +1,7 @@
 FactoryGirl.define do
-  factory :points, class: 'Point' do
+  factory :credits, class: 'Credit' do
     value 123
-    type 'Point'
+    type 'Credit'
     association :cashable, factory: :user
   end
 end

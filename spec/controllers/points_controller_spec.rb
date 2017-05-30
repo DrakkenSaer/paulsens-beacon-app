@@ -1,9 +1,9 @@
 require 'rails_helper'
 
-RSpec.describe PointsController, type: :controller do
+RSpec.describe CreditsController, type: :controller do
 
-  let(:valid_attributes) { FactoryGirl.build(:points).attributes }
-  let(:invalid_attributes) { FactoryGirl.attributes_for(:points, value: nil) }
+  let(:valid_attributes) { FactoryGirl.build(:credits).attributes }
+  let(:invalid_attributes) { FactoryGirl.attributes_for(:credits, value: nil) }
 
   describe "GET #index" do
     context "as admin" do
@@ -84,13 +84,13 @@ RSpec.describe PointsController, type: :controller do
 
   describe "GET #edit" do
     before :each do
-      @point = FactoryGirl.create(:points)
+      @credit = FactoryGirl.create(:credits)
     end
 
     context "as admin" do
       login_admin
-      it "assigns the requested point as @point" do
-        get :edit, params: {id: @point, point: valid_attributes.slice('value')}
+      it "assigns the requested credit as @credit" do
+        get :edit, params: {id: @credit, credit: valid_attributes.slice('value')}
         expect(response).to have http_status(200)
       end
     end
@@ -98,32 +98,32 @@ RSpec.describe PointsController, type: :controller do
 
   describe "POST #create" do
     context "with valid params" do
-      it "creates a new Point" do
+      it "creates a new Credit" do
         expect {
-          post :create, params: {point: valid_attributes}
-        }.to change(Point, :count).by(1)
+          post :create, params: {credit: valid_attributes}
+        }.to change(Credit, :count).by(1)
       end
 
-      it "assigns a newly created point as @point" do
-        post :create, params: {point: valid_attributes}
-        expect(assigns(:points)).to be_a(Point)
-        expect(assigns(:points)).to be_persisted
+      it "assigns a newly created credit as @credit" do
+        post :create, params: {credit: valid_attributes}
+        expect(assigns(:credits)).to be_a(Credit)
+        expect(assigns(:credits)).to be_persisted
       end
 
-      it "redirects to the created point" do
-        post :create, params: {point: valid_attributes}
-        expect(response).to redirect_to(Point.last)
+      it "redirects to the created credit" do
+        post :create, params: {credit: valid_attributes}
+        expect(response).to redirect_to(Credit.last)
       end
     end
 
     context "with invalid params" do
-      it "assigns a newly created but unsaved point as @point" do
-        post :create, params: {point: invalid_attributes}
-        expect(assigns(:points)).to be_a_new(Point)
+      it "assigns a newly created but unsaved credit as @credit" do
+        post :create, params: {credit: invalid_attributes}
+        expect(assigns(:credits)).to be_a_new(Credit)
       end
 
       it "re-renders the 'new' template" do
-        post :create, params: {point: invalid_attributes}
+        post :create, params: {credit: invalid_attributes}
         expect(response).to render_template("new")
       end
     end
@@ -135,53 +135,53 @@ RSpec.describe PointsController, type: :controller do
         skip("Add a hash of attributes valid for your model")
       }
 
-      it "updates the requested point" do
-        point = Point.create! valid_attributes
-        put :update, params: {id: point.to_param, point: new_attributes}
-        point.reload
+      it "updates the requested credit" do
+        credit = Credit.create! valid_attributes
+        put :update, params: {id: credit.to_param, credit: new_attributes}
+        credit.reload
         skip("Add assertions for updated state")
       end
 
-      it "assigns the requested point as @point" do
-        point = Point.create! valid_attributes
-        put :update, params: {id: point.to_param, point: valid_attributes}
-        expect(assigns(:points)).to eq(point)
+      it "assigns the requested credit as @credit" do
+        credit = Credit.create! valid_attributes
+        put :update, params: {id: credit.to_param, credit: valid_attributes}
+        expect(assigns(:credits)).to eq(credit)
       end
 
-      it "redirects to the point" do
-        point = Point.create! valid_attributes
-        put :update, params: {id: point.to_param, point: valid_attributes}
-        expect(response).to redirect_to(point)
+      it "redirects to the credit" do
+        credit = Credit.create! valid_attributes
+        put :update, params: {id: credit.to_param, credit: valid_attributes}
+        expect(response).to redirect_to(credit)
       end
     end
 
     context "with invalid params" do
-      it "assigns the point as @point" do
-        point = Point.create! valid_attributes
-        put :update, params: {id: point.to_param, point: invalid_attributes}
-        expect(assigns(:points)).to eq(point)
+      it "assigns the credit as @credit" do
+        credit = Credit.create! valid_attributes
+        put :update, params: {id: credit.to_param, credit: invalid_attributes}
+        expect(assigns(:credits)).to eq(credit)
       end
 
       it "re-renders the 'edit' template" do
-        point = Point.create! valid_attributes
-        put :update, params: {id: point.to_param, point: invalid_attributes}
+        credit = Credit.create! valid_attributes
+        put :update, params: {id: credit.to_param, credit: invalid_attributes}
         expect(response).to render_template("edit")
       end
     end
   end
 
   describe "DELETE #destroy" do
-    it "destroys the requested point" do
-      point = Point.create! valid_attributes
+    it "destroys the requested credit" do
+      credit = Credit.create! valid_attributes
       expect {
-        delete :destroy, params: {id: point.to_param}
-      }.to change(Point, :count).by(-1)
+        delete :destroy, params: {id: credit.to_param}
+      }.to change(Credit, :count).by(-1)
     end
 
-    it "redirects to the points list" do
-      point = Point.create! valid_attributes
-      delete :destroy, params: {id: point.to_param}
-      expect(response).to redirect_to(points_url)
+    it "redirects to the credits list" do
+      credit = Credit.create! valid_attributes
+      delete :destroy, params: {id: credit.to_param}
+      expect(response).to redirect_to(credits_url)
     end
   end
 

@@ -1,7 +1,7 @@
-<%= form_for(@point) do |f| %>
+<%= form_for(@credit) do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
 
-  <%= render 'points_fields', f: f %>
+  <%= render 'credit_fields', f: f %>
 
   <div class="actions">
     <%= f.submit %>

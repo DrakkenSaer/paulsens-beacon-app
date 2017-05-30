@@ -1,7 +1,7 @@
 class Flexible::ResourceController < ResourceController
   include Concerns::Resource::Nested::SetParentResource
 
-  before_action :set_parent_resource
+  prepend_before_action :set_parent_resource
 
   def index
     set_resource_variable(@parent_resource.class == resource_class ? 

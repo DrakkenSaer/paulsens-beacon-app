@@ -1,18 +1,18 @@
 require 'rails_helper'
 
-RSpec.describe "points/index", type: :view do
+RSpec.describe "credits/index", type: :view do
   before(:each) do
-    assign(:points, [
-      Point.create!(
+    assign(:credits, [
+      Credit.create!(
         :value => "Value"
       ),
-      Point.create!(
+      Credit.create!(
         :value => "Value"
       )
     ])
   end
 
-  it "renders a list of points" do
+  it "renders a list of credits" do
     render
     assert_select "tr>td", :text => "Value".to_s, :count => 2
   end

@@ -32,10 +32,6 @@
     <%= f.password_field :current_password, autocomplete: "off" %>
   </div>
   <% end %>
-  
-  <%= fields_for :points do |builder| %>
-    <%= render 'points/points_fields', f: builder %>
-  <% end %>
 
   <div class="actions">
     <%= f.submit "Update" %>

@@ -1,3 +1,3 @@
 json.user user
-json.points user.points
+json.credit user.credit
 json.token @encoded_token if @encoded_token.present?

@@ -1,4 +1,4 @@
-class Point < Currency
+class Credit < Currency
 
   validate :validate_incrementation_limit, if: :value_changed?
 

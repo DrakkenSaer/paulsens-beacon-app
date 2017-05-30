@@ -6,7 +6,6 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-
 HistoricalEvent.destroy_all
 Notification.destroy_all
 Beacon.destroy_all
@@ -36,7 +35,7 @@ resource_interval.times do |i|
     user.add_role resource_roles[:user].sample
 end
 
-User.all.map { |user| user.points.update(value: 10000 ) }
+User.all.map { |user| user.credit.update(value: 10000 ) }
 
 resource_interval.times do |i|
     Beacon.create!( title: Faker::Company.name + "_#{i}",

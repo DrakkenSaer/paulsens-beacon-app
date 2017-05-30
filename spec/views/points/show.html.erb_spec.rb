@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe "points/show", type: :view do
+RSpec.describe "credits/show", type: :view do
   before(:each) do
-    @point = assign(:point, Point.create!(
+    @credit = assign(:credit, Credit.create!(
       :value => "Value"
     ))
   end

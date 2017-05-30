@@ -1,18 +1,18 @@
 require 'rails_helper'
 
-RSpec.describe "points/edit", type: :view do
+RSpec.describe "credits/edit", type: :view do
   before(:each) do
-    @point = assign(:point, Point.create!(
+    @credit = assign(:credit, Credit.create!(
       :value => "MyString"
     ))
   end
 
-  it "renders the edit point form" do
+  it "renders the edit credit form" do
     render
 
-    assert_select "form[action=?][method=?]", point_path(@point), "post" do
+    assert_select "form[action=?][method=?]", credit_path(@credit), "post" do
 
-      assert_select "input#point_value[name=?]", "point[value]"
+      assert_select "input#credit_value[name=?]", "credit[value]"
     end
   end
 end

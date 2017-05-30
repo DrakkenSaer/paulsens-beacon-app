@@ -1,5 +1,4 @@
 module Roles::Helper
-    # Remove this and call upon the module's methods to include instead to fix performance hit
     def invoke(source)
         define_class_methods(source)
         define_instance_methods(source)

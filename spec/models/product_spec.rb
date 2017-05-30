@@ -64,7 +64,7 @@ RSpec.describe Product, type: :model do
       context "purchase!" do
         before(:each) do
           @user = FactoryGirl.create(:user)
-          @user.points.update!(value: subject.cost)
+          @user.credits.update!(value: subject.cost)
         end
         
         it "takes in an orderable object as an argument" do

@@ -6,7 +6,7 @@ class UsersController < ResourceController
   private
 
     def user_params
-      params.require(:user).permit(:email, :phone, :address, points_attributes: [:id, :value])
+      params.require(:user).permit(:email, :phone, :address, credit_attributes: [:id, :value])
     end
 
 end
