@@ -17,12 +17,14 @@ ActiveRecord::Schema.define(version: 20170519004059) do
 
   create_table "beacons", force: :cascade do |t|
     t.string   "uuid",        null: false
+    t.string   "major_uuid",  null: false
+    t.string   "minor_uuid",  null: false
     t.string   "title",       null: false
     t.text     "description", null: false
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
-    t.string   "major_uuid",  null: false
-    t.string   "minor_uuid",  null: false
+    t.index ["major_uuid"], name: "index_beacons_on_major_uuid", using: :btree
+    t.index ["minor_uuid"], name: "index_beacons_on_minor_uuid", using: :btree
     t.index ["uuid"], name: "index_beacons_on_uuid", using: :btree
   end
 
@@ -48,6 +50,20 @@ ActiveRecord::Schema.define(version: 20170519004059) do
     t.string   "image_content_type"
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
+  end
+
+  create_table "items", force: :cascade do |t|
+    t.string   "type",                               null: false
+    t.boolean  "featured",           default: false, null: false
+    t.float    "cost",               default: 0.0,   null: false
+    t.string   "title",                              null: false
+    t.text     "description",                        null: false
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
   end
 
   create_table "line_items", force: :cascade do |t|
@@ -85,19 +101,6 @@ ActiveRecord::Schema.define(version: 20170519004059) do
     t.string   "resource_state"
     t.datetime "completion_date"
     t.index ["user_id"], name: "index_orders_on_user_id", using: :btree
-  end
-
-  create_table "products", force: :cascade do |t|
-    t.boolean  "featured",           default: false, null: false
-    t.float    "cost",               default: 0.0,   null: false
-    t.string   "title",                              null: false
-    t.text     "description",                        null: false
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
-    t.string   "image_file_name"
-    t.string   "image_content_type"
-    t.integer  "image_file_size"
-    t.datetime "image_updated_at"
   end
 
   create_table "promotions", force: :cascade do |t|

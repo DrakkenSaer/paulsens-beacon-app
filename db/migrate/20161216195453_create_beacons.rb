@@ -2,6 +2,8 @@ class CreateBeacons < ActiveRecord::Migration[5.0]
   def change
     create_table :beacons do |t|
       t.string :uuid, null: false, unique: true, index: true
+      t.string :major_uuid, null: false, index: true
+      t.string :minor_uuid, null: false, index: true
       t.string :title, null: false, unique: true
       t.text :description, null: false
 

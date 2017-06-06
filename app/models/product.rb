@@ -1,18 +1,11 @@
-class Product < ApplicationRecord
-    include Concerns::Purchasable
-    include Concerns::Images::ValidatesAttachment
-    
+class Product < Item
     before_validation :set_default_cost, 
                       :set_default_featured
 
     has_many :promotions, as: :promotional
     accepts_nested_attributes_for :promotions, reject_if: :all_blank, allow_destroy: true
 
-    validates :title, :description, :cost, presence: true
-    validates :title, uniqueness: true
     validates :featured, inclusion: { in: [ true, false ] }
-
-    resourcify
 
     # This is temporary, waiting to think of a better solution. Do not test.
     def promotions_attributes=(promotions_attributes)

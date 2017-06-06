@@ -4,16 +4,16 @@ class Flexible::ResourceController < ResourceController
   prepend_before_action :set_parent_resource
 
   def index
-    set_resource_variable(@parent_resource.class == resource_class ? 
-                                      policy_scope(resource_class) : 
-                                      policy_scope(@parent_resource.send(resource_name.pluralize)),
+    set_resource_variable(parent_resource_is_self? ? 
+                            policy_scope(resource_class) : 
+                            policy_scope(@parent_resource.send(resource_name.pluralize)),
                           "@#{resource_name.pluralize}")
   end
-
+  
   def create
-    set_resource_variable(@parent_resource.class == resource_class ? 
-                                                  @parent_resource : 
-                                                  @parent_resource.send(resource_name.pluralize).create(resource_params))
+    set_resource_variable(parent_resource_is_self? ? 
+                                  @parent_resource : 
+                                  @parent_resource.send(resource_name.pluralize).create(resource_params))
 
     authorize_resource
     respond_with resource, location: helpers.flexible_resource_path(resource_path, resource)
@@ -39,7 +39,7 @@ class Flexible::ResourceController < ResourceController
     end
 
     def set_resource
-      if @parent_resource.class == resource_class
+      if parent_resource_is_self?
         set_resource_variable(@parent_resource)
       else
         set_resource_variable(params[:id] ? @parent_resource.send(resource_name.pluralize).find(params[:id]) : @parent_resource.send(resource_name.pluralize).build)
@@ -47,11 +47,15 @@ class Flexible::ResourceController < ResourceController
     end
     
     def after_destroy_path
-      if @parent_resource.class == resource_class
+      if parent_resource_is_self?
         resource_path(resource_name.pluralize)
       else
         @parent_resource
       end
+    end
+    
+    def parent_resource_is_self?
+      @parent_resource.class == resource_class
     end
     
 end

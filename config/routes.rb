@@ -2,10 +2,16 @@
 Rails.application.routes.draw do
   root to: "pages#show", page: "home"
 
-  resources :historical_events, :products, :promotions, :roles, :credits
+  resources :historical_events, :products, :promotions, :roles
+  resources :credits, except: [:new, :create]
 
-  resources :beacons, :rewards, :notifications, :orders do
+  resources :rewards, :notifications, :orders do
     patch 'status', action: :resource_state_change, as: :resource_state_change
+  end
+  
+  resources :beacons do
+    patch 'status', action: :resource_state_change, as: :resource_state_change
+    resources :notifications
   end
 
   devise_for :users, path: 'account', skip: [:sessions], path_names: { cancel: 'deactivate' }

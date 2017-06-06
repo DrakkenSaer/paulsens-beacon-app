@@ -12,6 +12,11 @@ class Currency < ApplicationRecord
     raise ArgumentError, 'Argument is not positive' unless value >= 0
     self.update!(value: self.value - value)
   end
+  
+  def can_spend?(value)
+    raise ArgumentError, 'Argument is not positive' unless value >= 0
+    self.value > value    
+  end
 
   protected
 

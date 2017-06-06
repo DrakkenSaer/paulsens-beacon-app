@@ -1,7 +1,6 @@
 class Promotion < ApplicationRecord
   include Concerns::Polymorphic::Helpers
-  include Concerns::Purchasable
-  include Concerns::Images::ValidatesAttachment
+  include Concerns::Images::Imageable
 
   before_validation :set_default_cost, 
                     :set_default_daily_deal, 

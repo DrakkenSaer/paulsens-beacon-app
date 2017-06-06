@@ -1,16 +1,6 @@
 <%= form_for(beacon) do |f| %>
-  <% if beacon.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(beacon.errors.count, "error") %> prohibited this beacon from being saved:</h2>
-
-      <ul>
-        <% beacon.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
+  <%= render 'shared/error_messages', object: f.object %>
+  
   <div class="field">
     <%= f.label :title %>
     <%= f.text_field :title %>
@@ -36,13 +26,10 @@
     <%= f.text_field :minor_uuid %>
   </div>
 
-
   <h3>Notifications</h3>
-  <%= f.fields_for :notifications do |builder| %>
-    <%= render 'notifications_fields', f: builder %>
-  <% end %>
+  <%= render 'notification_fields', f: f %>
 
-  <%= link_to_add_fields 'Add Notifaction', f, :notifications %>
+  <%= link_to_add_fields 'Add Notification', f, :notifications %>
 
   <div class="actions">
     <%= f.submit %>

@@ -27,7 +27,7 @@ class Order < ApplicationRecord
         end
 
         
-        event :complete, guards: lambda { @user.has_enough_credits?(total_cost) } do
+        event :complete, guards: :user_has_enough_credits? do
             transitions from: STATES, to: :completed, success: [lambda { @user.credit.spend!(total_cost) },
                                                                 lambda { @user.products << self.products },
                                                                 lambda { @user.promotions << self.promotions },
@@ -59,4 +59,10 @@ class Order < ApplicationRecord
            self.update!(completion_date: date)
         end
 
+    private
+    
+        # State Validations
+        def user_has_enough_credits?
+            @user.credit.can_spend?(total_cost) 
+        end
 end

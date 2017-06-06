@@ -1,6 +1,6 @@
 class Notification < ApplicationRecord
   include Concerns::Polymorphic::Helpers
-  include Concerns::Images::ValidatesAttachment
+  include Concerns::Images::Imageable
 
   belongs_to :notifiable, polymorphic: true, optional: true
 

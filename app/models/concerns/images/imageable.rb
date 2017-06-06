@@ -1,4 +1,4 @@
-module Concerns::Images::ValidatesAttachment
+module Concerns::Images::Imageable
     # Performance hit: Avoids falseClass empty stop along the call chain - https://8thlight.com/blog/josh-cheek/2012/02/03/modules-called-they-want-their-integrity-back.html
     # Remove this and call upon the module's methods to include instead to fix performance hit
     def self.included(source)
